@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "864447003499",
+    "project_id": "outreachapp-e28a3",
+    "storage_bucket": "outreachapp-e28a3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:864447003499:android:c9d76ba0cd8d8dd0212a2e",
+        "android_client_info": {
+          "package_name": "com.example.client"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "864447003499-3dubqt84n6t4d3m2preh7gg3l8eb117r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDnJt82rcBZqDxxZdSrgfKOW_WbkV0a32Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "864447003499-3dubqt84n6t4d3m2preh7gg3l8eb117r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:864447003499:android:43b643838a393266212a2e",
+        "android_client_info": {
+          "package_name": "com.example.driveroutreach"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "864447003499-3dubqt84n6t4d3m2preh7gg3l8eb117r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDnJt82rcBZqDxxZdSrgfKOW_WbkV0a32Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "864447003499-3dubqt84n6t4d3m2preh7gg3l8eb117r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
