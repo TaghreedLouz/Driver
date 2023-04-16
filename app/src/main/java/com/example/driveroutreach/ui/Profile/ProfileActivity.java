@@ -20,4 +20,5 @@ public class ProfileActivity extends AppCompatActivity implements ProfileView{
         profilePresenter= new ProfilePresenter(this);
 
     }
+
 }
