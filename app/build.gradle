@@ -6,7 +6,9 @@ plugins {
 
 android {
     compileSdk 33
-
+    buildFeatures {
+        viewBinding true
+    }
     defaultConfig {
         applicationId "com.example.driveroutreach"
         minSdk 21
