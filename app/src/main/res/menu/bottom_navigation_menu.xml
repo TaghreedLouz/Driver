@@ -2,12 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/page_home"
-        android:enabled="true"
-        android:icon="@drawable/ic_baseline_location_on_24"
-        android:title="Map"/>
-
-    <item
         android:id="@+id/page_schedule"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_calendar_month_24"
@@ -23,5 +17,9 @@
         android:enabled="true"
         android:icon="@drawable/ic_baseline_person_24"
         android:title="Profile"/>
-
+    <item
+        android:id="@+id/page_home"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_location_on_24"
+        android:title="Map"/>
 </menu>
