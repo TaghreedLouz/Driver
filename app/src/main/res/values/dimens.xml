@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="video_width">85dp</dimen>
+    <dimen name="video_height">120dp</dimen>
+
+    <dimen name="video_margin">30dp</dimen>
+    <dimen name="recycler_view_left_offset">3dp</dimen>
+    <dimen name="left_offset">61dp</dimen>
+    <dimen name="card_width">148dp</dimen>
+    <dimen name="card_corner_radius">10dp</dimen>
+    <dimen name="internet_icon_width">30dp</dimen>
+    <dimen name="margin_top_progress">0dp</dimen>
+    <dimen name="progress_heigh">40dp</dimen>
+    <dimen name="lock_icon_width">120dp</dimen>
+    <dimen name="progressbar_width">300dp</dimen>
+    <dimen name="recycler_height">180dp</dimen>
+    <dimen name="warning_text_size">12sp</dimen>
+    <dimen name="error_image_width">100dp</dimen>
+    <dimen name="min_alert_width">100dp</dimen>
+    <dimen name="frame_alert_padding">10dp</dimen>
+    <dimen name="alert_text_size">14sp</dimen>
+    <dimen name="alert_dialog_margin">20dp</dimen>
+    <dimen name="frame_alert_padding_bottom">55dp</dimen>
+    <dimen name="options_icon_width">60dp</dimen>
+    <dimen name="progress_icon_size">20dp</dimen>
+    <dimen name="back_icon_width">25dp</dimen>
+    <dimen name="video_title_full_screen">18sp</dimen>
+    <dimen name="progress_text_size">12sp</dimen>
+
+    <dimen name="demo_sheet_rounded_corner">16dp</dimen>
+
+    <dimen name="super_bottom_sheet_width">@dimen/_280sdp</dimen>
+    <dimen name="super_bottom_sheet_width_mid">@dimen/_290sdp</dimen>
+    <dimen name="super_bottom_sheet_width_large">@dimen/_300sdp</dimen>
+    <dimen name="default_corner_radius">@dimen/sdp_10</dimen>
+    <dimen name="default_corner_radius2">@dimen/sdp_5</dimen>
+
+    <dimen name="sdp_textSize_10">@dimen/_9ssp</dimen>
+    <dimen name="sdp_textSize_12">@dimen/_10ssp</dimen>
+    <dimen name="sdp_textSize_14">@dimen/_11ssp</dimen>
+    <dimen name="sdp_textSize_16">@dimen/_13ssp</dimen>
+    <dimen name="sdp_textSize_18">@dimen/_14ssp</dimen>
+    <dimen name="sdp_textSize_20">@dimen/_15ssp</dimen>
+    <dimen name="sdp_textSize_22">@dimen/_17ssp</dimen>
+    <dimen name="sdp_textSize_30">@dimen/_22ssp</dimen>
+
+    <dimen name="sdp_5">@dimen/_4sdp</dimen>
+    <dimen name="sdp_8">@dimen/_5sdp</dimen>
+    <dimen name="sdp_10">@dimen/_8sdp</dimen>
+    <dimen name="sdp_11">@dimen/_9sdp</dimen>
+    <dimen name="sdp_12">@dimen/_10sdp</dimen>
+    <dimen name="sdp_15">@dimen/_12sdp</dimen>
+
+    <dimen name="sdp_16">@dimen/_14sdp</dimen>
+
+    <dimen name="sdp_20">@dimen/_15sdp</dimen>
+    <dimen name="sdp_25">@dimen/_19sdp</dimen>
+    <dimen name="sdp_30">@dimen/_23sdp</dimen>
+    <dimen name="sdp_40">@dimen/_31sdp</dimen>
+    <dimen name="sdp_50">@dimen/_39sdp</dimen>
+    <dimen name="sdp_60">@dimen/_46sdp</dimen>
+    <dimen name="sdp_70">@dimen/_54sdp</dimen>
+    <dimen name="sdp_height_50">@dimen/_39sdp</dimen>
+    <dimen name="sdp_height_100">@dimen/_78sdp</dimen>
+    <dimen name="sdp_height_40">@dimen/_31sdp</dimen>
+    <dimen name="sdp_45">@dimen/_35sdp</dimen>
+    <dimen name="sdp_80">@dimen/_35sdp</dimen>
+    <dimen name="sdp_app_margin_horizontal_20">@dimen/_16sdp</dimen>
+    <dimen name="sdp_app_margin_top_25">@dimen/_19sdp</dimen>
+    <dimen name="sdp_book_width">@dimen/_68sdp</dimen>
+    <dimen name="sdp_book_height">@dimen/_98sdp</dimen>
+    <dimen name="sdp_video_height">@dimen/_181sdp</dimen>
+    <dimen name="sdp_card_height">@dimen/_144sdp</dimen>
+    <dimen name="sdp_card_width">@dimen/_120sdp</dimen>
+    <dimen name="sdp_game_card_height">@dimen/_132sdp</dimen>
+    <dimen name="sdp__game_card_width">@dimen/_124sdp</dimen>
+    <dimen name="sdp_game_icon_height">@dimen/_93sdp</dimen>
+    <dimen name="sdp_game_icon_width">@dimen/_109sdp</dimen>
+    <dimen name="rating_margin_notification">-51.4dp</dimen>
+
+
+</resources>
