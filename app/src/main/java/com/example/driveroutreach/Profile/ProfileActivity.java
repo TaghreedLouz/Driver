@@ -6,7 +6,7 @@ import android.os.Bundle;
 
 import com.example.driveroutreach.R;
 
-public class ProfileActivity extends AppCompatActivity implements ProfileView {
+public class ProfileActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
