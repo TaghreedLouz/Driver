@@ -2,24 +2,26 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/page_schedule"
+        android:id="@+id/page_profile"
         android:enabled="true"
-        android:icon="@drawable/ic_baseline_calendar_month_24"
-        android:title="Schedule"/>
+        android:icon="@drawable/ic_baseline_person_24"
+        android:title="@string/tv_menu_profile"/>
 
     <item
         android:id="@+id/page_archive"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_archive_24"
-        android:title="Archive"/>
+        android:title="@string/tv_menu_archive"/>
+
     <item
-        android:id="@+id/page_profile"
+        android:id="@+id/page_schedule"
         android:enabled="true"
-        android:icon="@drawable/ic_baseline_person_24"
-        android:title="Profile"/>
+        android:icon="@drawable/ic_baseline_calendar_month_24"
+        android:title="@string/tv_menu_schedule"/>
+
     <item
         android:id="@+id/page_home"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_location_on_24"
-        android:title="Map"/>
+        android:title="@string/tv_menu_map"/>
 </menu>
