@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.driveroutreach.R;
 import com.example.driveroutreach.databinding.ActivityMainBinding;
+import com.example.driveroutreach.ui.fragments.schedule.ScheduleFragment;
 import com.google.android.material.navigation.NavigationBarView;
 
 public class MainActivity extends AppCompatActivity implements MainView {
