@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/_13sdp"
+    android:gravity="center"
+    android:background="@color/white"
+    tools:context=".ui.activities.Verification.VerificationActivity">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/img_logo"
+        android:layout_width="@dimen/_71sdp"
+        android:layout_height="@dimen/_75sdp"
+        android:layout_marginTop="@dimen/_37sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/img_logo" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/img_outreach"
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="@dimen/_37sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/img_logo"
+        app:srcCompat="@drawable/img_outreach" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_enterCode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto_regular"
+        android:text="@string/enter_the_code"
+        android:textAlignment="center"
+        android:textColor="@color/sea_green"
+        android:textSize="@dimen/_20ssp"
+        android:layout_marginTop="@dimen/_30sdp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/img_outreach" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_hintCode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto_regular"
+        android:text="@string/secret_code"
+        android:textAlignment="center"
+        android:textColor="@color/dark_gray"
+        android:textSize="@dimen/_12ssp"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_enterCode" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="@dimen/_190sdp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_14sdp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_hintCode">
+
+        <EditText
+            android:id="@+id/et_digit_1"
+            android:layout_width="@dimen/_37sdp"
+            android:layout_height="@dimen/_37sdp"
+            android:layout_weight="1"
+            android:background="@drawable/shape_code_bg"
+            android:inputType="number"
+            android:textColor="@color/dark_gray"
+            android:maxLength="1"
+            android:nextFocusDown="@+id/et_digit_2"
+            android:textAlignment="center" />
+
+        <EditText
+            android:id="@+id/et_digit_2"
+            android:layout_width="@dimen/_37sdp"
+            android:layout_height="@dimen/_37sdp"
+            android:layout_marginStart="@dimen/_13sdp"
+            android:layout_marginEnd="@dimen/_13sdp"
+            android:layout_weight="1"
+            android:background="@drawable/shape_code_bg"
+            android:inputType="number"
+            android:maxLength="1"
+            android:nextFocusDown="@+id/et_digit_3"
+            android:textAlignment="center"
+            android:textColor="@color/dark_gray"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+        <EditText
+            android:id="@+id/et_digit_3"
+            android:layout_width="@dimen/_37sdp"
+            android:layout_height="@dimen/_37sdp"
+            android:layout_marginEnd="@dimen/_13sdp"
+            android:layout_weight="1"
+            android:background="@drawable/shape_code_bg"
+            android:inputType="number"
+            android:textColor="@color/dark_gray"
+            android:maxLength="1"
+            android:nextFocusDown="@+id/et_digit_4"
+            android:textAlignment="center" />
+
+        <EditText
+            android:id="@+id/et_digit_4"
+            android:layout_width="@dimen/_37sdp"
+            android:layout_height="@dimen/_37sdp"
+            android:layout_weight="1"
+            android:background="@drawable/shape_code_bg"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textAlignment="center"
+            android:textColor="@color/dark_gray"
+            tools:ignore="SpeakableTextPresentCheck" />
+    </LinearLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_login"
+        android:layout_width="@dimen/_267sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_marginTop="@dimen/_13sdp"
+        android:fontFamily="@font/roboto_regular"
+        android:text="@string/login"
+        android:textAllCaps="false"
+        android:textSize="@dimen/_14ssp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

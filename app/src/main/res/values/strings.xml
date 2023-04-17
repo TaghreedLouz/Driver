@@ -5,8 +5,11 @@
     <string name="tv_menu_archive">Archive</string>
     <string name="tv_menu_schedule">Schedule</string>
     <string name="tv_menu_map">Map</string>
-
+    <string name="login">Login</string>
+    <string name="mobile_number">Mobile Number</string>
     <string name="tv_sch_f_schedule">Schedule</string>
+    <string name="enter_the_code">Enter the code</string>
+    <string name="secret_code">Enter the secret code that was sent to you</string>
 
 
 </resources>

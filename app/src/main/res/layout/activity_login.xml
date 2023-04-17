@@ -4,9 +4,125 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="@dimen/_13sdp"
+    android:gravity="center"
+    android:background="@color/white"
+    tools:context=".ui.activities.Login.LoginActivity">
 
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_margin="@dimen/_11sdp"
+        android:foregroundGravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="@+id/TextInputLayout2"
+        app:layout_constraintEnd_toEndOf="@+id/TextInputLayout2"
+        app:layout_constraintTop_toTopOf="@+id/TextInputLayout2">
 
-    tools:context=".LoginActivity">
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/textView"
+            android:layout_width="@dimen/_1sdp"
+            android:layout_height="@dimen/_17sdp"
+            android:layout_marginEnd="@dimen/_6sdp"
+            android:layout_weight="1"
+            android:background="@color/gray" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/img_flag"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_15sdp"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/img_flag" />
+    </LinearLayout>
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/img_logo"
+        android:layout_width="@dimen/_71sdp"
+        android:layout_height="@dimen/_75sdp"
+        android:layout_marginTop="@dimen/_37sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/img_logo" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/img_outreach"
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="@dimen/_37sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/img_logo"
+        app:srcCompat="@drawable/img_outreach" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto_regular"
+        android:text="@string/login"
+        android:textAlignment="center"
+        android:textColor="@color/sea_green"
+        android:textSize="@dimen/_27ssp"
+        android:layout_marginTop="@dimen/_33sdp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/img_outreach" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/TextInputLayout2"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:hint="@string/mobile_number"
+        android:textColorHint="@color/sea_green"
+        android:textSize="@dimen/_12ssp"
+        android:gravity="center_vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_login">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_mobile"
+            android:layout_width="@dimen/_267sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:drawableStart="@drawable/ic_baseline_phone_24"
+            android:drawablePadding="@dimen/_35sdp"
+            android:gravity="center_vertical"
+            android:fontFamily="@font/roboto_regular"
+            android:inputType="phone"
+            android:textColor="@color/dark_gray"
+            tools:ignore="TouchTargetSizeCheck" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/img_code"
+        android:layout_width="@dimen/_30sdp"
+        android:layout_height="@dimen/_35sdp"
+        android:layout_weight="1"
+        android:layout_marginStart="@dimen/_30sdp"
+        app:layout_constraintBottom_toBottomOf="@+id/TextInputLayout2"
+        app:layout_constraintStart_toStartOf="@+id/TextInputLayout2"
+        app:layout_constraintTop_toTopOf="@+id/TextInputLayout2"
+        app:srcCompat="@drawable/img_palestine_code" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_login"
+        android:layout_width="@dimen/_267sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_marginTop="@dimen/_13sdp"
+        android:fontFamily="@font/roboto_regular"
+        android:text="@string/login"
+        android:textAllCaps="false"
+        android:textSize="@dimen/_14ssp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/TextInputLayout2"
+        app:layout_constraintHorizontal_bias="0.505"
+        app:layout_constraintStart_toStartOf="@+id/TextInputLayout2"
+        app:layout_constraintTop_toBottomOf="@+id/TextInputLayout2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
