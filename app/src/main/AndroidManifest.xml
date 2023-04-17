@@ -26,20 +26,12 @@
         <activity
             android:name=".LoginActivity"
             android:exported="false" />
-        <activity
-            android:name=".ui.Home.HomeActivity"
-            android:exported="false" />
 
         <!-- add API Key (Map) - nada -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBYBkFQ2g5Rc02dxkGNZO97vOlP0xUgmGU" />
 
-        <activity
-            android:name=".ui.Profile.ProfileActivity"
-            android:exported="true">
-
-        </activity>
     </application>
 
 </manifest>

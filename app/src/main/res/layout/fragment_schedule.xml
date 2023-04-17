@@ -47,7 +47,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="@dimen/_90sdp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:background="@drawable/bac_layout_sch"
+        android:background="@drawable/shape_edged_rec"
         >
 
         <TextView
