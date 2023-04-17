@@ -1,4 +1,4 @@
-package com.example.driveroutreach.ui.activites.main;
+package com.example.driveroutreach.ui.activities.Main;
 
 import android.view.MenuItem;
 
