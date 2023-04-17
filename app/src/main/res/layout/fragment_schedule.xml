@@ -20,17 +20,19 @@
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                >
 
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="@string/tv_sch_f_schedule"
+                    android:textSize="@dimen/_12ssp"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="@dimen/_30sdp"
-                    android:text="@string/tv_sch_f_schedule"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_12ssp" />
+                    />
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
         </com.google.android.material.appbar.AppBarLayout>
@@ -42,22 +44,25 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="@dimen/_90sdp"
-        android:background="@drawable/shape_edged_rec"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        app:layout_constraintTop_toTopOf="parent">
+        android:background="@drawable/shape_edged_rec"
+        >
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="@string/tv_sch_f_schedule"
+            android:textSize="@dimen/_20ssp"
+            android:textColor="@color/black_t_sch"
+            android:textStyle="bold"
             android:layout_marginStart="@dimen/_25sdp"
             android:layout_marginTop="@dimen/_20sdp"
-            android:text="@string/tv_sch_f_schedule"
-            android:textColor="@color/black_t_sch"
-            android:textSize="@dimen/_20ssp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            />
+
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -65,4 +70,12 @@
 </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    <!--    android:layout_height="@dimen/_118sdp"-->
+
+
+
+
+
+
+
+
+<!--    android:layout_height="@dimen/_118sdp"-->
