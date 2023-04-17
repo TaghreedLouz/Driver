@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.driveroutreach.databinding.FragmentScheduleBinding;
+import com.example.driveroutreach.ui.fragments.BaseFragment;
 
 public class ScheduleFragment extends BaseFragment {
 

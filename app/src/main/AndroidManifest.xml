@@ -25,14 +25,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!-- add API Key (Map) - nada -->
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBYBkFQ2g5Rc02dxkGNZO97vOlP0xUgmGU" />
 
         <activity
+            android:name=".ui.Profile.ProfileActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".ui.activities.Main.MainActivity"
-            android:exported="false" /> <!-- add API Key (Map) - nada -->
+            android:exported="false" />
+        <!-- add API Key (Map) - nada -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBYBkFQ2g5Rc02dxkGNZO97vOlP0xUgmGU" />
