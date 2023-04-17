@@ -8,7 +8,10 @@
     <string name="tv_menu_map">الخريطة</string>
 
     <string name="tv_sch_f_schedule">جدول المواعيد</string>
-
+    <string name="login">تسجيل دخول</string>
+    <string name="mobile_number">رقم الجوال</string>
+    <string name="enter_the_code">أدخل رمز التحقق</string>
+    <string name="secret_code">أدخل الرمز السري الذي تم إرساله لك</string>
 
 
 

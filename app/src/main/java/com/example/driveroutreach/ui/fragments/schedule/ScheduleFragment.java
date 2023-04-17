@@ -2,13 +2,10 @@ package com.example.driveroutreach.ui.fragments.schedule;
 
 import android.os.Bundle;
 
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.driveroutreach.R;
 import com.example.driveroutreach.databinding.FragmentScheduleBinding;
 import com.example.driveroutreach.ui.fragments.BaseFragment;
 

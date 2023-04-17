@@ -1,20 +1,17 @@
-package com.example.driveroutreach.ui.activites.main;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
+package com.example.driveroutreach.ui.activities.Main;
 
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+
 import com.example.driveroutreach.R;
 import com.example.driveroutreach.databinding.ActivityMainBinding;
-import com.example.driveroutreach.ui.fragments.BaseFragment;
-import com.example.driveroutreach.ui.fragments.schedule.ScheduleFragment;
 import com.google.android.material.navigation.NavigationBarView;
 
-public class MainActivity extends AppCompatActivity implements MainView{
+public class MainActivity extends AppCompatActivity implements MainView {
     ActivityMainBinding binding ;
 
     @Override
