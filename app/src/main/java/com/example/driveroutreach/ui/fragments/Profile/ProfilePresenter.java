@@ -1,4 +1,4 @@
-package com.example.driveroutreach.ui.Profile;
+package com.example.driveroutreach.ui.fragments.Profile;
 
 public class ProfilePresenter {
     ProfileView view;
