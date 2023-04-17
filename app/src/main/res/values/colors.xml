@@ -19,5 +19,14 @@
     <color name="colorPrimaryVariant">@color/sea_green</color>  <!--لون شريط حالة الإشعارات -->
     <color name="black_t_sch">#FF202020</color>
 
+    <color name="black_description_notification">#3C3C3C</color>
+
+    <color name="gray2">#8B8B8B</color>
+    <color name="gray_bac_circle">#D9D9D9</color>
+    <color name="black_light">#5D6162</color>
+
+
+
+
 
 </resources>

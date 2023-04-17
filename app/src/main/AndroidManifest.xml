@@ -14,24 +14,23 @@
         android:theme="@style/Theme.Driveroutreach"
         tools:targetApi="31">
         <activity
+            android:name=".ui.activites.notification.NotificationActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.activites.main.MainActivity"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".LoginActivity"
-            android:exported="false" />
-
-        <!-- add API Key (Map) - nada -->
+            android:exported="false" /> <!-- add API Key (Map) - nada -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBYBkFQ2g5Rc02dxkGNZO97vOlP0xUgmGU" />
-
     </application>
 
 </manifest>
