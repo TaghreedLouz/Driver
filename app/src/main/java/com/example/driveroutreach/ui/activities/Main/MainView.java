@@ -1,8 +1,6 @@
-package com.example.driveroutreach.ui.activites.main;
+package com.example.driveroutreach.ui.activities.Main;
 
 import androidx.fragment.app.Fragment;
-
-import com.example.driveroutreach.ui.fragments.BaseFragment;
 
 public interface MainView {
 

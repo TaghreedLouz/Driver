@@ -60,6 +60,9 @@
     <dimen name="sdp_25">@dimen/_19sdp</dimen>
     <dimen name="sdp_30">@dimen/_23sdp</dimen>
     <dimen name="sdp_40">@dimen/_31sdp</dimen>
+
+    <dimen name="sdp_44">@dimen/_37sdp</dimen>
+
     <dimen name="sdp_50">@dimen/_39sdp</dimen>
     <dimen name="sdp_60">@dimen/_46sdp</dimen>
 
