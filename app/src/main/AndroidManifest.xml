@@ -30,7 +30,11 @@
         <!-- add API Key (Map) - nada -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBYBkFQ2g5Rc02dxkGNZO97vOlP0xUgmGU" />
+            android:value="AIzaSyDq3BF85MbWW26d4zNLV72YQvLYhpfEoHE" />
+
+        <uses-library
+            android:name="com.google.android.maps"
+            android:required="true" />
 
     </application>
 
