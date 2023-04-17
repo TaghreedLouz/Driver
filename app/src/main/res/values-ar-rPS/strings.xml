@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">السائق </string>
+
+    <string name="tv_menu_profile">الصفحة الشخصية</string>
+    <string name="tv_menu_archive">الأرشيف</string>
+    <string name="tv_menu_schedule">جدول المواعيد</string>
+    <string name="tv_menu_map">الخريطة</string>
+
+    <string name="tv_sch_f_schedule">جدول المواعيد</string>
+
+
+</resources>

@@ -14,4 +14,10 @@
     <color name="green">#00AD67</color>
     <color name="orange">#F9B119</color>
     <color name="black_text">#2E2E2E</color>
+
+    <color name="colorPrimary">@color/sea_green</color>  <!--لون التول بار أو الآكشن بار  -->
+    <color name="colorPrimaryVariant">@color/sea_green</color>  <!--لون شريط حالة الإشعارات -->
+    <color name="black_t_sch">#FF202020</color>
+
+
 </resources>

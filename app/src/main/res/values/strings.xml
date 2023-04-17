@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Driver(outreach)</string>
+
+    <string name="tv_menu_profile">Profile</string>
+    <string name="tv_menu_archive">Archive</string>
+    <string name="tv_menu_schedule">Schedule</string>
+    <string name="tv_menu_map">Map</string>
+
+    <string name="tv_sch_f_schedule">Schedule</string>
+
 </resources>
