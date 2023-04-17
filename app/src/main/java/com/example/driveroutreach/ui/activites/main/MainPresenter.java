@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentManager;
 
 import com.example.driveroutreach.R;
 import com.example.driveroutreach.ui.fragments.BaseFragment;
+import com.example.driveroutreach.ui.fragments.Home.HomeFragment;
 import com.example.driveroutreach.ui.fragments.schedule.ScheduleFragment;
 
 public class MainPresenter {
@@ -28,7 +29,7 @@ public class MainPresenter {
         switch (item.getItemId()){
 
             case R.id.page_home:
-//                        fragment = new  فراقمنت الهوم يلي حتعمليه ي نور
+                      fragment = new HomeFragment();
                 break;
 
             case R.id.page_schedule:
