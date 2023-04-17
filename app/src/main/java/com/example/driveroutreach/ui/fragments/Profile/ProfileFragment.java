@@ -1,4 +1,4 @@
-package com.example.driveroutreach.ui.fragments.Profile;
+package com.example.driveroutreach.ui.fragments.profile;
 
 import android.os.Bundle;
 

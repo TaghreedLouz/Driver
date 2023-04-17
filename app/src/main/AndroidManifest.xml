@@ -14,11 +14,12 @@
         android:theme="@style/Theme.Driveroutreach"
         tools:targetApi="31">
         <activity
-            android:name=".ui.activites.notification.NotificationActivity"
+            android:name=".ui.activities.notification.NotificationActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.activites.main.MainActivity"
-            android:exported="true">
+            android:name=".ui.activities.Main.MainActivity"
+            android:exported="true"
+            tools:ignore="MissingClass">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

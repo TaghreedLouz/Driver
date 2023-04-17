@@ -76,7 +76,7 @@
         android:layout_height="@dimen/_24sdp"
         android:layout_marginStart="@dimen/_12sdp"
         android:layout_marginTop="@dimen/_2sdp"
-        android:src="@drawable/img_line_vertical"
+        android:src="@drawable/imge_line_vertical"
         app:layout_constraintEnd_toEndOf="@+id/icon_start"
         app:layout_constraintStart_toEndOf="@+id/tv_start_time_item_schedule"
         app:layout_constraintTop_toBottomOf="@+id/icon_start" />

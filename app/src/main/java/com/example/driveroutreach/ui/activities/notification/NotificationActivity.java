@@ -1,4 +1,4 @@
-package com.example.driveroutreach.ui.activites.notification;
+package com.example.driveroutreach.ui.activities.notification;
 
 import androidx.appcompat.app.AppCompatActivity;
 
