@@ -13,6 +13,28 @@
     <string name="enter_the_code">أدخل رمز التحقق</string>
     <string name="secret_code">أدخل الرمز السري الذي تم إرساله لك</string>
 
+    <string name="appBar_title_profile">الصفحة الشخصية</string>
+    <string name="appBar_title_archive">الإرشيف</string>
+    <string name="appBar_title_suggestions">الإقتراحات</string>
 
+    <string name="profile_notif">الإشعارات</string>
+    <string name="profile_contact">تواصل معنا</string>
+    <string name="profile_aboutus">من نحن؟</string>
+    <string name="profile_settings">الإعدادات</string>
+    <string name="profile_logout">تسجيل الخروج</string>
 
+    <string name="appbar_title_edit_profile"> تعديل الملف الشخصي</string>
+    <string name="edit_photo">تعديل الصورة</string>
+
+    <string name="vehicle_id">رقم المكتبة</string>
+    <string name="name">الإسم</string>
+    <string name="city">المنطقة</string>
+    <string name="day_off">يوم الإجازة</string>
+
+    <string name="tv_title_contact_us">تواصل معنا</string>
+    <string name="et_hint_subject">الموضوع</string>
+    <string name="tv_beneficiaries">المستفيدين</string>
+
+    <string name="tv_attended">حضر</string>
+    <string name="tv_absent">لم يحضر</string>
 </resources>
