@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.activities.edit_profile.EditProfileActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/top_appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/topAppBar"
+            style="@style/Widget.MaterialComponents.Toolbar.Primary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:elevation="@dimen/_2sdp"
+            app:navigationIcon="@drawable/ic_arrow_back"
+            app:title="@string/appbar_title_edit_profile"
+            app:titleCentered="true"
+            app:titleTextColor="@color/black_light" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/img_profile"
+        android:layout_width="@dimen/_74sdp"
+        android:layout_height="@dimen/_74sdp"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:src="@drawable/profile_avtar"
+        app:civ_border_color="@color/sea_green"
+        app:civ_border_width="@dimen/_2sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/top_appbar" />
+
+    <TextView
+        android:id="@+id/tv_edit_photo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_14sdp"
+        android:text="@string/edit_photo"
+        android:textSize="@dimen/_11sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/img_profile" />
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_11sdp"
+        android:foregroundGravity="center"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="@id/et_mobile_num"
+        app:layout_constraintEnd_toEndOf="@+id/et_mobile_num"
+        app:layout_constraintTop_toTopOf="@+id/et_mobile_num">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/textView"
+            android:layout_width="@dimen/_1sdp"
+            android:layout_height="@dimen/_17sdp"
+            android:layout_marginEnd="@dimen/_6sdp"
+            android:layout_weight="1"
+            android:background="@color/gray" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/img_flag"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_15sdp"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/img_flag" />
+    </LinearLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/et_mobile_num"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:hint="@string/mobile_number"
+        android:textColorHint="@color/sea_green"
+        android:textSize="@dimen/_11ssp"
+        app:boxCornerRadiusBottomEnd="@dimen/_8sdp"
+        app:boxCornerRadiusBottomStart="@dimen/_8sdp"
+        app:boxCornerRadiusTopEnd="@dimen/_8sdp"
+        app:boxCornerRadiusTopStart="@dimen/_8sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_edit_photo">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_mobile"
+            android:layout_width="@dimen/_267sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:drawableStart="@drawable/ic_baseline_phone_24"
+            android:drawablePadding="@dimen/_15sdp"
+            android:fontFamily="@font/roboto_regular"
+            android:inputType="phone"
+            android:textColor="@color/dark_gray"
+            tools:ignore="TouchTargetSizeCheck" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <LinearLayout
+        android:id="@+id/lin_layout_vehicle_id"
+        android:layout_width="@dimen/_267sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_marginTop="@dimen/_14sdp"
+        android:background="@drawable/shape_bac_item"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/et_mobile_num">
+
+        <ImageView
+            android:id="@+id/icon_car"
+            android:layout_width="@dimen/_14sdp"
+            android:layout_height="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:src="@drawable/img_car"
+              android:layout_gravity="center_vertical|start" />
+
+        <TextView
+            android:id="@+id/tv_vechile_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|start"
+            android:text="@string/vehicle_id"
+            android:textColor="@color/sea_green"
+            android:textSize="@dimen/_11sdp"
+/>
+
+
+
+    </LinearLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|end"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:text="1"
+        android:textColor="@color/dark_gray"
+        android:textSize="@dimen/_11sdp"
+        app:layout_constraintBottom_toBottomOf="@id/lin_layout_vehicle_id"
+        app:layout_constraintEnd_toEndOf="@id/lin_layout_vehicle_id"
+        app:layout_constraintTop_toTopOf="@id/lin_layout_vehicle_id" />
+
+
+    <LinearLayout
+        android:id="@+id/lin_layout_name"
+        android:layout_width="@dimen/_267sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_marginTop="@dimen/_14sdp"
+        android:background="@drawable/shape_bac_item"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lin_layout_vehicle_id">
+
+        <ImageView
+            android:layout_width="@dimen/_11sdp"
+            android:layout_height="@dimen/_11sdp"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:src="@drawable/ic_baseline_person_24"
+            android:layout_gravity="center_vertical|start" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|start"
+            android:text="@string/name"
+            android:textColor="@color/sea_green"
+            android:textSize="@dimen/_11sdp"
+            />
+
+
+
+    </LinearLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|end"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:text="Ahmad Al Ghazawi"
+        android:textColor="@color/dark_gray"
+        android:textSize="@dimen/_11sdp"
+        app:layout_constraintBottom_toBottomOf="@id/lin_layout_name"
+        app:layout_constraintEnd_toEndOf="@id/lin_layout_name"
+        app:layout_constraintTop_toTopOf="@id/lin_layout_name" />
+
+
+    <LinearLayout
+        android:id="@+id/lin_layout_city"
+        android:layout_width="@dimen/_267sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_marginTop="@dimen/_14sdp"
+        android:background="@drawable/shape_bac_item"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lin_layout_name">
+
+        <ImageView
+            android:layout_width="@dimen/_13sdp"
+            android:layout_height="@dimen/_13sdp"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:src="@drawable/ic_baseline_business_24"
+            android:layout_gravity="center_vertical|start" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|start"
+            android:text="@string/city"
+            android:textColor="@color/sea_green"
+            android:textSize="@dimen/_11sdp"
+            />
+
+    </LinearLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|end"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:text="Gaza"
+        android:textColor="@color/dark_gray"
+        android:textSize="@dimen/_11sdp"
+        app:layout_constraintBottom_toBottomOf="@id/lin_layout_city"
+        app:layout_constraintEnd_toEndOf="@id/lin_layout_city"
+        app:layout_constraintTop_toTopOf="@id/lin_layout_city" />
+
+
+    <LinearLayout
+        android:id="@+id/lin_layout_dayoff"
+        android:layout_width="@dimen/_267sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_marginTop="@dimen/_14sdp"
+        android:background="@drawable/shape_bac_item"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lin_layout_city">
+
+        <ImageView
+            android:layout_width="@dimen/_15sdp"
+            android:layout_height="@dimen/_15sdp"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:src="@drawable/ic_baseline_calendar_month_24"
+            android:layout_gravity="center_vertical|start"
+            app:tint="@color/sea_green"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|start"
+            android:text="@string/day_off"
+            android:textColor="@color/sea_green"
+            android:textSize="@dimen/_11sdp"
+            />
+
+    </LinearLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|end"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:text="Tuesday"
+        android:textColor="@color/dark_gray"
+        android:textSize="@dimen/_11sdp"
+        app:layout_constraintBottom_toBottomOf="@id/lin_layout_dayoff"
+        app:layout_constraintEnd_toEndOf="@id/lin_layout_dayoff"
+        app:layout_constraintTop_toTopOf="@id/lin_layout_dayoff" />
+
+
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

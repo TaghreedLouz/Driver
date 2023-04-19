@@ -8,6 +8,8 @@ import androidx.fragment.app.FragmentManager;
 import com.example.driveroutreach.R;
 import com.example.driveroutreach.ui.fragments.BaseFragment;
 import com.example.driveroutreach.ui.fragments.Home.HomeFragment;
+import com.example.driveroutreach.ui.fragments.Profile.ProfileFragment;
+import com.example.driveroutreach.ui.fragments.archive.ArchiveFragment;
 import com.example.driveroutreach.ui.fragments.schedule.ScheduleFragment;
 
 public class MainPresenter {
@@ -37,11 +39,11 @@ public class MainPresenter {
                 break;
 
             case R.id.page_archive:
-//                        fragment = new ...الأرشيف
+                       fragment = new ArchiveFragment();
                 break;
 
             case R.id.page_profile:
-//                        fragment = new ...البروفايل
+                       fragment = new ProfileFragment();
                 break;
         }
 

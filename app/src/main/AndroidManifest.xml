@@ -14,6 +14,12 @@
         android:theme="@style/Theme.Driveroutreach"
         tools:targetApi="31">
         <activity
+            android:name=".ContactUsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EditProfileActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.activities.notification.NotificationActivity"
             android:exported="false" />
         <activity
@@ -26,12 +32,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".ui.activities.Login.LoginActivity"
-            android:exported="false" />
-
-        <!-- add API Key (Map) - nada -->
+            android:exported="false" /> <!-- add API Key (Map) - nada -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDq3BF85MbWW26d4zNLV72YQvLYhpfEoHE" />
@@ -39,7 +42,6 @@
         <uses-library
             android:name="com.google.android.maps"
             android:required="true" />
-
     </application>
 
 </manifest>
