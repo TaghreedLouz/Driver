@@ -14,10 +14,10 @@
         android:theme="@style/Theme.Driveroutreach"
         tools:targetApi="31">
         <activity
-            android:name=".ContactUsActivity"
+            android:name=".ui.activities.contact_us.ContactUsActivity"
             android:exported="false" />
         <activity
-            android:name=".EditProfileActivity"
+            android:name=".ui.activities.edit_profile.EditProfileActivity"
             android:exported="false" />
         <activity
             android:name=".ui.activities.notification.NotificationActivity"
