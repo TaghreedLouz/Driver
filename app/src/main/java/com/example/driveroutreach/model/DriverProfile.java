@@ -10,6 +10,7 @@ public class DriverProfile {
     String dayOff;
     LatLng coordinates;
 
+
     public DriverProfile(String name, int mobile, String region, int vichuleId, String dayOff, LatLng coordinates) {
         this.name = name;
         this.mobile = mobile;
