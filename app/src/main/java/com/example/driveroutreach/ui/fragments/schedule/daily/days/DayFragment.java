@@ -3,18 +3,18 @@ package com.example.driveroutreach.ui.fragments.schedule.daily.days;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.driveroutreach.R;
+import com.example.driveroutreach.adapters.TripAdapter;
+import com.example.driveroutreach.databinding.FragmentDailyBinding;
+import com.example.driveroutreach.databinding.FragmentDayBinding;
+import com.example.driveroutreach.databinding.ItemTripBinding;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link DayFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class DayFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
@@ -30,15 +30,6 @@ public class DayFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment DayFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static DayFragment newInstance(String param1, String param2) {
         DayFragment fragment = new DayFragment();
         Bundle args = new Bundle();
@@ -60,7 +51,18 @@ public class DayFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_day, container, false);
+        FragmentDayBinding binding = FragmentDayBinding.inflate(inflater,container,false);
+
+        binding.RVDay.setAdapter(new TripAdapter());
+        binding.RVDay.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false));
+
+
+        return binding.getRoot();
     }
 }
+
+
+//
+//    AdapterContact adapter = new AdapterContact(MainActivity.this,contacts);
+//        binding.rv.setAdapter(adapter);
+//                binding.rv.setLayoutManager(new LinearLayoutManager(getBaseContext(), RecyclerView.VERTICAL,false));
