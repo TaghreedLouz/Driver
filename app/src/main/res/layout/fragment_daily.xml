@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:backgroundTint="@color/white"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.fragments.schedule.daily.DailyFragment">
 
@@ -15,8 +16,9 @@
         app:tabIndicator="@color/white"
         app:tabSelectedTextColor="@color/black"
         app:tabPaddingStart="@dimen/_20sdp"
-        app:tabPaddingEnd="@dimen/_50sdp"
+        app:tabPaddingEnd="@dimen/_30sdp"
         style="@style/MyCustomTabLayout"
+        app:layout_constraintBottom_toTopOf="@+id/VB2"
         />
 
     <androidx.viewpager2.widget.ViewPager2
