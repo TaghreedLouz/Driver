@@ -3,12 +3,15 @@ package com.example.driveroutreach.ui.fragments.schedule.all;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.driveroutreach.R;
+import com.example.driveroutreach.adapters.AllTripsAdapter;
+import com.example.driveroutreach.databinding.FragmentAllBinding;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -61,6 +64,9 @@ public class AllFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_all, container, false);
+        FragmentAllBinding binding = FragmentAllBinding.inflate(inflater,container,false);
+        binding.RVALLTRIPS.setAdapter(new AllTripsAdapter());
+        binding.RVALLTRIPS.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false));
+        return binding.getRoot();
     }
 }
