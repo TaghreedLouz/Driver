@@ -37,4 +37,25 @@
 
     <string name="tv_attended">حضر</string>
     <string name="tv_absent">لم يحضر</string>
+
+    <string name="btn_daily">يوميًّا </string>
+    <string name="btn_all">الكل </string>
+    <string name="tv_itinerary">الرحلة </string>
+    <string name="btn_start">ابدأ </string>
+    <string name="tab_saturday">السبت </string>
+    <string name="tab_sunday">الأحد </string>
+    <string name="tab_monday">الاثنين </string>
+    <string name="tab_tuesday">الثلاثاء </string>
+    <string name="tab_wednesday">الأربعاء </string>
+    <string name="tab_thursday">الخميس </string>
+    <string name="tv_settings">الإعدادات </string>
+    <string name="tv_sound">الصوت </string>
+    <string name="tv_language">اللغة </string>
+    <string name="btn_english">الإنجليزية</string>
+    <string name="btn_arabic">العربية</string>
+    <string name="tv_fontSize">حجم الخط</string>
+    <string name="btn_save">حفظ</string>
+
+
+
 </resources>
