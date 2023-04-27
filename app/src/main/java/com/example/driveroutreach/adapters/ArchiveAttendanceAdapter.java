@@ -6,17 +6,17 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class ArchiveAdapter extends RecyclerView.Adapter<ArchiveAdapter.AVH> {
+public class ArchiveAttendanceAdapter extends RecyclerView.Adapter<ArchiveAttendanceAdapter.AAVH> {
 
 
     @NonNull
     @Override
-    public AVH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public AAVH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return null;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull AVH holder, int position) {
+    public void onBindViewHolder(@NonNull AAVH holder, int position) {
 
     }
 
@@ -25,10 +25,12 @@ public class ArchiveAdapter extends RecyclerView.Adapter<ArchiveAdapter.AVH> {
         return 0;
     }
 
-    class AVH extends RecyclerView.ViewHolder {
 
 
-        public AVH(@NonNull View itemView) {
+    class AAVH extends RecyclerView.ViewHolder {
+
+
+        public AAVH(@NonNull View itemView) {
             super(itemView);
         }
     }
