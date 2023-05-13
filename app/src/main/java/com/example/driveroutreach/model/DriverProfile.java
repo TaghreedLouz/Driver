@@ -1,8 +1,11 @@
 package com.example.driveroutreach.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.android.gms.maps.model.LatLng;
 
-public class DriverProfile {
+public class DriverProfile implements Parcelable {
     String name;
     int mobile;
     String region;
@@ -19,6 +22,38 @@ public class DriverProfile {
         this.dayOff = dayOff;
         this.coordinates = coordinates;
     }
+
+    public DriverProfile() {
+    }
+
+    public DriverProfile(String name, int mobile, String region, int vichuleId, String dayOff) {
+        this.name = name;
+        this.mobile = mobile;
+        this.region = region;
+        this.vichuleId = vichuleId;
+        this.dayOff = dayOff;
+    }
+
+    protected DriverProfile(Parcel in) {
+        name = in.readString();
+        mobile = in.readInt();
+        region = in.readString();
+        vichuleId = in.readInt();
+        dayOff = in.readString();
+
+    }
+
+    public static final Creator<DriverProfile> CREATOR = new Creator<DriverProfile>() {
+        @Override
+        public DriverProfile createFromParcel(Parcel in) {
+            return new DriverProfile(in);
+        }
+
+        @Override
+        public DriverProfile[] newArray(int size) {
+            return new DriverProfile[size];
+        }
+    };
 
     public String getName() {
         return name;
@@ -66,5 +101,20 @@ public class DriverProfile {
 
     public void setCoordinates(LatLng coordinates) {
         this.coordinates = coordinates;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+              parcel.writeString(this.name);
+              parcel.writeInt(this.mobile);
+              parcel.writeString(this.region);
+              parcel.writeInt(this.vichuleId);
+              parcel.writeString(this.dayOff);
+
     }
 }

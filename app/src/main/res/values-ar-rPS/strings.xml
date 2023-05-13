@@ -26,7 +26,7 @@
     <string name="appbar_title_edit_profile"> تعديل الملف الشخصي</string>
     <string name="edit_photo">تعديل الصورة</string>
 
-    <string name="vehicle_id">رقم المكتبة</string>
+    <string name="vehicle_id">رقم المركبة</string>
     <string name="name">الإسم</string>
     <string name="city">المنطقة</string>
     <string name="day_off">يوم الإجازة</string>

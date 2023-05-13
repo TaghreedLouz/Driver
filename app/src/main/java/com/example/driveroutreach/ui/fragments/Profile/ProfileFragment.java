@@ -1,15 +1,36 @@
 package com.example.driveroutreach.ui.fragments.Profile;
 
+import android.app.Notification;
+import android.content.Context;
+import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.driveroutreach.R;
 import com.example.driveroutreach.databinding.FragmentProfileBinding;
+import com.example.driveroutreach.model.DriverProfile;
+import com.example.driveroutreach.ui.activities.contact_us.ContactUsActivity;
+import com.example.driveroutreach.ui.activities.edit_profile.EditProfileActivity;
+import com.example.driveroutreach.ui.activities.notification.NotificationActivity;
+import com.example.driveroutreach.ui.activities.settings.SettingsActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.ktx.Firebase;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -17,6 +38,15 @@ import com.example.driveroutreach.databinding.FragmentProfileBinding;
  * create an instance of this fragment.
  */
 public class ProfileFragment extends Fragment {
+
+
+    public interface sendData{
+
+    }
+
+    sendData sendData;
+    DriverProfile driverProfileObject;
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -64,7 +94,78 @@ public class ProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         FragmentProfileBinding binding = FragmentProfileBinding.inflate(inflater,container,false);
 
+        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
 
-        return inflater.inflate(R.layout.fragment_profile, container, false);
+           firestore.collection("Driver").document("0592631653").get()
+                           .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                               @Override
+                               public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                   Log.d("Driver",task.getResult().toString());
+                                   if (task.isSuccessful()){
+
+
+                                     driverProfileObject = task.getResult().toObject(DriverProfile.class);
+                                     Log.d("Driver",task.getResult().toString());
+                                     binding.tvName.setText(driverProfileObject.getName());
+                                     binding.tvNumber.setText("+972".concat(String.valueOf(driverProfileObject.getMobile())));
+
+                                       } else {
+
+                                       Log.d("Driver's info", task.getException().getMessage());
+
+                                   }
+
+                               }
+                           });
+
+                binding.linLayoutContactUs.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        startActivity(new Intent(getActivity(), ContactUsActivity.class));
+                    }
+                });
+
+                binding.linLayoutNotification.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        startActivity(new Intent(getActivity(), NotificationActivity.class));
+                    }
+                });
+
+                binding.linLayoutAboutUs.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+//                        Intent intent = new Intent(getActivity(), Abou.class);
+//                        startActivity(intent);
+                    }
+                });
+
+                binding.linLayoutSettings.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        startActivity(new Intent(getActivity(), SettingsActivity.class));
+
+
+                    }
+                });
+
+
+                binding.imgEdit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                      startActivity(new Intent(getActivity(), EditProfileActivity.class).putExtra("Driver_Profile",driverProfileObject));
+                    }
+                });
+
+        return binding.getRoot();
+    }
+
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+        sendData =(sendData) context;
     }
 }
