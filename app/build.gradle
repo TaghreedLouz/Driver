@@ -11,6 +11,8 @@ android {
         viewBinding true
     }
 
+
+
     defaultConfig {
         applicationId "com.example.driveroutreach"
         minSdk 21
@@ -32,6 +34,7 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    namespace 'com.example.driveroutreach'
 }
 
 

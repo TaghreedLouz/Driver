@@ -21,7 +21,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
+
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -74,58 +74,58 @@ public class EditProfileActivity extends AppCompatActivity {
         }
     }
 // todo: make in the firebase var for img url .. test this function ..
-    void uploadImage(Uri profile_img_uri){
-
-        //Setting the progress
-        ProgressDialog progressDialog= new ProgressDialog(EditProfileActivity.this);
-        progressDialog.setTitle("Uploading...");
-        progressDialog.show();
-
-        String firebaseUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
-        StorageReference storageReference = firebaseStorage.getReference("Images/" + firebaseUser +"/"+profile_img_uri.getLastPathSegment());
-        StorageTask<UploadTask.TaskSnapshot> uploadTask = storageReference.putFile(profile_img_uri)
-                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        // Image uploaded successfully
-                        // Dismiss dialog
-                        progressDialog.dismiss();
-                        Toast.makeText(getBaseContext(),"Image Uploaded!!", Toast.LENGTH_SHORT).show();
-
-
-
-                        storageReference.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Uri> task) {
-
-                              Uri  imgUrl = task.getResult();
-                                Log.d("bb",imgUrl.toString());
-                            }
-                        });
-
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        e.printStackTrace();
-
-                        // Error, Image not uploaded
-                        progressDialog.dismiss();
-                        Toast.makeText(getBaseContext(), "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-
-                }) .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
-
-                        double progress = (100.0 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
-                        progressDialog.setMessage("Uploaded " + (int)progress + "%");
-                        progressDialog.setProgress((int) progress);
-                    }
-                });
-
-    }
+//    void uploadImage(Uri profile_img_uri){
+//
+//        //Setting the progress
+//        ProgressDialog progressDialog= new ProgressDialog(EditProfileActivity.this);
+//        progressDialog.setTitle("Uploading...");
+//        progressDialog.show();
+//
+//        String firebaseUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+//
+//        StorageReference storageReference = firebaseStorage.getReference("Images/" + firebaseUser +"/"+profile_img_uri.getLastPathSegment());
+//        StorageTask<UploadTask.TaskSnapshot> uploadTask = storageReference.putFile(profile_img_uri)
+//                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+//                    @Override
+//                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//                        // Image uploaded successfully
+//                        // Dismiss dialog
+//                        progressDialog.dismiss();
+//                        Toast.makeText(getBaseContext(),"Image Uploaded!!", Toast.LENGTH_SHORT).show();
+//
+//
+//
+//                        storageReference.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+//                            @Override
+//                            public void onComplete(@NonNull Task<Uri> task) {
+//
+//                              Uri  imgUrl = task.getResult();
+//                                Log.d("bb",imgUrl.toString());
+//                            }
+//                        });
+//
+//                    }
+//                })
+//                .addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        e.printStackTrace();
+//
+//                        // Error, Image not uploaded
+//                        progressDialog.dismiss();
+//                        Toast.makeText(getBaseContext(), "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
+//                    }
+//
+//                }) .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+//                    @Override
+//                    public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
+//
+//                        double progress = (100.0 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
+//                        progressDialog.setMessage("Uploaded " + (int)progress + "%");
+//                        progressDialog.setProgress((int) progress);
+//                    }
+//                });
+//
+//    }
 }
 
