@@ -1,6 +1,5 @@
 package com.example.driveroutreach.ui.activities.Main;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,15 +10,12 @@ import androidx.fragment.app.Fragment;
 
 import com.example.driveroutreach.R;
 import com.example.driveroutreach.databinding.ActivityMainBinding;
-import com.example.driveroutreach.ui.activities.contact_us.ContactUsActivity;
-import com.example.driveroutreach.ui.fragments.Home.AttendanceBottomSheet;
 import com.example.driveroutreach.ui.fragments.Home.HomeFragment;
-import com.example.driveroutreach.ui.fragments.Profile.ProfileFragment;
 import com.example.driveroutreach.ui.fragments.schedule.ScheduleFragment;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.navigation.NavigationBarView;
 
-public class MainActivity extends AppCompatActivity implements MainView,  ProfileFragment.sendData {
+public class MainActivity extends AppCompatActivity implements MainView, HomeFragment.onSendData {
     ActivityMainBinding binding;
     BottomSheetBehavior bottomSheetBehavior;
 
@@ -61,7 +57,12 @@ public class MainActivity extends AppCompatActivity implements MainView,  Profil
         getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
     }
 
+    @Override
+    public void onSend(boolean clicked) {
+
+        if (clicked) binding.bottomNavigationMain.setVisibility(View.GONE);
+        else binding.bottomNavigationMain.setVisibility(View.VISIBLE);
 
 
-
+    }
 }

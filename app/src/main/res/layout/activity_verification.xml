@@ -9,6 +9,20 @@
     android:background="@color/white"
     tools:context=".ui.activities.Verification.VerificationActivity">
 
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_resend"
+        android:layout_width="@dimen/_200sdp"
+        android:layout_height="@dimen/_30sdp"
+        android:fontFamily="@font/roboto_regular"
+        android:clickable="true"
+        android:gravity="center"
+        android:text="@string/didn_t_get_otp_resend"
+        android:textColor="#88B3AF"
+        android:textSize="@dimen/_10ssp"
+        app:layout_constraintEnd_toEndOf="@+id/btn_login"
+        app:layout_constraintStart_toStartOf="@+id/btn_login"
+        app:layout_constraintTop_toBottomOf="@+id/btn_login" />
+
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/img_logo"
         android:layout_width="@dimen/_71sdp"
@@ -58,68 +72,133 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_enterCode" />
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="@dimen/_190sdp"
+
+    <com.chaos.view.PinView
+        android:id="@+id/pin_view"
+        style="@style/PinWidget.PinView"
+        android:layout_width="@dimen/_205sdp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_14sdp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_hintCode">
+        android:layout_gravity="center"
+        android:cursorVisible="true"
+        android:gravity="center"
+        android:inputType="number"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:itemBackground="@color/white"
+        android:textColor="@color/dark_gray"
+        app:cursorColor="@color/sea_green"
+        app:hideLineWhenFilled="false"
+        app:itemCount="6"
+        app:itemHeight="@dimen/_40sdp"
+        app:itemRadius="@dimen/_6sdp"
+        app:itemWidth="@dimen/_30sdp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_hintCode"
+        app:lineColor="@color/gray" />
 
-        <EditText
-            android:id="@+id/et_digit_1"
-            android:layout_width="@dimen/_37sdp"
-            android:layout_height="@dimen/_37sdp"
-            android:layout_weight="1"
-            android:background="@drawable/shape_code_bg"
-            android:inputType="number"
-            android:textColor="@color/dark_gray"
-            android:maxLength="1"
-            android:nextFocusDown="@+id/et_digit_2"
-            android:textAlignment="center" />
 
-        <EditText
-            android:id="@+id/et_digit_2"
-            android:layout_width="@dimen/_37sdp"
-            android:layout_height="@dimen/_37sdp"
-            android:layout_marginStart="@dimen/_13sdp"
-            android:layout_marginEnd="@dimen/_13sdp"
-            android:layout_weight="1"
-            android:background="@drawable/shape_code_bg"
-            android:inputType="number"
-            android:maxLength="1"
-            android:nextFocusDown="@+id/et_digit_3"
-            android:textAlignment="center"
-            android:textColor="@color/dark_gray"
-            tools:ignore="SpeakableTextPresentCheck" />
 
-        <EditText
-            android:id="@+id/et_digit_3"
-            android:layout_width="@dimen/_37sdp"
-            android:layout_height="@dimen/_37sdp"
-            android:layout_marginEnd="@dimen/_13sdp"
-            android:layout_weight="1"
-            android:background="@drawable/shape_code_bg"
-            android:inputType="number"
-            android:textColor="@color/dark_gray"
-            android:maxLength="1"
-            android:nextFocusDown="@+id/et_digit_4"
-            android:textAlignment="center" />
+<!--    <LinearLayout-->
+<!--        android:id="@+id/linearLayout"-->
+<!--        android:layout_width="@dimen/_205sdp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="@dimen/_14sdp"-->
+<!--        android:orientation="horizontal"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/tv_hintCode">-->
 
-        <EditText
-            android:id="@+id/et_digit_4"
-            android:layout_width="@dimen/_37sdp"
-            android:layout_height="@dimen/_37sdp"
-            android:layout_weight="1"
-            android:background="@drawable/shape_code_bg"
-            android:inputType="number"
-            android:maxLength="1"
-            android:textAlignment="center"
-            android:textColor="@color/dark_gray"
-            tools:ignore="SpeakableTextPresentCheck" />
-    </LinearLayout>
+<!--        <EditText-->
+<!--            android:id="@+id/et_digit_1"-->
+<!--            android:layout_width="@dimen/_37sdp"-->
+<!--            android:layout_height="@dimen/_37sdp"-->
+<!--            android:layout_weight="1"-->
+<!--            android:background="@drawable/shape_code_bg"-->
+<!--            android:inputType="number"-->
+<!--            android:textColor="@color/dark_gray"-->
+<!--            android:imeOptions="actionNext"-->
+<!--            android:importantForAutofill="no"-->
+<!--            android:maxLength="1"-->
+<!--            android:nextFocusDown="@+id/et_digit_2"-->
+<!--            android:textAlignment="center" />-->
+
+<!--        <EditText-->
+<!--            android:id="@+id/et_digit_2"-->
+<!--            android:layout_width="@dimen/_37sdp"-->
+<!--            android:layout_height="@dimen/_37sdp"-->
+<!--            android:layout_marginStart="@dimen/_5sdp"-->
+<!--            android:layout_marginEnd="@dimen/_5sdp"-->
+<!--            android:layout_weight="1"-->
+<!--            android:background="@drawable/shape_code_bg"-->
+<!--            android:inputType="number"-->
+<!--            android:imeOptions="actionNext"-->
+<!--            android:importantForAutofill="no"-->
+<!--            android:maxLength="1"-->
+<!--            android:nextFocusDown="@+id/et_digit_3"-->
+<!--            android:textAlignment="center"-->
+<!--            android:textColor="@color/dark_gray"-->
+<!--            tools:ignore="SpeakableTextPresentCheck" />-->
+
+<!--        <EditText-->
+<!--            android:id="@+id/et_digit_3"-->
+<!--            android:layout_width="@dimen/_37sdp"-->
+<!--            android:layout_height="@dimen/_37sdp"-->
+<!--            android:layout_marginEnd="@dimen/_10sdp"-->
+<!--            android:layout_weight="1"-->
+<!--            android:background="@drawable/shape_code_bg"-->
+<!--            android:imeOptions="actionNext"-->
+<!--            android:importantForAutofill="no"-->
+<!--            android:inputType="number"-->
+<!--            android:maxLength="1"-->
+<!--            android:nextFocusDown="@+id/et_digit_4"-->
+<!--            android:textAlignment="center"-->
+<!--            android:textColor="@color/dark_gray"-->
+<!--            tools:ignore="SpeakableTextPresentCheck" />-->
+
+<!--        <EditText-->
+<!--            android:id="@+id/et_digit_4"-->
+<!--            android:layout_width="@dimen/_37sdp"-->
+<!--            android:layout_height="@dimen/_37sdp"-->
+<!--            android:layout_marginEnd="@dimen/_5sdp"-->
+<!--            android:layout_weight="1"-->
+<!--            android:background="@drawable/shape_code_bg"-->
+<!--            android:inputType="number"-->
+<!--            android:imeOptions="actionNext"-->
+<!--            android:importantForAutofill="no"-->
+<!--            android:maxLength="1"-->
+<!--            android:textAlignment="center"-->
+<!--            android:textColor="@color/dark_gray"-->
+<!--            tools:ignore="SpeakableTextPresentCheck" />-->
+
+<!--        <EditText-->
+<!--            android:id="@+id/et_digit_5"-->
+<!--            android:layout_width="@dimen/_37sdp"-->
+<!--            android:layout_height="@dimen/_37sdp"-->
+<!--            android:layout_weight="1"-->
+<!--            android:layout_marginEnd="@dimen/_5sdp"-->
+<!--            android:background="@drawable/shape_code_bg"-->
+<!--            android:inputType="number"-->
+<!--            android:imeOptions="actionNext"-->
+<!--            android:importantForAutofill="no"-->
+<!--            android:maxLength="1"-->
+<!--            android:textAlignment="center"-->
+<!--            android:textColor="@color/dark_gray"-->
+<!--            tools:ignore="SpeakableTextPresentCheck" />-->
+
+<!--        <EditText-->
+<!--            android:id="@+id/et_digit_6"-->
+<!--            android:layout_width="@dimen/_37sdp"-->
+<!--            android:layout_height="@dimen/_37sdp"-->
+<!--            android:layout_weight="1"-->
+<!--            android:background="@drawable/shape_code_bg"-->
+<!--            android:inputType="number"-->
+<!--            android:imeOptions="actionNext"-->
+<!--            android:importantForAutofill="no"-->
+<!--            android:maxLength="1"-->
+<!--            android:textAlignment="center"-->
+<!--            android:textColor="@color/dark_gray"-->
+<!--            tools:ignore="SpeakableTextPresentCheck" />-->
+<!--    </LinearLayout>-->
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_login"
@@ -127,13 +206,28 @@
         android:layout_height="@dimen/_40sdp"
         android:layout_marginTop="@dimen/_13sdp"
         android:fontFamily="@font/roboto_regular"
-        android:text="@string/login"
+        android:text="@string/verify"
         android:textAllCaps="false"
         android:textSize="@dimen/_14ssp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/pin_view" />
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="@dimen/_20sdp"
+        android:layout_height="@dimen/_20sdp"
+        android:layout_centerHorizontal="true"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_login"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.305"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/btn_login"
+        app:layout_constraintVertical_bias="0.538" />
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

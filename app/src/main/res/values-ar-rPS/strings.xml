@@ -11,7 +11,7 @@
     <string name="login">تسجيل دخول</string>
     <string name="mobile_number">رقم الجوال</string>
     <string name="enter_the_code">أدخل رمز التحقق</string>
-    <string name="secret_code">أدخل الرمز السري الذي تم إرساله لك</string>
+    <string name="secret_code">أدخل الرمز الذي تم إرساله ل</string>
 
     <string name="appBar_title_profile">الصفحة الشخصية</string>
     <string name="appBar_title_archive">الإرشيف</string>
@@ -55,7 +55,14 @@
     <string name="btn_arabic">العربية</string>
     <string name="tv_fontSize">حجم الخط</string>
     <string name="btn_save">حفظ</string>
-
+    <string name="didn_t_get_otp_resend"><b><u>اعادة الارسال</u></b>لم يتم ارسال رمز التحقق؟ </string>
+    <string name="send">ارسال</string>
+    <string name="palestine_code">+970</string>
+    <string name="sending">يتم الارسال</string>
+    <string name="verify">تحقق</string>
+    <string name="verifying">يتم التحقق</string>
+    <string name="ok">تم</string>
+    <string name="determine_the_accuracy_of_your_location">تحديد موقعك الحالي</string>
 
 
 </resources>
