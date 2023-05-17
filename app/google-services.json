@@ -44,11 +44,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "864447003499-bnoc5t4hovar1oanmpg92h15use27mdc.apps.googleusercontent.com",
+          "client_id": "864447003499-ou7f5qlij15slvlfrn58q24878lul7kn.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.driveroutreach",
-            "certificate_hash": "a941a1fa60c143741c6ec52ce03490924d4a8d1f"
+            "certificate_hash": "939ecc035ac0d52f2494adcf123a0465b8be53d1"
           }
         },
         {
