@@ -250,6 +250,7 @@
                 android:id="@+id/lin_layout_logout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="@dimen/_5sdp"
                 android:layout_marginBottom="@dimen/_22sdp"
                 android:orientation="horizontal">
 
