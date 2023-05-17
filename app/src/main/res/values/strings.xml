@@ -9,7 +9,7 @@
     <string name="mobile_number">Mobile Number</string>
     <string name="tv_sch_f_schedule">Schedule</string>
     <string name="enter_the_code">Enter the code</string>
-    <string name="secret_code">Enter the secret code that was sent to you</string>
+    <string name="secret_code">Enter the code that was sent to</string>
 
     <string name="appBar_title_profile">Profile</string>
     <string name="appBar_title_archive">Archive</string>
@@ -53,6 +53,14 @@
     <string name="btn_arabic">Arabic</string>
     <string name="tv_fontSize">Font size</string>
     <string name="btn_save">Save</string>
+    <string name="didn_t_get_otp_resend">Didn\'t get OTP? <b><u>Resend</u></b></string>
+    <string name="send">Send</string>
+    <string name="palestine_code">+970</string>
+    <string name="sending">Sending</string>
+    <string name="verify">Verify</string>
+    <string name="verifying">Verifying</string>
+    <string name="ok">Ok</string>
+    <string name="determine_the_accuracy_of_your_location">Determine the accuracy of your location</string>
 
 
 </resources>

@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "864447003499",
+    "firebase_url": "https://outreachapp-e28a3-default-rtdb.firebaseio.com",
     "project_id": "outreachapp-e28a3",
     "storage_bucket": "outreachapp-e28a3.appspot.com"
   },
@@ -42,6 +43,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "864447003499-bnoc5t4hovar1oanmpg92h15use27mdc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.driveroutreach",
+            "certificate_hash": "a941a1fa60c143741c6ec52ce03490924d4a8d1f"
+          }
+        },
         {
           "client_id": "864447003499-3dubqt84n6t4d3m2preh7gg3l8eb117r.apps.googleusercontent.com",
           "client_type": 3
