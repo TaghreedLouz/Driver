@@ -92,39 +92,20 @@ public class HomeFragment extends Fragment implements HomeView, OnMapReadyCallba
 
         HomePresenter homePresenter = new HomePresenter(this);
 
-        //Setting the behavior of bottom sheet
-         bottomSheetBehavior= BottomSheetBehavior.from(binding.bottomSheet);
-        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+
 
 
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //this button is to make the bottom sheet expand
-                    fabClicked = true;
-
-                 onSendData.onSend(fabClicked);
-                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-            }
-        });
-
-        bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
-            @Override
-            public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                //this listener is to see the state of the bottom sheet and control the appearing/disappearing of navigation bar
-            boolean state  = homePresenter.BottomSheetChangingState(newState,fabClicked);
-                onSendData.onSend(state);
-            }
-
-            @Override
-            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+                AttendanceBottomSheet ABS = new AttendanceBottomSheet();
+                ABS.show(getParentFragmentManager(),"");
 
             }
         });
 
 
            // todo: set the vp adapter and fragments
-
 //        new TabLayoutMediator(binding.tbAttendance,binding.vpAttendance, new TabLayoutMediator.TabConfigurationStrategy() {
 //            @Override
 //            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
@@ -141,7 +122,7 @@ public class HomeFragment extends Fragment implements HomeView, OnMapReadyCallba
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        onSendData=(onSendData) context;
+//        onSendData=(onSendData) context;
     }
 
     @Override
@@ -156,7 +137,6 @@ public class HomeFragment extends Fragment implements HomeView, OnMapReadyCallba
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
            map= googleMap;
-
     }
 
 
