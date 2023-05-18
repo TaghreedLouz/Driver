@@ -11,7 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-
         >
 
         <com.google.android.material.appbar.AppBarLayout
@@ -48,12 +47,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
+        <!-- header-->
         <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/img_edit"
+            android:layout_width="@dimen/_18sdp"
+            android:layout_height="@dimen/_18sdp"
             android:layout_margin="@dimen/_23sdp"
-            android:background="@color/white"
+            android:backgroundTint="@color/white"
+            android:contentDescription="Edit"
             android:src="@drawable/ic_baseline_edit_24"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -69,16 +70,17 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/img_profile"
                 android:layout_width="@dimen/_59sdp"
                 android:layout_height="@dimen/_59sdp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="@dimen/_5sdp"
                 android:src="@drawable/profile_avtar"
                 app:civ_border_color="@color/sea_green"
-                app:civ_border_width="@dimen/_2sdp"
-                android:id="@+id/img_profile"/>
+                app:civ_border_width="@dimen/_1sdp" />
 
             <TextView
+                android:id="@+id/tv_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -99,6 +101,7 @@
                     android:src="@drawable/img_flag" />
 
                 <TextView
+                    android:id="@+id/tv_number"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -106,6 +109,7 @@
                     android:textColor="@color/sea_green"
                     android:textSize="@dimen/_13ssp" />
             </LinearLayout>
+
         </LinearLayout>
 
 
@@ -119,165 +123,214 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/header" />
+        <!-- End of header-->
 
+        <!--notification-->
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_200sdp"
-            android:layout_margin="@dimen/_30sdp"
-            android:layout_marginTop="@dimen/_30sdp"
-            android:orientation="vertical"
+            android:id="@+id/lin_layout_notification"
+            android:layout_width="@dimen/_259sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_29sdp"
+            android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/divider">
 
-            <LinearLayout
-                android:id="@+id/lin_layout_notification"
-                android:layout_width="match_parent"
+            <ImageView
+                android:layout_width="@dimen/_14sdp"
+                android:layout_height="@dimen/_16sdp"
+                android:layout_marginEnd="@dimen/_12ssp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/icon_notification" />
+
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/_22sdp"
-                android:orientation="horizontal">
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="@dimen/_150sdp"
+                android:text="@string/profile_notif"
+                android:textSize="@dimen/_11sdp"
+                android:textStyle="bold" />
 
-                <ImageView
-                    android:layout_width="@dimen/_16sdp"
-                    android:layout_height="@dimen/_16sdp"
-                    android:layout_marginEnd="@dimen/_12ssp"
-                    android:src="@drawable/icon_notification" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginEnd="@dimen/_150sdp"
-                    android:text="@string/profile_notif"
-                    android:textSize="@dimen/_11sdp"
-                    android:textStyle="bold" />
-
-                <ImageView
-                    android:layout_width="@dimen/_8sdp"
-                    android:layout_height="@dimen/_8sdp"
-                    android:layout_gravity="center_vertical"
-                    android:src="@drawable/ic_arrow_right" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/lin_layout_contact_us"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/_22sdp"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="@dimen/_17sdp"
-                    android:layout_height="@dimen/_17sdp"
-                    android:layout_marginEnd="@dimen/_12ssp"
-                    android:src="@drawable/ic_baseline_message_24" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginEnd="@dimen/_152sdp"
-                    android:text="@string/profile_contact"
-                    android:textSize="@dimen/_11sdp"
-                    android:textStyle="bold" />
-
-                <ImageView
-                    android:layout_width="@dimen/_8sdp"
-                    android:layout_height="@dimen/_8sdp"
-                    android:layout_gravity="center_vertical"
-                    android:src="@drawable/ic_arrow_right" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/lin_layout_about_us"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/_22sdp"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="@dimen/_17sdp"
-                    android:layout_height="@dimen/_17sdp"
-                    android:layout_marginEnd="@dimen/_12ssp"
-                    android:src="@drawable/ic_baseline_report_24" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginEnd="@dimen/_160sdp"
-                    android:text="@string/profile_aboutus"
-                    android:textSize="@dimen/_11sdp"
-                    android:textStyle="bold" />
-
-                <ImageView
-                    android:layout_width="@dimen/_8sdp"
-                    android:layout_height="@dimen/_8sdp"
-                    android:layout_gravity="center_vertical"
-                    android:src="@drawable/ic_arrow_right" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/lin_layout_settings"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/_22sdp"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="@dimen/_17sdp"
-                    android:layout_height="@dimen/_17sdp"
-                    android:layout_marginEnd="@dimen/_12ssp"
-                    android:src="@drawable/ic_baseline_settings_24" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginEnd="@dimen/_162sdp"
-                    android:text="@string/profile_settings"
-                    android:textSize="@dimen/_11sdp"
-                    android:textStyle="bold" />
-
-                <ImageView
-                    android:layout_width="@dimen/_8sdp"
-                    android:layout_height="@dimen/_8sdp"
-                    android:layout_gravity="center_vertical"
-                    android:src="@drawable/ic_arrow_right" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/lin_layout_logout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/_5sdp"
-                android:layout_marginBottom="@dimen/_22sdp"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="@dimen/_15ssp"
-                    android:layout_height="@dimen/_15ssp"
-                    android:layout_marginEnd="@dimen/_12ssp"
-                    android:src="@drawable/baseline_logout_24" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginEnd="@dimen/_170sdp"
-                    android:text="@string/profile_logout"
-                    android:textSize="@dimen/_11sdp"
-                    android:textStyle="bold" />
-
-                <ImageView
-                    android:layout_width="@dimen/_8sdp"
-                    android:layout_height="@dimen/_8sdp"
-                    android:layout_gravity="center_vertical"
-                    android:src="@drawable/ic_arrow_right" />
-            </LinearLayout>
 
         </LinearLayout>
 
+        <ImageView
+            android:layout_width="@dimen/_8sdp"
+            android:layout_height="@dimen/_8sdp"
+            android:src="@drawable/ic_arrow_right"
+            app:layout_constraintBottom_toBottomOf="@id/lin_layout_notification"
+            app:layout_constraintEnd_toEndOf="@id/lin_layout_notification"
+            app:layout_constraintTop_toTopOf="@id/lin_layout_notification" />
+        <!--end ofnotification-->
+
+
+        <!--contact us-->
+        <LinearLayout
+            android:id="@+id/lin_layout_contact_us"
+            android:layout_width="@dimen/_259sdp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_22sdp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/lin_layout_notification">
+
+            <ImageView
+                android:layout_width="@dimen/_17sdp"
+                android:layout_height="@dimen/_17sdp"
+                android:layout_marginEnd="@dimen/_12ssp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_baseline_message_24" />
+
+            <TextView
+                android:id="@+id/tv_contactus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="@dimen/_152sdp"
+                android:text="@string/profile_contact"
+                android:textSize="@dimen/_11sdp"
+                android:textStyle="bold" />
+
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="@dimen/_8sdp"
+            android:layout_height="@dimen/_8sdp"
+            android:src="@drawable/ic_arrow_right"
+            app:layout_constraintBottom_toBottomOf="@id/lin_layout_contact_us"
+            app:layout_constraintEnd_toEndOf="@id/lin_layout_contact_us"
+            app:layout_constraintTop_toTopOf="@id/lin_layout_contact_us" />
+        <!--end of contact us-->
+
+
+        <!--about us-->
+        <LinearLayout
+            android:id="@+id/lin_layout_about_us"
+            android:layout_width="@dimen/_259sdp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_22sdp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@id/lin_layout_settings"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/lin_layout_contact_us">
+
+            <ImageView
+                android:layout_width="@dimen/_17sdp"
+                android:layout_height="@dimen/_17sdp"
+                android:layout_marginEnd="@dimen/_12ssp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_baseline_report_24" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="@dimen/_160sdp"
+                android:text="@string/profile_aboutus"
+                android:textSize="@dimen/_11sdp"
+                android:textStyle="bold" />
+
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="@dimen/_8sdp"
+            android:layout_height="@dimen/_8sdp"
+            android:src="@drawable/ic_arrow_right"
+            app:layout_constraintBottom_toBottomOf="@id/lin_layout_about_us"
+            app:layout_constraintEnd_toEndOf="@id/lin_layout_about_us"
+            app:layout_constraintTop_toTopOf="@id/lin_layout_about_us" />
+
+        <!--end of about us-->
+
+
+        <!-- Settings  -->
+
+        <LinearLayout
+            android:id="@+id/lin_layout_settings"
+            android:layout_width="@dimen/_259sdp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_22sdp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/lin_layout_about_us">
+
+            <ImageView
+                android:layout_width="@dimen/_17sdp"
+                android:layout_height="@dimen/_17sdp"
+                android:layout_marginEnd="@dimen/_12ssp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_baseline_settings_24" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="@dimen/_162sdp"
+                android:text="@string/profile_settings"
+                android:textSize="@dimen/_11sdp"
+                android:textStyle="bold" />
+
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="@dimen/_8sdp"
+            android:layout_height="@dimen/_8sdp"
+            android:src="@drawable/ic_arrow_right"
+            app:layout_constraintBottom_toBottomOf="@id/lin_layout_settings"
+            app:layout_constraintEnd_toEndOf="@id/lin_layout_settings"
+            app:layout_constraintTop_toTopOf="@id/lin_layout_settings" />
+        <!-- end of settings       -->
+
+        <!--  logout      -->
+
+        <LinearLayout
+            android:id="@+id/lin_layout_logout"
+            android:layout_width="@dimen/_259sdp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_22sdp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/lin_layout_settings">
+
+            <ImageView
+                android:layout_width="@dimen/_15ssp"
+                android:layout_height="@dimen/_15ssp"
+                android:layout_marginEnd="@dimen/_12ssp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/baseline_logout_24" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="@dimen/_170sdp"
+                android:text="@string/profile_logout"
+                android:textSize="@dimen/_11sdp"
+                android:textStyle="bold" />
+
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="@dimen/_8sdp"
+            android:layout_height="@dimen/_8sdp"
+            android:src="@drawable/ic_arrow_right"
+            app:layout_constraintBottom_toBottomOf="@id/lin_layout_logout"
+            app:layout_constraintEnd_toEndOf="@id/lin_layout_logout"
+            app:layout_constraintTop_toTopOf="@id/lin_layout_logout" />
+
+        <!--   end of logout     -->
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

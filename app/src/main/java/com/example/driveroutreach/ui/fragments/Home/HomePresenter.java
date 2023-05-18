@@ -15,24 +15,7 @@ public class HomePresenter {
         view.onSetMapFrag(fragment);
     }
 
-    public boolean BottomSheetChangingState(int state, boolean fabClicked) {
-        boolean fabState = fabClicked;
-        switch (state) {
-            //   the bottom sheet is expanded
-            case 3:
-                fabState = true;
 
-
-                break;
-            //   the bottom sheet is hidden
-            case 5:
-                fabState = false;
-
-
-                break;
-        }
-        return fabState;
-    }
 
     public ArrayList<String> TabLayoutArrayList() {
         ArrayList<String> tabs = new ArrayList<>();

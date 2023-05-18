@@ -3,12 +3,16 @@ package com.example.driveroutreach.ui.fragments.archive;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.driveroutreach.R;
+import com.example.driveroutreach.adapters.ArchiveAdapter;
+import com.example.driveroutreach.databinding.FragmentAllBinding;
+import com.example.driveroutreach.databinding.FragmentArchiveBinding;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -60,7 +64,11 @@ public class ArchiveFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        FragmentArchiveBinding binding = FragmentArchiveBinding.inflate(inflater,container,false);
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_archive, container, false);
+
+        binding.rvArchive.setAdapter(new ArchiveAdapter());
+        binding.rvArchive.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false));
+        return binding.getRoot();
     }
 }

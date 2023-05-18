@@ -12,6 +12,11 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -40,6 +45,12 @@
             android:name=".ui.activities.Main.MainActivity"
             android:exported="true"
             tools:ignore="MissingClass">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
 
 
 
@@ -49,12 +60,7 @@
             android:name=".ui.activities.Login.LoginActivity"
             android:exported="true">
 
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
 
 
         </activity>
@@ -76,11 +82,17 @@
         <!-- add API Key (Map) - nada -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDq3BF85MbWW26d4zNLV72YQvLYhpfEoHE" />
+            android:value="AIzaSyC5Zj3Id3i6fzJYpYbLPEfd0LjkboWzX-M" />
 
         <uses-library
             android:name="com.google.android.maps"
             android:required="true" />
+
+
+
     </application>
+
+
+
 
 </manifest>

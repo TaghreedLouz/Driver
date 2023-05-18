@@ -130,7 +130,6 @@
               android:layout_gravity="center_vertical|start" />
 
         <TextView
-            android:id="@+id/tv_vechile_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|start"
@@ -143,6 +142,7 @@
 
     </LinearLayout>
     <TextView
+        android:id="@+id/tv_vechile_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|end"
@@ -186,6 +186,7 @@
 
     </LinearLayout>
     <TextView
+        android:id="@+id/tv_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|end"
@@ -227,6 +228,7 @@
 
     </LinearLayout>
     <TextView
+        android:id="@+id/tv_region"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|end"
@@ -269,6 +271,7 @@
 
     </LinearLayout>
     <TextView
+        android:id="@+id/tv_dayOff"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|end"
