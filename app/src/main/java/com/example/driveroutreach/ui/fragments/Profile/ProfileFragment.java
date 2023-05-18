@@ -166,6 +166,6 @@ public class ProfileFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
 
-        sendData =(sendData) context;
+//        sendData =(sendData) context;
     }
 }
