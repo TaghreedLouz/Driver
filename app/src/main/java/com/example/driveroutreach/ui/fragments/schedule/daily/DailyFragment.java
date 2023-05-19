@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,7 +49,8 @@ public class DailyFragment extends Fragment {
 
         ArrayList<Fragment> fragments = new ArrayList<>();
         for (int i = 0; i < days_tabs.size(); i++) {
-            fragments.add(new DayFragment()) ;
+            Log.d("array",days_tabs.get(i));
+            fragments.add(DayFragment.newInstance("Tuesday")) ;
         }
 
         DayVBAdapter dayVBAdapter = new DayVBAdapter(getActivity() ,fragments);

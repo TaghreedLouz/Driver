@@ -40,47 +40,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_trip_name"
         />
 
-    <TextView
-        android:id="@+id/tv_day"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/_13sdp"
-        android:text="Saturday"
-        android:textColor="@color/dark_gray"
-        android:textSize="@dimen/_9ssp"
-        android:layout_marginTop="@dimen/_5sdp"
-        app:layout_constraintStart_toEndOf="@+id/icon_calender"
-        app:layout_constraintTop_toBottomOf="@id/icon_line_horizontal"
-        android:layout_marginStart="@dimen/_5sdp"
 
-        />
-
-
-    <TextView
-        android:id="@+id/icon_line"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/_24sdp"
-        android:layout_marginStart="@dimen/_4sdp"
-        android:layout_marginTop="@dimen/_3sdp"
-        android:src="@drawable/imge_line_vertical"
-        app:layout_constraintStart_toEndOf="@+id/tv_day"
-        app:layout_constraintTop_toBottomOf="@+id/icon_line_horizontal"
-        android:text="|"
-
-        />
-    <TextView
-        android:id="@+id/tv_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_4sdp"
-        android:layout_marginTop="@dimen/_5sdp"
-        android:src="@drawable/imge_line_vertical"
-        app:layout_constraintStart_toEndOf="@+id/icon_line"
-        app:layout_constraintTop_toBottomOf="@+id/icon_line_horizontal"
-        android:text="8:00 AM"
-        android:textSize="@dimen/_9ssp"
-
-        />
 
     <ImageView
         android:id="@+id/icon_calender"
@@ -92,6 +52,18 @@
         android:src="@drawable/img_small_calender"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/icon_line_horizontal"
+        />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/child_rv"
+        app:layout_constraintStart_toEndOf="@id/icon_calender"
+        app:layout_constraintTop_toBottomOf="@id/icon_line_horizontal"
+        android:layout_margin="@dimen/_5sdp"
+        tools:listitem="@layout/item_all_trips_child_rv"
+          tools:itemCount="2"
         />
 
 
