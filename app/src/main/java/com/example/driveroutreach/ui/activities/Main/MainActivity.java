@@ -46,24 +46,6 @@ public class MainActivity extends AppCompatActivity implements MainView, HomeFra
     SharedPreferences.Editor edit;
 
     @Override
-    protected void onStart() {
-        super.onStart();
-
-//        sp = getSharedPreferences("spLocation", MODE_PRIVATE);
-//        edit = sp.edit();
-//
-//        String latitude_sp = sp.getString(LONGITUDE_KEY, "null");
-//        String longitude_sp = sp.getString(LATITUDE_KEY, "null");
-//
-//        if (latitude_sp.equals("null") && longitude_sp.equals("null")) {
-//            callDialog(null);
-//        } else {
-//            Toast.makeText(MainActivity.this, "Your Location:" + "\n" + "Latitude= " + latitude_sp + "\n" + "Longitude= " + longitude_sp, Toast.LENGTH_SHORT).show();
-//            Log.d("TAGMain", "onCreate: " + longitude + "" + latitude);
-//        }
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
@@ -72,23 +54,17 @@ public class MainActivity extends AppCompatActivity implements MainView, HomeFra
         sp = getSharedPreferences("spLocation", MODE_PRIVATE);
         edit = sp.edit();
 
-        String latitude_sp = sp.getString(LONGITUDE_KEY, "null");
-        String longitude_sp = sp.getString(LATITUDE_KEY, "null");
+        String longitude_sp = sp.getString(LONGITUDE_KEY, "null");
+        String latitude_sp = sp.getString(LATITUDE_KEY, "null");
 
         if (latitude_sp.equals("null") && longitude_sp.equals("null")) {
             callDialog(null);
         } else {
             Toast.makeText(MainActivity.this, "Your Location:" + "\n" + "Latitude= " + latitude_sp + "\n" + "Longitude= " + longitude_sp, Toast.LENGTH_SHORT).show();
-            Log.d("TAGMain", "onCreate: " + longitude + "" + latitude);
+            Log.d("TAGMain", "onCreate: " + "Your Location:" + "\n" + "Latitude= " + latitude_sp + "\n" + "Longitude= " + longitude_sp);
         }
 
         Toast.makeText(MainActivity.this, "Your Location:" + "\n" + "Latitude= " + latitude_sp + "\n" + "Longitude= " + longitude_sp, Toast.LENGTH_SHORT).show();
-
-
-//        if (latitude_sp == null && longitude_sp == null){
-//            callDialog(null);
-//        }else
-
 
 
 
@@ -215,7 +191,6 @@ public class MainActivity extends AppCompatActivity implements MainView, HomeFra
             } else if (LocationPassive != null) {
                 double lat = LocationPassive.getLatitude();
                 double longi = LocationPassive.getLongitude();
-                ;
 
                 latitude = String.valueOf(lat);
                 longitude = String.valueOf(longi);
@@ -233,13 +208,6 @@ public class MainActivity extends AppCompatActivity implements MainView, HomeFra
             }
 
             setResult(RESULT_OK, intent);
-            //Thats All Run Your App
-//            if (latitude == null || longitude == "null"){
-//                callDialog(null);
-//            }else {
-//                Toast.makeText(MainActivity.this, "Your Location:"+"\n"+"Latitude= "+latitude+"\n"+"Longitude= "+longitude, Toast.LENGTH_SHORT).show();
-//                Log.d("TAGMain", "onCreate: "+longitude+""+latitude);
-//            }
             dialog.dismiss();
         }
 
@@ -247,8 +215,6 @@ public class MainActivity extends AppCompatActivity implements MainView, HomeFra
     }
 
     private void OnGPS() {
-
-
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         builder.setMessage("Enable GPS").setCancelable(false).setPositiveButton("YES", new DialogInterface.OnClickListener() {
@@ -262,6 +228,7 @@ public class MainActivity extends AppCompatActivity implements MainView, HomeFra
             public void onClick(DialogInterface dialog, int which) {
 
                 dialog.cancel();
+                callDialog(null);
             }
         });
         final AlertDialog alertDialog = builder.create();

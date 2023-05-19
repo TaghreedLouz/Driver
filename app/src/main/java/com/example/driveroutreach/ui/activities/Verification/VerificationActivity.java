@@ -341,12 +341,6 @@ public class VerificationActivity extends AppCompatActivity {
         binding.btnLogin.setText(R.string.verify);
         binding.btnLogin.setEnabled(true);
         binding.pinView.setEnabled(true);
-//        binding.etDigit1.setEnabled(true);
-//        binding.etDigit2.setEnabled(true);
-//        binding.etDigit3.setEnabled(true);
-//        binding.etDigit4.setEnabled(true);
-//        binding.etDigit5.setEnabled(true);
-//        binding.etDigit6.setEnabled(true);
         binding.tvResend.setEnabled(true);
     }
 
