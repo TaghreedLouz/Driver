@@ -28,15 +28,16 @@ import com.example.driveroutreach.R;
 import com.example.driveroutreach.databinding.ActivityMainBinding;
 import com.example.driveroutreach.ui.fragments.Home.HomeFragment;
 import com.example.driveroutreach.ui.fragments.schedule.ScheduleFragment;
+import com.example.driveroutreach.ui.fragments.schedule.daily.days.DayFragment;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.navigation.NavigationBarView;
 
-public class MainActivity extends AppCompatActivity implements MainView, HomeFragment.onSendData {
+public class MainActivity extends AppCompatActivity implements MainView, HomeFragment.onSendData, DayFragment.OnDataListenerDayFrag {
     ActivityMainBinding binding;
     BottomSheetBehavior bottomSheetBehavior;
     Dialog dialog;
     Button btn_getLocation;
-    private static final int REQUEST_LOCATION = 1;
+    public static final int REQUEST_LOCATION = 1;
     LocationManager locationManager;
     String latitude, longitude, latitude_sp, longitude_sp;
     public final String LATITUDE_KEY = "latitude";
@@ -235,4 +236,11 @@ public class MainActivity extends AppCompatActivity implements MainView, HomeFra
         alertDialog.show();
     }
 
+    @Override
+    public void onDataReceivedFromDayFrag(String journeyId, String date) {
+        Log.d("TripData",journeyId + " "+ date);
+
+        HomeFragment homeFragment=HomeFragment.newInstance(journeyId,date);
+        getSupportFragmentManager().beginTransaction().add(R.id.container,homeFragment).commit();
+    }
 }
