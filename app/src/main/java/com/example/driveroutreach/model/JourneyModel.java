@@ -19,6 +19,8 @@ public class JourneyModel {
     String journeyId;
 
 
+    ArrayList<SchedualAllModel> all = new ArrayList<>();
+
     public JourneyModel() {
     }
 
@@ -31,6 +33,14 @@ public class JourneyModel {
         this.beneficiaries = beneficiaries;
         this.day = day;
         this.journeyId = journeyId;
+    }
+
+    public ArrayList<SchedualAllModel> getAll() {
+        return all;
+    }
+
+    public void setAll(ArrayList<SchedualAllModel> all) {
+        this.all = all;
     }
 
     public String getDriver() {

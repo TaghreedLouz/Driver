@@ -35,7 +35,7 @@ import java.util.Set;
  */
 public class AllFragment extends Fragment {
     ArrayList<SchedualAllModel> All_Scheduale_Array;
-
+    ArrayList<String> OrgNames;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -91,6 +91,8 @@ public class AllFragment extends Fragment {
         Set<String> OrganizationsNames = new HashSet<String>();
         All_Scheduale_Array = new ArrayList<>();
 
+
+
         firestore.collection("Journey").whereEqualTo("driver","1").get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -115,10 +117,10 @@ public class AllFragment extends Fragment {
 
                                                     SchedualAllModel schedualAllModel  = document.toObject(SchedualAllModel.class);
 
+
                                                     All_Scheduale_Array.add(schedualAllModel);
 
                                                     Log.d("all_Rv2",All_Scheduale_Array.toString());
-
 
 
                                                    }
@@ -129,14 +131,10 @@ public class AllFragment extends Fragment {
                                            }
                                        });
 
-                                binding.RVALLTRIPS.setAdapter(new AllTripChildAdapter(All_Scheduale_Array));
-                                binding.RVALLTRIPS.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false));
-
-
                             }
 
                             //Log.d("test",All_Scheduale_Array.get(0).getOrganization());
-                            ArrayList<String> OrgNames = new ArrayList<>(OrganizationsNames);
+                            OrgNames = new ArrayList<>(OrganizationsNames);
 
                             binding.RVALLTRIPS.setAdapter(new AllTripsAdapter(OrgNames));
                             binding.RVALLTRIPS.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false));

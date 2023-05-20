@@ -65,56 +65,31 @@
             android:layout_marginTop="@dimen/_20sdp"
             />
 
-        <RadioGroup
-            android:id="@+id/rg_buttons"
-            android:layout_width="wrap_content"
+
+
+
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/TL"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@+id/tv_schedule"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:orientation="horizontal"
-            android:layout_marginTop="@dimen/_15sdp"
-            >
-
-            <RadioButton
-                android:id="@+id/rbtn_daily"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/btn_daily"
-                android:textSize="@dimen/_14ssp"
-                android:paddingVertical="@dimen/_11sdp"
-                android:paddingHorizontal="@dimen/_42sdp"
-                android:button="@android:color/transparent"
-                android:background="@drawable/radio_selector"
-                android:textColor="@drawable/text_color"
-                android:layout_marginEnd="@dimen/_5sdp"
-                />
-            <RadioButton
-                android:id="@+id/rbtn_all"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/btn_all"
-                android:textSize="@dimen/_14ssp"
-                android:paddingVertical="@dimen/_11sdp"
-                android:paddingHorizontal="@dimen/_42sdp"
-                android:button="@android:color/transparent"
-                android:background="@drawable/radio_selector"
-                android:textColor="@drawable/text_color"
-                android:layout_marginStart="@dimen/_5sdp"
-                />
-
-        </RadioGroup>
-
-        <FrameLayout
-            android:id="@+id/container_schedule"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintTop_toBottomOf="@+id/rg_buttons"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginTop="@dimen/_8sdp"
-            android:layout_marginHorizontal="@dimen/_10sdp"
+            app:tabMode="auto"
+            app:tabIndicator="@color/white"
+            app:tabSelectedTextColor="@color/black"
+            app:tabPaddingStart="@dimen/_20sdp"
+            app:tabPaddingEnd="@dimen/_30sdp"
+            style="@style/MyCustomTabLayout"
+            app:layout_constraintBottom_toTopOf="@+id/VB2"
             />
 
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/VB2"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@+id/TL"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
 
 
 
