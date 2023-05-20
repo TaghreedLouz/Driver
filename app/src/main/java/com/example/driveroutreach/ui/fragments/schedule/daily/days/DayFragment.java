@@ -1,5 +1,6 @@
 package com.example.driveroutreach.ui.fragments.schedule.daily.days;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,9 +12,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.driveroutreach.R;
 import com.example.driveroutreach.adapters.TripAdapter;
 import com.example.driveroutreach.databinding.FragmentDayBinding;
+import com.example.driveroutreach.listeners.ScheduleListener;
 import com.example.driveroutreach.model.JourneyModel;
+import com.example.driveroutreach.ui.fragments.Home.HomeFragment;
+import com.example.driveroutreach.ui.fragments.schedule.ScheduleFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -26,6 +31,12 @@ public class DayFragment extends Fragment {
 
 
     ArrayList<JourneyModel> Trips;
+
+    public interface OnDataListenerDayFrag{
+        void onDataReceivedFromDayFrag(String journeyId, String date);
+    }
+
+    OnDataListenerDayFrag onDataListenerDayFrag;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -88,7 +99,18 @@ public class DayFragment extends Fragment {
                            }
 
 
-                           binding.RVDay.setAdapter(new TripAdapter(Trips));
+                           binding.RVDay.setAdapter(new TripAdapter(Trips, new ScheduleListener() {
+                               @Override
+                               public void StartJourney(String journeyId, String date) {
+                                   if (onDataListenerDayFrag != null) {
+                                       onDataListenerDayFrag.onDataReceivedFromDayFrag(journeyId,date);
+                                       getParentFragmentManager().beginTransaction().replace(R.id.container, new HomeFragment()).commit();
+                                   }else {
+                                       Log.d("transaction","Wrong Operation");
+                                   }
+
+                               }
+                           }));
                            binding.RVDay.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false));
 
                        }   else {
@@ -101,10 +123,15 @@ public class DayFragment extends Fragment {
 
         return binding.getRoot();
     }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        try {
+            onDataListenerDayFrag = (OnDataListenerDayFrag) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + " must implement OnDataListener");
+        }
+    }
 }
 
-
-//
-//    AdapterContact adapter = new AdapterContact(MainActivity.this,contacts);
-//        binding.rv.setAdapter(adapter);
-//                binding.rv.setLayoutManager(new LinearLayoutManager(getBaseContext(), RecyclerView.VERTICAL,false));
