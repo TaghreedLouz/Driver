@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/gray"
+  >
+
+    <TextView
+        android:id="@+id/tv_day"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginEnd="@dimen/_13sdp"
+        android:text="Saturday"
+        android:textColor="@color/dark_gray"
+        android:textSize="@dimen/_9ssp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+
+        />
+
+
+    <TextView
+        android:id="@+id/icon_line"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_24sdp"
+        android:layout_marginStart="@dimen/_4sdp"
+        android:src="@drawable/imge_line_vertical"
+        android:text="|"
+        app:layout_constraintStart_toEndOf="@+id/tv_day"
+        app:layout_constraintTop_toTopOf="parent"
+
+        />
+
+    <TextView
+        android:id="@+id/tv_time_start1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_4sdp"
+        android:src="@drawable/imge_line_vertical"
+        android:text="8:00 AM"
+        android:textSize="@dimen/_9ssp"
+        app:layout_constraintStart_toEndOf="@+id/icon_line"
+        app:layout_constraintTop_toTopOf="parent"
+
+        />
+
+    <ImageView
+        android:id="@id/img_arrow1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_11sdp"
+        android:src="@drawable/baseline_arrow_forward_24"
+        app:layout_constraintStart_toEndOf="@id/tv_time_start1"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_time_end1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_4sdp"
+        android:src="@drawable/imge_line_vertical"
+        android:text="8:00 AM"
+        android:textSize="@dimen/_9ssp"
+        app:layout_constraintStart_toEndOf="@+id/img_arrow1"
+        app:layout_constraintTop_toTopOf="parent"
+
+        />
+
+
+    <TextView
+        android:id="@+id/tv_time_start2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_4sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:src="@drawable/imge_line_vertical"
+        android:text="8:00 AM"
+        android:textSize="@dimen/_9ssp"
+        app:layout_constraintStart_toEndOf="@+id/icon_line"
+        app:layout_constraintTop_toBottomOf="@id/tv_time_start1"
+
+        />
+
+    <ImageView
+        android:id="@id/img_arrow2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_11sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:src="@drawable/baseline_arrow_forward_24"
+        app:layout_constraintStart_toEndOf="@id/tv_time_start2"
+        app:layout_constraintTop_toBottomOf="@id/img_arrow1" />
+
+    <TextView
+        android:id="@+id/tv_time_end2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_4sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:src="@drawable/imge_line_vertical"
+        android:text="8:00 AM"
+        android:textSize="@dimen/_9ssp"
+        app:layout_constraintStart_toEndOf="@+id/img_arrow2"
+        app:layout_constraintTop_toBottomOf="@id/tv_time_end1"
+
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
