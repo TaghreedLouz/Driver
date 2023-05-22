@@ -304,17 +304,17 @@ public class HomeFragment extends Fragment implements HomeView, OnMapReadyCallba
                   //Todo: try smth if loops
 
                             // Calculate the distance between the user's current location and the marked position
-                            double distance = calculateDistance(userLatitude, userLongitude,
-                                    MARKED_LATITUDE, MARKED_LONGITUDE); //those for the marked point.
-
-                            // Check if the user has reached the marked position
-                            if (distance <= thresholdDistance) {
-                                Toast.makeText(getActivity(), "You have reached the marked position!",
-                                        Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(getActivity(), "You are not at the marked position yet.",
-                                        Toast.LENGTH_SHORT).show();
-                            }
+//                            double distance = calculateDistance(userLatitude, userLongitude,
+//                                    MARKED_LATITUDE, MARKED_LONGITUDE); //those for the marked point.
+//
+//                            // Check if the user has reached the marked position
+//                            if (distance <= thresholdDistance) {
+//                                Toast.makeText(getActivity(), "You have reached the marked position!",
+//                                        Toast.LENGTH_SHORT).show();
+//                            } else {
+//                                Toast.makeText(getActivity(), "You are not at the marked position yet.",
+//                                        Toast.LENGTH_SHORT).show();
+//                            }
 
 
                             // Move the camera to the user's current location
