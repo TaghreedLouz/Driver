@@ -65,7 +65,7 @@ public class HomeFragment extends Fragment implements HomeView, OnMapReadyCallba
     GoogleMap map;
 
     Task<DataSnapshot> reference;
-    ArrayList<LatLng> MarkersPoistions;
+    ArrayList<com.example.driveroutreach.model.Location> MarkersPoistions;
     FusedLocationProviderClient fusedLocationClient;
     private Marker markedPositionMarker;
 
@@ -163,8 +163,7 @@ public class HomeFragment extends Fragment implements HomeView, OnMapReadyCallba
                                     if (task.isSuccessful()) {
                                         Benefeciares benefeciares = task.getResult().toObject(Benefeciares.class);
 
-
-                                        MarkersPoistions.add(new com.google.android.gms.maps.model.LatLng(benefeciares.getLocation().getLatitude(), benefeciares.getLocation().getLatitude()));
+                                        MarkersPoistions.add(new com.example.driveroutreach.model.Location(benefeciares.getLocation().getLatitude(),benefeciares.getLocation().getLongitude()));
                                     } else {
                                   //Put exception
                                     }
@@ -211,16 +210,17 @@ public class HomeFragment extends Fragment implements HomeView, OnMapReadyCallba
     public void onMapReady(@NonNull GoogleMap googleMap) {
         map = googleMap;
 
-        for (LatLng position : MarkersPoistions) {
-            MarkerOptions markerOptions = new MarkerOptions().position(position);
+        for (com.example.driveroutreach.model.Location position : MarkersPoistions) {
+
+            MarkerOptions markerOptions = new MarkerOptions().position(new LatLng(position.getLatitude(),position.getLongitude()));
             Marker marker = googleMap.addMarker(markerOptions);
         }
 
 
-        // Move the camera to the first marker
-        if (!MarkersPoistions.isEmpty()) {
-            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(MarkersPoistions.get(0), 12));
-        }
+//        // Move the camera to the first marker
+//        if (!MarkersPoistions.isEmpty()) {
+//            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(MarkersPoistions.get(0), 12));
+//        }
 
 
 // check condition
@@ -261,32 +261,17 @@ public class HomeFragment extends Fragment implements HomeView, OnMapReadyCallba
     }
 
 
-    private double calculateDistance(double startLatitude, double startLongitude,
-                                     double endLatitude, double endLongitude) {
-        final int R = 6371; // Radius of the Earth in kilometers
-
-        double latDistance = Math.toRadians(endLatitude - startLatitude);
-        double lonDistance = Math.toRadians(endLongitude - startLongitude);
-        double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
-                + Math.cos(Math.toRadians(startLatitude)) * Math.cos(Math.toRadians(endLatitude))
-                * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        double distance = R * c;
-
-        return distance;
-    }
-
-
     private void startLocationUpdates() {
 
         double thresholdDistance = 0.1;
 
+        //Checking if the user had access permission. if not it returns.
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
             return;
         }
 
-            map.setMyLocationEnabled(true); //to put me where i am .
+            map.setMyLocationEnabled(true); //when pressing the button on the map it moves the user to it's place.
 
             // Create location request
             LocationRequest locationRequest = LocationRequest.create();
@@ -301,20 +286,10 @@ public class HomeFragment extends Fragment implements HomeView, OnMapReadyCallba
                             double userLongitude = location.getLongitude();
 
 
-                  //Todo: try smth if loops
-
-                            // Calculate the distance between the user's current location and the marked position
-                            double distance = calculateDistance(userLatitude, userLongitude,
-                                    MARKED_LATITUDE, MARKED_LONGITUDE); //those for the marked point.
-
-                            // Check if the user has reached the marked position
-                            if (distance <= thresholdDistance) {
-                                Toast.makeText(getActivity(), "You have reached the marked position!",
-                                        Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(getActivity(), "You are not at the marked position yet.",
-                                        Toast.LENGTH_SHORT).show();
-                            }
+// using the nearest method
+                            com.example.driveroutreach.model.Location specificLocation = new com.example.driveroutreach.model.Location(userLatitude,userLongitude); // Example specific location (San Francisco)
+                            com.example.driveroutreach.model.Location nearestLocation= findNearestLocation(specificLocation, MarkersPoistions);
+                           // System.out.println("Nearest location: " + nearestLocation.getLatitude() + ", " + nearestLocation.getLongitude());
 
 
                             // Move the camera to the user's current location
@@ -325,6 +300,38 @@ public class HomeFragment extends Fragment implements HomeView, OnMapReadyCallba
 
 
         }
+
+    private com.example.driveroutreach.model.Location findNearestLocation(com.example.driveroutreach.model.Location specificLocation, ArrayList<com.example.driveroutreach.model.Location> locations) {
+
+//this method calculates if the two points are near each other.
+        com.example.driveroutreach.model.Location nearestLocation = null;
+        double minDistance = Double.MAX_VALUE;
+        for (com.example.driveroutreach.model.Location location : locations) {
+            double distance = calculateDistance(specificLocation, location);
+            if (distance < minDistance) {
+                minDistance = distance;
+                nearestLocation = location;
+            }
+        }
+        return nearestLocation;
+    }
+
+
+    private double calculateDistance(com.example.driveroutreach.model.Location location1, com.example.driveroutreach.model.Location location2) {
+
+    //    Haversine Formula: The Haversine formula is a mathematical equation used for calculating distances between two points on a sphere  using their latitude and longitude coordinates.
+
+        double earthRadius = 6371; // Radius of the earth in kilometers
+        double dLat = Math.toRadians(location2.getLatitude() - location1.getLatitude());
+        double dLon = Math.toRadians(location2.getLongitude() - location1.getLongitude());
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(Math.toRadians(location1.getLatitude())) * Math.cos(Math.toRadians(location2.getLatitude())) *
+                        Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        double distance = earthRadius * c; // Distance in kilometers
+        return distance;
+    }
+
     }
 
 
