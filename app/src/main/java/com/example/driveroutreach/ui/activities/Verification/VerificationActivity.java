@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.driveroutreach.R;
 import com.example.driveroutreach.databinding.ActivityVerificationBinding;
 import com.example.driveroutreach.ui.activities.Main.MainActivity;
+import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthSettings;
 import com.google.firebase.auth.PhoneAuthCredential;
@@ -27,7 +28,7 @@ import java.util.concurrent.TimeUnit;
 public class VerificationActivity extends AppCompatActivity {
     ActivityVerificationBinding binding;
     String verificationId;
-    private PhoneAuthProvider.ForceResendingToken resendingToken;
+    private PhoneAuthProvider.ForceResendingToken token;
 
 
     @SuppressLint("ResourceAsColor")
@@ -39,16 +40,26 @@ public class VerificationActivity extends AppCompatActivity {
 
 
             verificationId = getIntent().getStringExtra("verificationId");
-            resendingToken = getIntent().getParcelableExtra("resendingToken");
-
+            token = getIntent().getParcelableExtra("resendingToken");
 
 
         binding.btnLogin.setOnClickListener(view -> {
-            Log.e("BtnLogin","Click");
+            setEnabledVisibility();
+            Log.e("VerificationActivityLOG","Click");
             if (binding.pinView.getText().toString().trim().isEmpty()) {
-                Log.e("empty", "empty");
+                binding.pinView.setError("Enter your phone number");
+                binding.pinView.setLineColor(getResources().getColor(R.color.baby_red));
+                Toast.makeText(getApplicationContext(), "Enter your phone number", Toast.LENGTH_SHORT).show();
+                Log.e("VerificationActivityLOG", "empty");
+                setEnabledVisibility();
                 return;
+            }else {
+                binding.progressBar.setVisibility(View.VISIBLE);
+                binding.btnLogin.setText(R.string.sending);
+                binding.pinView.setEnabled(false);
+                binding.btnLogin.setEnabled(false);
             }
+
 
             String code = binding.pinView.getText().toString();
             if (verificationId != null) {
@@ -56,34 +67,78 @@ public class VerificationActivity extends AppCompatActivity {
                 PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.getCredential(verificationId, code);
                 FirebaseAuth.getInstance().signInWithCredential(phoneAuthCredential)
                         .addOnCompleteListener(task -> {
-                            Log.e("Done","done");
-                            binding.progressBar.setVisibility(View.GONE);
+                            Log.e("VerificationActivityLOG","   =====>  "+task.getException().getMessage());
+                            setEnabledVisibility();
                             if (task.isSuccessful()) {
-                                Intent intent = new Intent(VerificationActivity.this, MainActivity.class);
-                                startActivity(intent);
+                                startActivity(new Intent(getBaseContext(), MainActivity.class));
                                 finish();
                             } else {
-                                Toast.makeText(VerificationActivity.this, "Verification Code Invalid", Toast.LENGTH_SHORT).show();
+                                binding.pinView.setLineColor(getResources().getColor(R.color.baby_red));
+                                Toast.makeText(VerificationActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                             }
-                        })
-                        .addOnFailureListener(e -> Toast.makeText(VerificationActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show());
+                        });
+                        //.addOnFailureListener(e -> Toast.makeText(VerificationActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show());
             }
         });
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+//        binding.tvResend.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                {
+//                    FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+//                    FirebaseAuthSettings firebaseAuthSettings = firebaseAuth.getFirebaseAuthSettings();
+//                    firebaseAuthSettings.setAppVerificationDisabledForTesting(false);
+//
+//                    PhoneAuthOptions.Builder builder = PhoneAuthOptions.newBuilder(firebaseAuth);
+//                    builder.setPhoneNumber("+972" + getIntent().getStringExtra("mobile"));
+//                    builder.setTimeout(60L, TimeUnit.SECONDS);
+//                    builder.setActivity(VerificationActivity.this);
+//                    builder.setCallbacks(new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+//                        @Override
+//                        public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
+//                            setEnabledVisibility();
+//                            Log.d("VerificationActivityLOG", "onVerificationCompleted   :    failed");
+//                        }
+//
+//                        @Override
+//                        public void onVerificationFailed(@androidx.annotation.NonNull FirebaseException e) {
+//                            setEnabledVisibility();
+//                            Toast.makeText(VerificationActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+//                            Log.d("VerificationActivityLOG", "onVerificationFailed   :  " + e.getMessage());
+//                        }
+//
+//                        @Override
+//                        public void onCodeSent(@NonNull String newVerificationId, PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+//                            setEnabledVisibility();
+//                            verificationId = newVerificationId;
+//                            Toast.makeText(VerificationActivity.this, "OTP sent", Toast.LENGTH_SHORT).show();
+//                            Log.d("VerificationActivityLOG", "onCodeSent   :  ");
+//                        }
+//                    });
+//
+//                    String code = binding.pinView.getText().toString();
+//                    if (verificationId != null) {
+//                        binding.progressBar.setVisibility(View.VISIBLE);
+//                        PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.getCredential(verificationId, code);
+//                        FirebaseAuth.getInstance().signInWithCredential(phoneAuthCredential)
+//                                .addOnCompleteListener(task -> {
+//                                    Log.e("VerificationActivityLOG", "   =====>  " + task.getException().getMessage());
+//                                    binding.progressBar.setVisibility(View.GONE);
+//                                    //setEnabledVisibility();
+//                                    if (task.isSuccessful()) {
+//                                        Intent intent = new Intent(VerificationActivity.this, MainActivity.class);
+//                                        startActivity(intent);
+//                                        finish();
+//                                    } else {
+//                                        Toast.makeText(VerificationActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+//                                    }
+//                                })
+//                                .addOnFailureListener(e -> Toast.makeText(VerificationActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show());
+//                    }
+//                }
+//            }
+//        });
 
 
 
@@ -212,129 +267,6 @@ public class VerificationActivity extends AppCompatActivity {
 
     }
 
-    //todo
-//    private void setupOTPInputs() {
-//        binding.etDigit1.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
-//                if (!charSequence.toString().trim().isEmpty()) {
-//                    binding.etDigit2.requestFocus();
-//                }
-//
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable editable) {
-//            }
-//        });
-//        binding.etDigit2.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
-//                if (!charSequence.toString().trim().isEmpty()) {
-//                    binding.etDigit3.requestFocus();
-//                }
-//
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable editable) {
-//                if (editable.toString().trim().isEmpty()) {
-//                    binding.etDigit1.requestFocus();
-//                }
-//            }
-//        });
-//        binding.etDigit3.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
-//                if (!charSequence.toString().trim().isEmpty()) {
-//                    binding.etDigit4.requestFocus();
-//                }
-//
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable editable) {
-//                if (editable.toString().trim().isEmpty()) {
-//                    binding.etDigit2.requestFocus();
-//                }
-//            }
-//        });
-//        binding.etDigit4.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
-//                if (!charSequence.toString().trim().isEmpty()) {
-//                    binding.etDigit5.requestFocus();
-//                }
-//
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable editable) {
-//                if (editable.toString().trim().isEmpty()) {
-//                    binding.etDigit3.requestFocus();
-//                }
-//            }
-//        });
-//        binding.etDigit5.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
-//                if (!charSequence.toString().trim().isEmpty()) {
-//                    binding.etDigit6.requestFocus();
-//                }
-//
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable editable) {
-//                if (editable.toString().trim().isEmpty()) {
-//                    binding.etDigit4.requestFocus();
-//                }
-//            }
-//        });
-//        binding.etDigit6.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
-//
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable editable) {
-//                if (editable.toString().trim().isEmpty()) {
-//                    binding.etDigit5.requestFocus();
-//                }
-//            }
-//        });
-//    }
 
     private void setEnabledVisibility(){
         binding.progressBar.setVisibility(View.GONE);
@@ -343,6 +275,5 @@ public class VerificationActivity extends AppCompatActivity {
         binding.pinView.setEnabled(true);
         binding.tvResend.setEnabled(true);
     }
-
 
 }
