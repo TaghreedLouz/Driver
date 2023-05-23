@@ -17,12 +17,14 @@ import android.view.ViewGroup;
 import com.example.driveroutreach.R;
 import com.example.driveroutreach.databinding.FragmentProfileBinding;
 import com.example.driveroutreach.model.DriverProfile;
+import com.example.driveroutreach.ui.activities.Login.LoginActivity;
 import com.example.driveroutreach.ui.activities.contact_us.ContactUsActivity;
 import com.example.driveroutreach.ui.activities.edit_profile.EditProfileActivity;
 import com.example.driveroutreach.ui.activities.notification.NotificationActivity;
 import com.example.driveroutreach.ui.activities.settings.SettingsActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -155,6 +157,15 @@ public class ProfileFragment extends Fragment {
                     public void onClick(View view) {
 
                       startActivity(new Intent(getActivity(), EditProfileActivity.class).putExtra("Driver_Profile",driverProfileObject));
+                    }
+                });
+
+                binding.linLayoutLogout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        FirebaseAuth.getInstance().signOut();
+                        startActivity(new Intent(getActivity(), LoginActivity.class));
+                        getActivity().finish();
                     }
                 });
 
