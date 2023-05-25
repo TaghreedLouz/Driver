@@ -38,51 +38,48 @@ public class VerificationActivity extends AppCompatActivity {
         binding = ActivityVerificationBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-
-            verificationId = getIntent().getStringExtra("verificationId");
-            token = getIntent().getParcelableExtra("resendingToken");
-
+        verificationId = getIntent().getStringExtra("verificationId");
+        token = getIntent().getParcelableExtra("resendingToken");
 
         binding.btnLogin.setOnClickListener(view -> {
             setEnabledVisibility();
             Log.e("VerificationActivityLOG","Click");
-            if (binding.pinView.getText().toString().trim().isEmpty()) {
-                binding.pinView.setError("Enter your phone number");
+            if (TextUtils.isEmpty(binding.pinView.getText().toString().trim())) {
+                binding.pinView.setError("Enter verification code");
                 binding.pinView.setLineColor(getResources().getColor(R.color.baby_red));
-                Toast.makeText(getApplicationContext(), "Enter your phone number", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Enter verification code", Toast.LENGTH_SHORT).show();
                 Log.e("VerificationActivityLOG", "empty");
-                setEnabledVisibility();
                 return;
-            }else {
+            } else {
                 binding.progressBar.setVisibility(View.VISIBLE);
                 binding.btnLogin.setText(R.string.sending);
                 binding.pinView.setEnabled(false);
                 binding.btnLogin.setEnabled(false);
+
+                String code = binding.pinView.getText().toString();
+                if (verificationId != null) {
+                    binding.progressBar.setVisibility(View.VISIBLE);
+                    PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.getCredential(verificationId, code);
+                    FirebaseAuth.getInstance().signInWithCredential(phoneAuthCredential)
+                            .addOnCompleteListener(task -> {
+                                setEnabledVisibility();
+                                if (task.isSuccessful()) {
+                                    startActivity(new Intent(getBaseContext(), MainActivity.class));
+                                    finish();
+                                } else {
+                                    binding.pinView.setLineColor(getResources().getColor(R.color.baby_red));
+                                    Toast.makeText(VerificationActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                    Log.e("VerificationActivityLOG","   =====>  "+task.getException().getMessage().toString());
+                                }
+                            });
+                    //.addOnFailureListener(e -> Toast.makeText(VerificationActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show());
+                }
             }
 
 
-            String code = binding.pinView.getText().toString();
-            if (verificationId != null) {
-                binding.progressBar.setVisibility(View.VISIBLE);
-                PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.getCredential(verificationId, code);
-                FirebaseAuth.getInstance().signInWithCredential(phoneAuthCredential)
-                        .addOnCompleteListener(task -> {
-                            Log.e("VerificationActivityLOG","   =====>  "+task.getException().getMessage());
-                            setEnabledVisibility();
-                            if (task.isSuccessful()) {
-                                startActivity(new Intent(getBaseContext(), MainActivity.class));
-                                finish();
-                            } else {
-                                binding.pinView.setLineColor(getResources().getColor(R.color.baby_red));
-                                Toast.makeText(VerificationActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                        //.addOnFailureListener(e -> Toast.makeText(VerificationActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show());
-            }
         });
 
-
-//        binding.tvResend.setOnClickListener(new View.OnClickListener() {
+        //        binding.tvResend.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
 //                {
@@ -267,7 +264,6 @@ public class VerificationActivity extends AppCompatActivity {
 
     }
 
-
     private void setEnabledVisibility(){
         binding.progressBar.setVisibility(View.GONE);
         binding.btnLogin.setText(R.string.verify);
@@ -275,5 +271,4 @@ public class VerificationActivity extends AppCompatActivity {
         binding.pinView.setEnabled(true);
         binding.tvResend.setEnabled(true);
     }
-
 }

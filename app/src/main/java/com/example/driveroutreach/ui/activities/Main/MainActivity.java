@@ -58,10 +58,12 @@ public class MainActivity extends AppCompatActivity implements MainView, HomeFra
     String latitude, longitude, latitude_sp, longitude_sp;
     public final String LATITUDE_KEY = "latitude";
     public final String LONGITUDE_KEY = "longitude";
+    AlertDialog alertDialog;
 
     SharedPreferences sp;
     SharedPreferences.Editor edit;
     private LocationRequest locationRequest;
+    private static final String DIALOG_SHOWN_KEY = "dialog_shown";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,57 +71,45 @@ public class MainActivity extends AppCompatActivity implements MainView, HomeFra
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-
-
-        callDialog(null);
-
-        locationRequest = LocationRequest.create();
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        locationRequest.setInterval(5000);
-        locationRequest.setFastestInterval(2000);
-
-
         sp = getSharedPreferences("sp", MODE_PRIVATE);
         edit = sp.edit();
+
+        MainPresenter mainPresenter = new MainPresenter(this);
+        mainPresenter.AddingFrag(new ScheduleFragment());
+
+        binding.bottomNavigationMain.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                mainPresenter.SelectingNavIcon(item);
+                return true;
+            }
+        });
 
         String longitude_sp = sp.getString(LONGITUDE_KEY, "null");
         String latitude_sp = sp.getString(LATITUDE_KEY, "null");
 
         if (latitude_sp.equals("null") && longitude_sp.equals("null")) {
-            callDialog(null);
+            // Check if dialog has been shown before
+            boolean dialogShown = sp.getBoolean(DIALOG_SHOWN_KEY, false);
+            if (!dialogShown) {
+                // Request location permission if not granted
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                        && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_LOCATION);
+                } else {
+                    // Permission already granted, call the method to get the current location
+                    showLocationDialog();
+                }
+            }
         } else {
             Toast.makeText(MainActivity.this, "Your Location:" + "\n" + "Latitude= " + latitude_sp + "\n" + "Longitude= " + longitude_sp, Toast.LENGTH_SHORT).show();
             Log.d("TAGMain", "onCreate: " + "Your Location:" + "\n" + "Latitude= " + latitude_sp + "\n" + "Longitude= " + longitude_sp);
         }
-
-        Toast.makeText(MainActivity.this, "Your Location:" + "\n" + "Latitude= " + latitude_sp + "\n" + "Longitude= " + longitude_sp, Toast.LENGTH_SHORT).show();
-
-
-
-        ActivityCompat.requestPermissions(this, new String[]
-                {Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
-
-        MainPresenter mainPresenter = new MainPresenter(this);
-
-        mainPresenter.AddingFrag(new ScheduleFragment());
-
-
-        binding.bottomNavigationMain.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
-                mainPresenter.SelectingNavIcon(item);
-
-                return true;
-            }
-        });
     }
 
     @Override
     public void onSetFragment(Fragment fragment) {
-        //         هنا مجرد ما يفتح التطبيق حيكون الديفولت ع الفراقمنت يلي تحت ، ف حطيت تاعي مجرد ما يجهز تاعك الهوم ي نور
         getSupportFragmentManager().beginTransaction().replace(R.id.container, new ScheduleFragment()).commit();
-        //        وهان بدي اياه يحدد ع الأيقون يلي تحت تاعت السيكيدجول
         binding.bottomNavigationMain.setSelectedItemId(R.id.page_schedule);
     }
 
@@ -130,54 +120,43 @@ public class MainActivity extends AppCompatActivity implements MainView, HomeFra
 
     @Override
     public void onSend(boolean clicked) {
-
-        if (clicked) binding.bottomNavigationMain.setVisibility(View.GONE);
-        else binding.bottomNavigationMain.setVisibility(View.VISIBLE);
-
+        if (clicked)
+            binding.bottomNavigationMain.setVisibility(View.GONE);
+        else
+            binding.bottomNavigationMain.setVisibility(View.VISIBLE);
     }
 
-    public void callDialog(View view) {
-        dialog = new Dialog(MainActivity.this/*, R.style.BottomSheetTheme*/);
+    private void showLocationDialog() {
+        dialog = new Dialog(MainActivity.this);
         View dialogView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.item_dialog, findViewById(R.id.custom_dialog));
         dialog.setContentView(dialogView);
         dialog.show();
 
-    }
+        btn_getLocation = dialogView.findViewById(R.id.btn_getLocation);
+        btn_getLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getCurrentLocation();
+                dialog.dismiss();
+            }
+        });
 
+        // Update shared preference to indicate dialog has been shown
+        edit.putBoolean(DIALOG_SHOWN_KEY, true);
+        edit.apply();
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        if (requestCode == 1){
-            dialog.show();
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED){
-
-                btn_getLocation = dialog.findViewById(R.id.btn_getLocation);
-                btn_getLocation.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-
-                        //Check gps is enable or not
-                        if (isGPSEnabled()) {
-
-                            getCurrentLocation();
-
-                        }else {
-
-                            turnOnGPS();
-                        }
-
-                        // dialog.dismiss();
-                    }
-                });
-
-
+        if (requestCode == REQUEST_LOCATION) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                showLocationDialog();
+            } else {
+                Toast.makeText(this, "Location permission denied", Toast.LENGTH_SHORT).show();
             }
         }
-
-
     }
 
     @Override
@@ -186,31 +165,29 @@ public class MainActivity extends AppCompatActivity implements MainView, HomeFra
 
         if (requestCode == 2) {
             if (resultCode == Activity.RESULT_OK) {
-
                 getCurrentLocation();
+            } else {
+                showLocationNotAvailableDialog();
             }
         }
     }
 
     private void getCurrentLocation() {
-
+        locationRequest = LocationRequest.create();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setInterval(10 * 1000); // 10 seconds
+        locationRequest.setFastestInterval(2 * 1000); // 2 seconds
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-
                 if (isGPSEnabled()) {
-
                     LocationServices.getFusedLocationProviderClient(MainActivity.this)
                             .requestLocationUpdates(locationRequest, new LocationCallback() {
                                 @Override
                                 public void onLocationResult(@NonNull LocationResult locationResult) {
                                     super.onLocationResult(locationResult);
-
-                                    LocationServices.getFusedLocationProviderClient(MainActivity.this)
-                                            .removeLocationUpdates(this);
-
-                                    if (locationResult != null && locationResult.getLocations().size() >0){
-
+                                    LocationServices.getFusedLocationProviderClient(MainActivity.this).removeLocationUpdates(this);
+                                    if (locationResult != null && locationResult.getLocations().size() > 0) {
                                         int index = locationResult.getLocations().size() - 1;
                                         double lati = locationResult.getLocations().get(index).getLatitude();
                                         double longi = locationResult.getLocations().get(index).getLongitude();
@@ -221,46 +198,42 @@ public class MainActivity extends AppCompatActivity implements MainView, HomeFra
                                         edit.putString(LATITUDE_KEY, latitude);
                                         edit.putString(LONGITUDE_KEY, longitude);
                                         edit.apply();
-                                        Toast.makeText(MainActivity.this, "Latitude: "+ latitude + "\n" + "Longitude: "+ longitude, Toast.LENGTH_SHORT).show();
-                                        dialog.dismiss();
+                                        Toast.makeText(MainActivity.this, "Latitude: " + latitude + "\n" + "Longitude: " + longitude, Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             }, Looper.getMainLooper());
-
                 } else {
-                    turnOnGPS();
+                    showLocationNotAvailableDialog();
                 }
-
             } else {
-                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
             }
         }
     }
 
+    private void showLocationNotAvailableDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Location Not Available")
+                .setMessage("Unable to get the current location. Please make sure your GPS is enabled and try again.")
+                .setPositiveButton("OK", null)
+                .show();
+
+
+    }
+
     private void turnOnGPS() {
-
-
-
-        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
-                .addLocationRequest(locationRequest);
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder().addLocationRequest(locationRequest);
         builder.setAlwaysShow(true);
-
-        Task<LocationSettingsResponse> result = LocationServices.getSettingsClient(getApplicationContext())
-                .checkLocationSettings(builder.build());
-
+        Task<LocationSettingsResponse> result = LocationServices.getSettingsClient(getApplicationContext()).checkLocationSettings(builder.build());
         result.addOnCompleteListener(new OnCompleteListener<LocationSettingsResponse>() {
             @Override
             public void onComplete(@NonNull Task<LocationSettingsResponse> task) {
-
                 try {
                     LocationSettingsResponse response = task.getResult(ApiException.class);
-                    Toast.makeText(MainActivity.this, "GPS is already tured on", Toast.LENGTH_SHORT).show();
-
+                    Toast.makeText(MainActivity.this, "GPS is already turned on", Toast.LENGTH_SHORT).show();
                 } catch (ApiException e) {
-
                     switch (e.getStatusCode()) {
                         case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
-
                             try {
                                 ResolvableApiException resolvableApiException = (ResolvableApiException) e;
                                 resolvableApiException.startResolutionForResult(MainActivity.this, 2);
@@ -268,146 +241,44 @@ public class MainActivity extends AppCompatActivity implements MainView, HomeFra
                                 ex.printStackTrace();
                             }
                             break;
-
                         case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
-                            //Device does not have location
                             break;
                     }
                 }
             }
         });
-
     }
 
     private boolean isGPSEnabled() {
-        LocationManager locationManager = null;
-        boolean isEnabled = false;
-
-        if (locationManager == null) {
-            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        boolean providerEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        if (providerEnabled) {
+            return true;
+        } else {
+            GPS();
         }
-
-        isEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        return isEnabled;
-
+        return false;
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//    private void getLocation() {
-//
-//        //Check Permissions again
-//
-//        if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(MainActivity.this,
-//
-//                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//            ActivityCompat.requestPermissions(this, new String[]
-//                    {Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
-//        } else {
-//            Location LocationGps = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-//            Location LocationNetwork = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-//            Location LocationPassive = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
-//
-//            Intent intent = new Intent();
-//
-//            if (LocationGps != null) {
-//                double lat = LocationNetwork.getLatitude();
-//                double longi = LocationNetwork.getLongitude();
-//
-//                latitude = String.valueOf(lat);
-//                longitude = String.valueOf(longi);
-//
-//                edit.putString(LATITUDE_KEY, latitude);
-//                edit.putString(LONGITUDE_KEY, longitude);
-//                edit.apply();
-//
-//                intent.putExtra(LATITUDE_KEY, latitude);
-//                intent.putExtra(LONGITUDE_KEY, longitude);
-//
-//                Toast.makeText(MainActivity.this, "Your Location:" + "\n" + "Latitude= " + latitude + "\n" + "Longitude= " + longitude, Toast.LENGTH_SHORT).show();
-//
-//            } else if (LocationNetwork != null) {
-//                double lat = LocationNetwork.getLatitude();
-//                double longi = LocationNetwork.getLongitude();
-//
-//
-//                latitude = String.valueOf(lat);
-//                longitude = String.valueOf(longi);
-//
-//                edit.putString(LATITUDE_KEY, latitude);
-//                edit.putString(LONGITUDE_KEY, longitude);
-//                edit.apply();
-//
-//                intent.putExtra(LATITUDE_KEY, latitude);
-//                intent.putExtra(LONGITUDE_KEY, longitude);
-//
-//                Toast.makeText(MainActivity.this, "Your Location:" + "\n" + "Latitude= " + latitude + "\n" + "Longitude= " + longitude, Toast.LENGTH_SHORT).show();
-//
-//            } else if (LocationPassive != null) {
-//                double lat = LocationPassive.getLatitude();
-//                double longi = LocationPassive.getLongitude();
-//
-//                latitude = String.valueOf(lat);
-//                longitude = String.valueOf(longi);
-//
-//                edit.putString(LATITUDE_KEY, latitude);
-//                edit.putString(LONGITUDE_KEY, longitude);
-//                edit.apply();
-//
-//                intent.putExtra(LATITUDE_KEY, latitude);
-//                intent.putExtra(LONGITUDE_KEY, longitude);
-//
-//                Toast.makeText(MainActivity.this, "Your Location:" + "\n" + "Latitude= " + latitude + "\n" + "Longitude= " + longitude, Toast.LENGTH_SHORT).show();
-//            } else {
-//                Toast.makeText(this, "Can't Get Your Location", Toast.LENGTH_SHORT).show();
-//            }
-//
-//            setResult(RESULT_OK, intent);
-//            dialog.dismiss();
-//        }
-//
-//
-//    }
-
-//    private void OnGPS() {
-//        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//
-//        builder.setMessage("Enable GPS").setCancelable(false).setPositiveButton("YES", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-//                callDialog(null);
-//            }
-//        }).setNegativeButton("NO", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//
-//                dialog.cancel();
-//                callDialog(null);
-//            }
-//        });
-//        final AlertDialog alertDialog = builder.create();
-//        alertDialog.show();
-//    }
+    private void GPS() {
+        alertDialog = new AlertDialog.Builder(MainActivity.this)
+                .setTitle("GPS Permission")
+                .setMessage("GPS is required for this app to work. Please enable GPS")
+                .setPositiveButton("Settings", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                        startActivityForResult(intent, 2);
+                    }
+                })
+                .setCancelable(false)
+                .show();
+    }
 
     @Override
     public void onDataReceivedFromDayFrag(String journeyId, String date) {
-        Log.d("TripData",journeyId + " "+ date);
-
-        HomeFragment homeFragment=HomeFragment.newInstance(journeyId,date);
-        getSupportFragmentManager().beginTransaction().add(R.id.container,homeFragment).commit();
+        Log.d("TripData", journeyId + " " + date);
+        HomeFragment homeFragment = HomeFragment.newInstance(journeyId, date);
+        getSupportFragmentManager().beginTransaction().add(R.id.container, homeFragment).commit();
     }
 }

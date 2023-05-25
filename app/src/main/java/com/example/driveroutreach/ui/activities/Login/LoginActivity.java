@@ -73,40 +73,54 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                    String mobil = binding.etMobile.getText().toString().trim();
+                String mobile = binding.etMobile.getText().toString().trim();
+                if (TextUtils.isEmpty(mobile)) {
+                    binding.etMobile.setError("Enter your phone number");
+                         setEnabledVisibility();
+                      Toast.makeText(getApplicationContext(), "Enter your phone", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                binding.progressBar.setVisibility(View.VISIBLE);
+                binding.btnLogin.setText(R.string.sending);
+                binding.btnLogin.setEnabled(false);
+
                     firestore.collection("Drivers_numbers")
-                            .whereArrayContainsAny("mobile", Collections.singletonList(mobil))
+                            .whereArrayContainsAny("mobile", Collections.singletonList(mobile))
+                           // .whereEqualTo("mobile", Integer.parseInt(binding.etMobile.getText().toString()))
                             .get()
                             .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                     if (task.isSuccessful()) {
+
                                         ArrayList<DriversNumbers> numbersArrayList = new ArrayList<>();
 
                                         Toast.makeText(LoginActivity.this, "if  ", Toast.LENGTH_SHORT).show();
-                                        sendCodeVerification();
-                                        binding.progressBar.setVisibility(View.VISIBLE);
-                                        binding.btnLogin.setText(R.string.sending);
-                                        binding.etMobile.setEnabled(false);
-                                        binding.btnLogin.setEnabled(false);
 
-//                                    for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
-//                                        DriversNumbers numbers = documentSnapshot.toObject(DriversNumbers.class);
-//                                        numbers.getId();
-//                                        String id = numbers.getId();
-//                                        int mobileFromFirestorm = numbers.getMobile();
-//                                        String m = String.valueOf(mobileFromFirestorm);
-//                                        String mobile = binding.etMobile.getText().toString().trim();
-//                                        numbersArrayList.add(numbers);
-//
-//                                        edit.putString(DRIVER_ID_KEY, id);
-//                                        edit.putString("m", m);
-//                                        Toast.makeText(LoginActivity.this, "for  "+m, Toast.LENGTH_SHORT).show();
-//
-//                                        Log.e("TAGonComplete", "onComplete: "+id);
-//                                        edit.apply();
-//
-//                                    }
+
+                                        Log.d("array",task.getResult().toString());
+
+                                    for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+                                        DriversNumbers numbers = documentSnapshot.toObject(DriversNumbers.class);
+                                        sendCodeVerification();
+                                        numbers.getId();
+                                        String id = numbers.getId();
+                                        int mobileFromFirestorm = numbers.getMobile();
+                                        String mobileFromFirestormString = String.valueOf(mobileFromFirestorm);
+                                        Log.d("array",String.valueOf(mobileFromFirestorm));
+                                        Log.e("TAGonComplete", "onComplete: "+mobileFromFirestormString);
+                                        String mobile = binding.etMobile.getText().toString().trim();
+                                        numbersArrayList.add(numbers);
+
+                                        edit.putString(DRIVER_ID_KEY, id);
+                                        edit.putString("m", mobileFromFirestormString);
+                                        Toast.makeText(LoginActivity.this, "for  "+mobileFromFirestormString, Toast.LENGTH_SHORT).show();
+
+                                        Log.e("TAGonComplete", "onComplete: "+id);
+                                        edit.apply();
+
+                                    }
                                     }else {
                                         Toast.makeText(LoginActivity.this, "else"+task.getException().toString(), Toast.LENGTH_SHORT).show();
                                     }
@@ -135,16 +149,6 @@ public class LoginActivity extends AppCompatActivity {
     private void sendCodeVerification() {
         String phone = binding.etMobile.getText().toString().trim();
         Log.e("LoginActivityLOG", phone);
-
-
-        String mobile = binding.etMobile.getText().toString().trim();
-        Log.e("LoginActivityLOG", mobile);
-        if (TextUtils.isEmpty(mobile)) {
-            binding.etMobile.setError("Enter your phone number");
-            binding.btnLogin.setEnabled(true);
-            //  Toast.makeText(getApplicationContext(), "Enter your phone", Toast.LENGTH_SHORT).show();
-            return;
-        }
 
 
 //        if (TextUtils.isEmpty(phone)) {
