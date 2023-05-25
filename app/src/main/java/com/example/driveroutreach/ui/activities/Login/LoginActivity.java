@@ -85,48 +85,63 @@ public class LoginActivity extends AppCompatActivity {
                 binding.btnLogin.setText(R.string.sending);
                 binding.btnLogin.setEnabled(false);
 
-                    firestore.collection("Drivers_numbers")
-                            .whereArrayContainsAny("mobile", Collections.singletonList(mobile))
-                           // .whereEqualTo("mobile", Integer.parseInt(binding.etMobile.getText().toString()))
-                            .get()
-                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                    if (task.isSuccessful()) {
+                firestore.collection("Drivers_numbers").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()){
 
-                                        ArrayList<DriversNumbers> numbersArrayList = new ArrayList<>();
+                        for (QueryDocumentSnapshot document : task.getResult()){
+                            DriversNumbers num = document.toObject(DriversNumbers.class);
 
-                                        Toast.makeText(LoginActivity.this, "if  ", Toast.LENGTH_SHORT).show();
+                            if (binding.etMobile.getText().toString().equals(String.valueOf(num.getMobile()))){
+                                Log.d("verification",String.valueOf(num.getMobile()));
+                            }else {
+                                Log.d("verification","Does not exist");
+                            }
+                        }
 
+                    } else {
+                        Log.d("verification",task.getException().getMessage());
+                    }
+                    }
+                });
 
-                                        Log.d("array",task.getResult().toString());
-
-                                    for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
-                                        DriversNumbers numbers = documentSnapshot.toObject(DriversNumbers.class);
-                                        sendCodeVerification();
-                                        numbers.getId();
-                                        String id = numbers.getId();
-                                        int mobileFromFirestorm = numbers.getMobile();
-                                        String mobileFromFirestormString = String.valueOf(mobileFromFirestorm);
-                                        Log.d("array",String.valueOf(mobileFromFirestorm));
-                                        Log.e("TAGonComplete", "onComplete: "+mobileFromFirestormString);
-                                        String mobile = binding.etMobile.getText().toString().trim();
-                                        numbersArrayList.add(numbers);
-
-                                        edit.putString(DRIVER_ID_KEY, id);
-                                        edit.putString("m", mobileFromFirestormString);
-                                        Toast.makeText(LoginActivity.this, "for  "+mobileFromFirestormString, Toast.LENGTH_SHORT).show();
-
-                                        Log.e("TAGonComplete", "onComplete: "+id);
-                                        edit.apply();
-
-                                    }
-                                    }else {
-                                        Toast.makeText(LoginActivity.this, "else"+task.getException().toString(), Toast.LENGTH_SHORT).show();
-                                    }
-
-                                }
-                            });
+//                    firestore.collection("Drivers_numbers")
+//                          //  .whereArrayContainsAny("mobile", Collections.singletonList(mobile))
+//                            .whereEqualTo("mobile", Integer.parseInt(binding.etMobile.getText().toString()))
+//                            .get()
+//                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                                @Override
+//                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                                    if (task.isSuccessful()) {
+//
+//                                        Log.d("numberTest",task.getResult().toString());
+//
+//                                    for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+//                                        DriversNumbers numbers = documentSnapshot.toObject(DriversNumbers.class);
+//
+//                                        Log.d("numberTest",String.valueOf(numbers.getMobile()));
+//
+//                                        //sendCodeVerification();
+//
+//
+//
+//                                      //  numbersArrayList.add(numbers);
+//
+////                                        edit.putString(DRIVER_ID_KEY, id);
+////                                        edit.putString("m", mobileFromFirestormString);
+////                                        Toast.makeText(LoginActivity.this, "for  "+mobileFromFirestormString, Toast.LENGTH_SHORT).show();
+//
+//                                      //  edit.apply();
+//
+//                                    }
+//                                    }else {
+//                                        Log.d("numberTest",task.getException().getMessage());
+//                                        Toast.makeText(LoginActivity.this, "else"+task.getException().toString(), Toast.LENGTH_SHORT).show();
+//                                    }
+//
+//                                }
+//                            });
 
                   //  setEnabledVisibility();
 
