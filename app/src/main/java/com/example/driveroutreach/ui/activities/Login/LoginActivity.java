@@ -74,36 +74,41 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 String mobile = binding.etMobile.getText().toString().trim();
-                Log.e("LoginActivityLOG", mobile);
                 if (TextUtils.isEmpty(mobile)) {
                     binding.etMobile.setError("Enter your phone number");
-                    //     setEnabledVisibility();
-                    //  Toast.makeText(getApplicationContext(), "Enter your phone", Toast.LENGTH_SHORT).show();
+                         setEnabledVisibility();
+                      Toast.makeText(getApplicationContext(), "Enter your phone", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
+                binding.progressBar.setVisibility(View.VISIBLE);
+                binding.btnLogin.setText(R.string.sending);
+                binding.btnLogin.setEnabled(false);
+
                     firestore.collection("Drivers_numbers")
                             .whereArrayContainsAny("mobile", Collections.singletonList(mobile))
+                           // .whereEqualTo("mobile", Integer.parseInt(binding.etMobile.getText().toString()))
                             .get()
                             .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                     if (task.isSuccessful()) {
+
                                         ArrayList<DriversNumbers> numbersArrayList = new ArrayList<>();
 
                                         Toast.makeText(LoginActivity.this, "if  ", Toast.LENGTH_SHORT).show();
-                                        sendCodeVerification();
-                                        binding.progressBar.setVisibility(View.VISIBLE);
-                                        binding.btnLogin.setText(R.string.sending);
-                                        binding.etMobile.setEnabled(false);
-                                        binding.btnLogin.setEnabled(false);
+
+
+                                        Log.d("array",task.getResult().toString());
 
                                     for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
                                         DriversNumbers numbers = documentSnapshot.toObject(DriversNumbers.class);
+                                        sendCodeVerification();
                                         numbers.getId();
                                         String id = numbers.getId();
                                         int mobileFromFirestorm = numbers.getMobile();
                                         String mobileFromFirestormString = String.valueOf(mobileFromFirestorm);
+                                        Log.d("array",String.valueOf(mobileFromFirestorm));
                                         Log.e("TAGonComplete", "onComplete: "+mobileFromFirestormString);
                                         String mobile = binding.etMobile.getText().toString().trim();
                                         numbersArrayList.add(numbers);
