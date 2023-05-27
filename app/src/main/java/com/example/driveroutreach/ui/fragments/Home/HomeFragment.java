@@ -273,18 +273,19 @@ public class HomeFragment extends Fragment implements HomeView, OnMapReadyCallba
 
             map.setMyLocationEnabled(true); //when pressing the button on the map it moves the user to it's place.
 
-            // Create location request
-            LocationRequest locationRequest = LocationRequest.create();
-            locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-            locationRequest.setInterval(5000); // Update location every 5 seconds
-            // Get the user's current location
+//            // Create location request
+//            LocationRequest locationRequest = LocationRequest.create();
+//            locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+//            locationRequest.setInterval(5000); // Update location every 5 seconds
+//            // Get the user's current location
 
-            fusedLocationClient.getLastLocation()
-                    .addOnSuccessListener(requireActivity(), location -> {
-                        if (location != null) {
-                            double userLatitude = location.getLatitude();
-                            double userLongitude = location.getLongitude();
+//            fusedLocationClient.getLastLocation()
+//                    .addOnSuccessListener(requireActivity(), location -> {
+//                        if (location != null) {
+//                            double userLatitude = location.getLatitude();
+//                            double userLongitude = location.getLongitude();
 
+//todo: get drivers location from geofire.
 
 // using the nearest method
                             com.example.driveroutreach.model.Location specificLocation = new com.example.driveroutreach.model.Location(userLatitude,userLongitude); // Example specific location (San Francisco)
