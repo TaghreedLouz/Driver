@@ -45,6 +45,7 @@ public class LoginActivity extends AppCompatActivity {
     SharedPreferences sp;
     SharedPreferences.Editor edit;
     public final String DRIVER_ID_KEY = "driverId";
+    public final String DRIVER_NUMBER_KEY = "driverNumber";
 
     @Override
     protected void onStart() {
@@ -97,24 +98,26 @@ public class LoginActivity extends AppCompatActivity {
                                 Log.d("LoginActivityLOG",String.valueOf(num.getMobile()));
                                 num.getId();
                                 edit.putString(DRIVER_ID_KEY,num.getId());
+                                edit.putString(DRIVER_NUMBER_KEY,String.valueOf(num.getMobile()));
                                 edit.commit();
                                 sendCodeVerification();
+                                binding.etMobile.setText("");
 
                             }else {
                                 Log.d("LoginActivityLOG","Does not exist");
-                                Toast.makeText(LoginActivity.this, "your not Allow", Toast.LENGTH_SHORT).show();
                                 setEnabledVisibility();
                             }
                         }
+
 
                     } else {
                         Log.d("LoginActivityLOG",task.getException().getMessage());
                     }
                     }
                 });
-
-
-
+                if (binding.etMobile.getText().toString() != sp.getString(DRIVER_NUMBER_KEY,"not found")){
+                    Toast.makeText(LoginActivity.this, "your not Allow", Toast.LENGTH_SHORT).show();
+                }
                 }
         });
 
