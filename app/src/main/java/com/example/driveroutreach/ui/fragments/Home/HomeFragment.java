@@ -37,6 +37,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -69,6 +71,7 @@ public class HomeFragment extends Fragment implements HomeView, OnMapReadyCallba
     FusedLocationProviderClient fusedLocationClient;
     private Marker markedPositionMarker;
 
+    DatabaseReference ref;
     public interface onSendData {
         void onSend(boolean clicked);
     }
@@ -279,11 +282,34 @@ public class HomeFragment extends Fragment implements HomeView, OnMapReadyCallba
 //            locationRequest.setInterval(5000); // Update location every 5 seconds
 //            // Get the user's current location
 
-//            fusedLocationClient.getLastLocation()
-//                    .addOnSuccessListener(requireActivity(), location -> {
-//                        if (location != null) {
-//                            double userLatitude = location.getLatitude();
-//                            double userLongitude = location.getLongitude();
+
+        ref = FirebaseDatabase.getInstance().getReference("DriverLocation");
+        GeoFire geoFire = new GeoFire(ref);
+
+        geoFire.getLocation(driverId_sp, new com.firebase.geofire.LocationCallback() {
+            @Override
+            public void onLocationResult(String key, GeoLocation location) {
+                if (location != null) {
+                    double longitude_driver = location.longitude;
+                    double latitude_driver = location.latitude;
+
+                    System.out.println(String.format("The location for key %s is [%f,%f]", key, location.latitude, location.longitude));
+                } else {
+                    System.out.println(String.format("There is no location for key %s in GeoFire", key));
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.err.println("There was an error getting the GeoFire location: " + databaseError);
+            }
+        });
+
+            fusedLocationClient.getLastLocation()
+                    .addOnSuccessListener(requireActivity(), location -> {
+                        if (location != null) {
+                            double userLatitude = location.getLatitude();
+                            double userLongitude = location.getLongitude();
 
 //todo: get drivers location from geofire.
 
