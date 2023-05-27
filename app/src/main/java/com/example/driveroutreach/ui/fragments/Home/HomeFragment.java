@@ -298,7 +298,6 @@ public class HomeFragment extends Fragment implements HomeView, OnMapReadyCallba
                     System.out.println(String.format("There is no location for key %s in GeoFire", key));
                 }
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 System.err.println("There was an error getting the GeoFire location: " + databaseError);
