@@ -37,6 +37,8 @@ import com.example.driveroutreach.databinding.ActivityMainBinding;
 import com.example.driveroutreach.ui.fragments.Home.HomeFragment;
 import com.example.driveroutreach.ui.fragments.schedule.ScheduleFragment;
 import com.example.driveroutreach.ui.fragments.schedule.daily.days.DayFragment;
+import com.firebase.geofire.GeoFire;
+import com.firebase.geofire.GeoLocation;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -54,6 +56,9 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 
 public class MainActivity extends AppCompatActivity implements MainView, DayFragment.OnDataListenerDayFrag {
     ActivityMainBinding binding;
@@ -73,27 +78,9 @@ public class MainActivity extends AppCompatActivity implements MainView, DayFrag
     SharedPreferences.Editor edit;
     private LocationRequest locationRequest;
     private static final String DIALOG_SHOWN_KEY = "dialog_shown";
-
-
-
-
-    LocationCallback locationCallback = new LocationCallback() {
-        @Override
-        public void onLocationResult(@NonNull LocationResult locationResult) {
-
-
-            if (locationResult == null){
-                return;
-            }
-
-            for (Location location : locationResult.getLocations()){
-                location.getLatitude();
-                location.getLongitude();
-                Log.d("MainActivityLOG", "onLocationResult: "+location.toString());
-            }
-        }
-    };
-
+    LocationCallback locationCallback;
+    DatabaseReference ref ;
+    public final String DRIVER_ID_KEY = "driverId";
 
     @Override
     protected void onStart() {
@@ -114,9 +101,33 @@ public class MainActivity extends AppCompatActivity implements MainView, DayFrag
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-
         sp = getSharedPreferences("sp", MODE_PRIVATE);
         edit = sp.edit();
+
+        String driver_id = sp.getString(DRIVER_ID_KEY,"null_id");
+
+        Log.d("MainActivityLOG", "onCreate driver_id : "+driver_id);
+
+        ref = FirebaseDatabase.getInstance().getReference("DriverLocation");
+        GeoFire geoFire = new GeoFire(ref);
+
+        locationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(@NonNull LocationResult locationResult) {
+
+                if (locationResult == null){
+                    return;
+                }
+
+                for (Location location : locationResult.getLocations()){
+                    location.getLatitude();
+                    location.getLongitude();
+                    geoFire.setLocation(driver_id, new GeoLocation(location.getLongitude(), location.getLatitude()));
+                    Log.d("MainActivityLOG", "onLocationResult: "+location.toString());
+                }
+            }
+        };
+
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(MainActivity.this);
 
@@ -136,7 +147,6 @@ public class MainActivity extends AppCompatActivity implements MainView, DayFrag
                 return true;
             }
         });
-
 
     }
 
@@ -164,10 +174,6 @@ public class MainActivity extends AppCompatActivity implements MainView, DayFrag
 
                 if (ContextCompat.checkSelfPermission(MainActivity.this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                     checkSettingAndStartLocationUpdate();
-
-
-
-
 
 
                 } else {
@@ -234,13 +240,9 @@ public class MainActivity extends AppCompatActivity implements MainView, DayFrag
         fusedLocationClient.removeLocationUpdates(locationCallback);
     }
 
-
-
-
     private void askLocationPermission() {
         if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)) {
-                showLocationDialog();
                 ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST_CODE);
 
 
