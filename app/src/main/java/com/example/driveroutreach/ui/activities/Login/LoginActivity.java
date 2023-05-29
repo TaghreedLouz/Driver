@@ -45,7 +45,6 @@ public class LoginActivity extends AppCompatActivity {
     SharedPreferences sp;
     SharedPreferences.Editor edit;
     public final String DRIVER_ID_KEY = "driverId";
-    public final String DRIVER_NUMBER_KEY = "driverNumber";
 
     @Override
     protected void onStart() {
@@ -95,29 +94,72 @@ public class LoginActivity extends AppCompatActivity {
                             DriversNumbers num = document.toObject(DriversNumbers.class);
 
                             if (binding.etMobile.getText().toString().equals(String.valueOf(num.getMobile()))){
-                                Log.d("LoginActivityLOG",String.valueOf(num.getMobile()));
-                                num.getId();
-                                edit.putString(DRIVER_ID_KEY,num.getId());
-                                edit.putString(DRIVER_NUMBER_KEY,String.valueOf(num.getMobile()));
-                                edit.commit();
+                                Log.d("bbbbb",String.valueOf(num.getMobile()));
                                 sendCodeVerification();
-                                binding.etMobile.setText("");
 
                             }else {
-                                Log.d("LoginActivityLOG","Does not exist");
+                                Log.d("bbbbb","Does not exist");
+                                Toast.makeText(LoginActivity.this, "your not Allow", Toast.LENGTH_SHORT).show();
                                 setEnabledVisibility();
                             }
                         }
 
-
                     } else {
-                        Log.d("LoginActivityLOG",task.getException().getMessage());
+                        Log.d("verification",task.getException().getMessage());
                     }
                     }
                 });
-                if (binding.etMobile.getText().toString() != sp.getString(DRIVER_NUMBER_KEY,"not found")){
-                    Toast.makeText(LoginActivity.this, "your not Allow", Toast.LENGTH_SHORT).show();
-                }
+
+//                    firestore.collection("Drivers_numbers")
+//                          //  .whereArrayContainsAny("mobile", Collections.singletonList(mobile))
+//                            .whereEqualTo("mobile", Integer.parseInt(binding.etMobile.getText().toString()))
+//                            .get()
+//                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                                @Override
+//                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                                    if (task.isSuccessful()) {
+//
+//                                        Log.d("numberTest",task.getResult().toString());
+//
+//                                    for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+//                                        DriversNumbers numbers = documentSnapshot.toObject(DriversNumbers.class);
+//
+//                                        Log.d("numberTest",String.valueOf(numbers.getMobile()));
+//
+//                                        //sendCodeVerification();
+//
+//
+//
+//                                      //  numbersArrayList.add(numbers);
+//
+////                                        edit.putString(DRIVER_ID_KEY, id);
+////                                        edit.putString("m", mobileFromFirestormString);
+////                                        Toast.makeText(LoginActivity.this, "for  "+mobileFromFirestormString, Toast.LENGTH_SHORT).show();
+//
+//                                      //  edit.apply();
+//
+//                                    }
+//                                    }else {
+//                                        Log.d("numberTest",task.getException().getMessage());
+//                                        Toast.makeText(LoginActivity.this, "else"+task.getException().toString(), Toast.LENGTH_SHORT).show();
+//                                    }
+//
+//                                }
+//                            });
+
+                  //  setEnabledVisibility();
+
+//                    String m = sp.getString("m", "null");
+//                    String mobilee = binding.etMobile.getText().toString().trim();
+             //       Toast.makeText(LoginActivity.this, "bbb  "+m, Toast.LENGTH_SHORT).show();
+   //                 setEnabledVisibility();
+//                    if (mobilee.equals(m)){
+//                        sendCodeVerification();
+//                    }else {
+//                        Toast.makeText(LoginActivity.this, "Your not allow to login", Toast.LENGTH_SHORT).show();
+//                    }
+
+
                 }
         });
 
@@ -128,6 +170,21 @@ public class LoginActivity extends AppCompatActivity {
         Log.e("LoginActivityLOG", phone);
 
 
+//        if (TextUtils.isEmpty(phone)) {
+//            binding.etMobile.setError("Enter your phone number");
+//            binding.btnLogin.setEnabled(true);
+//            Toast.makeText(this, "Enter your phone", Toast.LENGTH_SHORT).show();
+//            return;
+//        } else {
+//            binding.progressBar.setVisibility(View.VISIBLE);
+//            binding.btnLogin.setText(R.string.sending);
+//            binding.etMobile.setEnabled(false);
+//            binding.btnLogin.setEnabled(false);
+//        }
+//            if (phone.startsWith("0")) {
+//                phone = phone.substring(1);
+//            }
+//            binding.progressBar.setVisibility(View.VISIBLE);
 
             PhoneAuthProvider.getInstance().verifyPhoneNumber(
                     "+970" + phone,
