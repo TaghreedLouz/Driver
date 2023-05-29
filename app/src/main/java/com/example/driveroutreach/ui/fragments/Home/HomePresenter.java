@@ -11,8 +11,8 @@ public class HomePresenter {
         this.view = view;
     }
 
-    public void SettingMap(Fragment fragment) {
-        view.onSetMapFrag(fragment);
+    public void SettingMap() {
+        view.onSetMapFrag();
     }
 
 
