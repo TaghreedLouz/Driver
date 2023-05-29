@@ -156,6 +156,7 @@ public class MainActivity extends AppCompatActivity implements MainView, DayFrag
         binding.bottomNavigationMain.setSelectedItemId(R.id.page_schedule);
     }
 
+
     @Override
     public void onSelectedNavIcon(Fragment fragment) {
         getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
