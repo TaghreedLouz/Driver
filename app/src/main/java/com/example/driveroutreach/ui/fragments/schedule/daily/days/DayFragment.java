@@ -104,7 +104,7 @@ public class DayFragment extends Fragment {
                                public void StartJourney(String journeyId, String date) {
                                    if (onDataListenerDayFrag != null) {
                                        onDataListenerDayFrag.onDataReceivedFromDayFrag(journeyId,date);
-                                       getParentFragmentManager().beginTransaction().replace(R.id.container, new HomeFragment()).commit();
+                                    //   getParentFragmentManager().beginTransaction().replace(R.id.container, new HomeFragment()).commit();
                                    }else {
                                        Log.d("transaction","Wrong Operation");
                                    }

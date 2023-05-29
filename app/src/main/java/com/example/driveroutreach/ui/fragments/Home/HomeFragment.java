@@ -21,8 +21,11 @@ import android.widget.Toast;
 
 import com.example.driveroutreach.R;
 import com.example.driveroutreach.databinding.FragmentHomeBinding;
+import com.example.driveroutreach.model.AttendanceArraylist;
 import com.example.driveroutreach.model.Benefeciares;
 import com.example.driveroutreach.ui.activities.Main.MainActivity;
+import com.firebase.geofire.GeoFire;
+import com.firebase.geofire.GeoLocation;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
@@ -44,6 +47,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Executor;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -72,6 +76,10 @@ public class HomeFragment extends Fragment implements HomeView, OnMapReadyCallba
     private Marker markedPositionMarker;
 
     DatabaseReference ref;
+
+    double longitude_driver;
+    double latitude_driver ;
+    ArrayList<String> benf;
     public interface onSendData {
         void onSend(boolean clicked);
     }
@@ -123,10 +131,11 @@ public class HomeFragment extends Fragment implements HomeView, OnMapReadyCallba
 
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
 
-        ArrayList<String> bnfsIdArray = new ArrayList<>();
+
 
         if (journeyId != null) {
             Log.d("Databack", journeyId + "journeey iddd");
+            MarkersPoistions = new ArrayList<>();
 
             reference = FirebaseDatabase.getInstance().getReference("AttendanceConfirmation").child("20-May-2023")
                     .child("1").child(journeyId).get()
@@ -138,14 +147,37 @@ public class HomeFragment extends Fragment implements HomeView, OnMapReadyCallba
                                 for (DataSnapshot dataSnapshot : task.getResult().getChildren()) {
 
 
-                                    for (DataSnapshot itemSnapshot : dataSnapshot.getChildren()) {
-                                        String item = itemSnapshot.getValue(String.class);
+                                      benf =(ArrayList<String>) dataSnapshot.getValue();
 
-                                        bnfsIdArray.add(item);
+                                   // bnfsIdArray.add(item);
 
-                                        Log.d("DataReturned", item);
+                                    Log.d("DataReturned", benf.toString());
+
                                     }
-                                }
+
+                                   if (!benf.isEmpty()){
+                                       for (int i = 0; i < benf.size(); i++) {
+
+                                           firestore.collection("Beneficiaries").document(benf.get(i)).get()
+                                                   .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                       @Override
+                                                       public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                           if (task.isSuccessful()) {
+                                                               Benefeciares benefeciares = task.getResult().toObject(Benefeciares.class);
+
+                                                               Log.d("locationTag",benefeciares.getLocation().toString());
+
+                                                               MarkersPoistions.add(new com.example.driveroutreach.model.Location(benefeciares.getLocation().getLatitude(),benefeciares.getLocation().getLongitude()));
+                                                           } else {
+                                                               //Put exception
+                                                           }
+                                                           onSetMapFrag();
+                                                       }
+                                                   });
+
+                                       }
+                                   }
+
                             } else {
                                 Log.d("realtimeDatabase", task.getException().getMessage());
                             }
@@ -153,30 +185,9 @@ public class HomeFragment extends Fragment implements HomeView, OnMapReadyCallba
                     });
 
 
-            MarkersPoistions = new ArrayList<>();
-
-            if (!bnfsIdArray.isEmpty()) {
-
-                for (int i = 0; i <= bnfsIdArray.size(); i++) {
-
-                    firestore.collection("Beneficiaries").document(bnfsIdArray.get(i)).get()
-                            .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                    if (task.isSuccessful()) {
-                                        Benefeciares benefeciares = task.getResult().toObject(Benefeciares.class);
-
-                                        MarkersPoistions.add(new com.example.driveroutreach.model.Location(benefeciares.getLocation().getLatitude(),benefeciares.getLocation().getLongitude()));
-                                    } else {
-                                  //Put exception
-                                    }
-                                }
-                            });
-
-                }
 
 
-            }
+
 
         }
 
@@ -194,19 +205,8 @@ public class HomeFragment extends Fragment implements HomeView, OnMapReadyCallba
         return binding.getRoot();
     }
 
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-//        onSendData=(onSendData) context;
-    }
 
-    @Override
-    public void onSetMapFrag(Fragment fragment) {
-        //Setting the map in the fragment
-        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
-                .findFragmentById(R.id.Map);
-        mapFragment.getMapAsync(this);
-    }
+
 
 
     @Override
@@ -220,13 +220,15 @@ public class HomeFragment extends Fragment implements HomeView, OnMapReadyCallba
         }
 
 
-//        // Move the camera to the first marker
-//        if (!MarkersPoistions.isEmpty()) {
-//            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(MarkersPoistions.get(0), 12));
-//        }
+        // Move the camera to the first marker in the array of benf
+        if (!MarkersPoistions.isEmpty()) {
 
 
-// check condition
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(MarkersPoistions.get(0).getLatitude(), MarkersPoistions.get(0).getLongitude()), 20f));
+        }
+
+
+ //check condition if we have the permission to get driver location, and if not we request it
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(getActivity(),
                 Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
@@ -266,66 +268,53 @@ public class HomeFragment extends Fragment implements HomeView, OnMapReadyCallba
 
     private void startLocationUpdates() {
 
-        double thresholdDistance = 0.1;
-
-        //Checking if the user had access permission. if not it returns.
-        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-            return;
-        }
-
-            map.setMyLocationEnabled(true); //when pressing the button on the map it moves the user to it's place.
-
-//            // Create location request
-//            LocationRequest locationRequest = LocationRequest.create();
-//            locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-//            locationRequest.setInterval(5000); // Update location every 5 seconds
-//            // Get the user's current location
 
 
         ref = FirebaseDatabase.getInstance().getReference("DriverLocation");
         GeoFire geoFire = new GeoFire(ref);
 
-        geoFire.getLocation(driverId_sp, new com.firebase.geofire.LocationCallback() {
+        geoFire.getLocation("1", new com.firebase.geofire.LocationCallback() {
             @Override
             public void onLocationResult(String key, GeoLocation location) {
                 if (location != null) {
-                    double longitude_driver = location.longitude;
-                    double latitude_driver = location.latitude;
+                    longitude_driver = location.longitude;
+                    latitude_driver = location.latitude;
 
-                    System.out.println(String.format("The location for key %s is [%f,%f]", key, location.latitude, location.longitude));
+                    Log.d("CompareLocation",String.format("The location for key %s is [%f,%f]", key, location.latitude, location.longitude));
+
                 } else {
-                    System.out.println(String.format("There is no location for key %s in GeoFire", key));
+                    Log.d("CompareLocation",String.format("There is no location for key %s in GeoFire", key));
+
                 }
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                System.err.println("There was an error getting the GeoFire location: " + databaseError);
+                Log.d("CompareLocation","There was an error getting the GeoFire location: " + databaseError);
+
             }
         });
 
-            fusedLocationClient.getLastLocation()
-                    .addOnSuccessListener(requireActivity(), location -> {
-                        if (location != null) {
-                            double userLatitude = location.getLatitude();
-                            double userLongitude = location.getLongitude();
 
-//todo: get drivers location from geofire.
-
-// using the nearest method
-                            com.example.driveroutreach.model.Location specificLocation = new com.example.driveroutreach.model.Location(userLatitude,userLongitude); // Example specific location (San Francisco)
-                            com.example.driveroutreach.model.Location nearestLocation= findNearestLocation(specificLocation, MarkersPoistions);
-                           // System.out.println("Nearest location: " + nearestLocation.getLatitude() + ", " + nearestLocation.getLongitude());
+////todo: get drivers location from geofire.
 
 
-                            // Move the camera to the user's current location
-                            map.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                                    new LatLng(userLatitude, userLongitude), 20));
-                        }
-                    });
+// Adjust the initial camera position and zoom level
+        double defaultLatitude = latitude_driver; // Replace with your desired latitude
+        double defaultLongitude = longitude_driver; // Replace with your desired longitude
+        float defaultZoomLevel = 12f; // Replace with your desired zoom level
+
+//        LatLng defaultLocation = new LatLng(defaultLatitude, defaultLongitude);
+//        map.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLocation, defaultZoomLevel));
+
+        com.example.driveroutreach.model.Location specificLocation = new com.example.driveroutreach.model.Location(latitude_driver,longitude_driver); // Example specific location (San Francisco)
+        com.example.driveroutreach.model.Location nearestLocation= findNearestLocation(specificLocation, MarkersPoistions);
+
+        Log.d("Nearest location","Nearest location: " + nearestLocation.getLatitude() + ", " + nearestLocation.getLongitude());
 
 
-        }
+        // Move the camera to the user's current location
+     //   map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude_driver, longitude_driver), 20));
+    }
 
     private com.example.driveroutreach.model.Location findNearestLocation(com.example.driveroutreach.model.Location specificLocation, ArrayList<com.example.driveroutreach.model.Location> locations) {
 
@@ -345,7 +334,7 @@ public class HomeFragment extends Fragment implements HomeView, OnMapReadyCallba
 
     private double calculateDistance(com.example.driveroutreach.model.Location location1, com.example.driveroutreach.model.Location location2) {
 
-    //    Haversine Formula: The Haversine formula is a mathematical equation used for calculating distances between two points on a sphere  using their latitude and longitude coordinates.
+        //    Haversine Formula: The Haversine formula is a mathematical equation used for calculating distances between two points on a sphere  using their latitude and longitude coordinates.
 
         double earthRadius = 6371; // Radius of the earth in kilometers
         double dLat = Math.toRadians(location2.getLatitude() - location1.getLatitude());
@@ -357,6 +346,17 @@ public class HomeFragment extends Fragment implements HomeView, OnMapReadyCallba
         double distance = earthRadius * c; // Distance in kilometers
         return distance;
     }
+
+
+
+    public void onSetMapFrag() {
+        //Setting the map in the fragment
+        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
+                .findFragmentById(R.id.Map);
+        mapFragment.getMapAsync(this);
+    }
+
+
 
     }
 
