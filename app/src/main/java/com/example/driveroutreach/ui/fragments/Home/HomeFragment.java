@@ -1,15 +1,10 @@
 package com.example.driveroutreach.ui.fragments.Home;
 
-import static com.example.driveroutreach.ui.activities.Main.MainActivity.REQUEST_LOCATION;
-
 import android.Manifest;
-import android.content.Context;
 import android.content.pm.PackageManager;
-import android.location.Location;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
@@ -21,14 +16,9 @@ import android.widget.Toast;
 
 import com.example.driveroutreach.R;
 import com.example.driveroutreach.databinding.FragmentHomeBinding;
-import com.example.driveroutreach.model.AttendanceArraylist;
 import com.example.driveroutreach.model.Benefeciares;
-import com.example.driveroutreach.ui.activities.Main.MainActivity;
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -47,18 +37,9 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.Executor;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 
 /**
@@ -80,11 +61,7 @@ public class HomeFragment extends Fragment implements HomeView, OnMapReadyCallba
     double longitude_driver;
     double latitude_driver ;
     ArrayList<String> benf;
-    public interface onSendData {
-        void onSend(boolean clicked);
-    }
 
-    onSendData onSendData;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -148,8 +125,6 @@ public class HomeFragment extends Fragment implements HomeView, OnMapReadyCallba
 
 
                                       benf =(ArrayList<String>) dataSnapshot.getValue();
-
-                                   // bnfsIdArray.add(item);
 
                                     Log.d("DataReturned", benf.toString());
 
@@ -222,8 +197,6 @@ public class HomeFragment extends Fragment implements HomeView, OnMapReadyCallba
 
         // Move the camera to the first marker in the array of benf
         if (!MarkersPoistions.isEmpty()) {
-
-
             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(MarkersPoistions.get(0).getLatitude(), MarkersPoistions.get(0).getLongitude()), 20f));
         }
 
@@ -267,9 +240,6 @@ public class HomeFragment extends Fragment implements HomeView, OnMapReadyCallba
 
 
     private void startLocationUpdates() {
-
-
-
         ref = FirebaseDatabase.getInstance().getReference("DriverLocation");
         GeoFire geoFire = new GeoFire(ref);
 
@@ -294,8 +264,6 @@ public class HomeFragment extends Fragment implements HomeView, OnMapReadyCallba
             }
         });
 
-
-////todo: get drivers location from geofire.
 
 
 // Adjust the initial camera position and zoom level
