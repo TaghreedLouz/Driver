@@ -45,13 +45,11 @@
             tools:ignore="MissingClass">
 
 
-
         </activity>
 
         <activity
             android:name=".ui.activities.Login.LoginActivity"
             android:exported="true">
-
 
 
             <intent-filter>
@@ -60,6 +58,10 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+
+
+
 
         </activity>
         <activity
