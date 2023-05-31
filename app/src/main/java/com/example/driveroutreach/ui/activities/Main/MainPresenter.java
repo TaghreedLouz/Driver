@@ -14,8 +14,6 @@ import com.example.driveroutreach.ui.fragments.schedule.ScheduleFragment;
 
 public class MainPresenter {
     MainView view;
-
-
     public MainPresenter(MainView view) {
         this.view = view;
     }
