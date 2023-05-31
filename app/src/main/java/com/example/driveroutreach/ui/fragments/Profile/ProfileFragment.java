@@ -3,6 +3,7 @@ package com.example.driveroutreach.ui.fragments.Profile;
 import android.app.Notification;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 
@@ -41,12 +42,10 @@ import java.util.List;
  */
 public class ProfileFragment extends Fragment {
 
+    SharedPreferences sp;
+    public final String DRIVER_ID_KEY = "driverId";
 
-    public interface sendData{
 
-    }
-
-    sendData sendData;
     DriverProfile driverProfileObject;
 
 
@@ -98,7 +97,11 @@ public class ProfileFragment extends Fragment {
 
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
 
-           firestore.collection("Driver").document("1").get()
+        sp = getActivity().getSharedPreferences("sp", Context.MODE_PRIVATE);
+
+        String driverId= sp.getString(DRIVER_ID_KEY,null);
+
+           firestore.collection("Driver").document(driverId).get()
                            .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                @Override
                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {

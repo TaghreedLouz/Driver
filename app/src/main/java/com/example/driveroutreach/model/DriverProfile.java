@@ -11,6 +11,8 @@ public class DriverProfile implements Parcelable {
     String region;
     int vichuleId;
     String dayOff;
+
+    String ImgUrl;
     LatLng coordinates;
 
 

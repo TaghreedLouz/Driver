@@ -1,6 +1,8 @@
 package com.example.driveroutreach.ui.fragments.Home;
 
 import android.Manifest;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 
@@ -23,6 +25,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -61,6 +64,10 @@ public class HomeFragment extends Fragment implements HomeView, OnMapReadyCallba
     double longitude_driver;
     double latitude_driver ;
     ArrayList<String> benf;
+    Marker driverLocationMarker;
+
+    SharedPreferences sp;
+    public final String DRIVER_ID_KEY = "driverId";
 
 
 
@@ -108,14 +115,19 @@ public class HomeFragment extends Fragment implements HomeView, OnMapReadyCallba
 
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
 
+        sp = getActivity().getSharedPreferences("sp", Context.MODE_PRIVATE);
 
+        String driverId= sp.getString(DRIVER_ID_KEY,null);
+
+
+        onGettingDriversLocation(driverId);
 
         if (journeyId != null) {
             Log.d("Databack", journeyId + "journeey iddd");
             MarkersPoistions = new ArrayList<>();
 
             reference = FirebaseDatabase.getInstance().getReference("AttendanceConfirmation").child("20-May-2023")
-                    .child("1").child(journeyId).get()
+                    .child(driverId).child(journeyId).get()
                     .addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<DataSnapshot> task) {
@@ -189,17 +201,18 @@ public class HomeFragment extends Fragment implements HomeView, OnMapReadyCallba
         map = googleMap;
 
         for (com.example.driveroutreach.model.Location position : MarkersPoistions) {
-
+                //adding benf place markers
             MarkerOptions markerOptions = new MarkerOptions().position(new LatLng(position.getLatitude(),position.getLongitude()));
             Marker marker = googleMap.addMarker(markerOptions);
         }
 
 
-        // Move the camera to the first marker in the array of benf
         if (!MarkersPoistions.isEmpty()) {
-            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(MarkersPoistions.get(0).getLatitude(), MarkersPoistions.get(0).getLongitude()), 20f));
+            // Move the camera to the first marker in the array of benf
+      //      googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(MarkersPoistions.get(0).getLatitude(), MarkersPoistions.get(0).getLongitude()), 17f));
         }
 
+        updateCurrentLocationMarker(new LatLng(longitude_driver,latitude_driver));
 
  //check condition if we have the permission to get driver location, and if not we request it
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
@@ -240,29 +253,7 @@ public class HomeFragment extends Fragment implements HomeView, OnMapReadyCallba
 
 
     private void startLocationUpdates() {
-        ref = FirebaseDatabase.getInstance().getReference("DriverLocation");
-        GeoFire geoFire = new GeoFire(ref);
 
-        geoFire.getLocation("1", new com.firebase.geofire.LocationCallback() {
-            @Override
-            public void onLocationResult(String key, GeoLocation location) {
-                if (location != null) {
-                    longitude_driver = location.longitude;
-                    latitude_driver = location.latitude;
-
-                    Log.d("CompareLocation",String.format("The location for key %s is [%f,%f]", key, location.latitude, location.longitude));
-
-                } else {
-                    Log.d("CompareLocation",String.format("There is no location for key %s in GeoFire", key));
-
-                }
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.d("CompareLocation","There was an error getting the GeoFire location: " + databaseError);
-
-            }
-        });
 
 
 
@@ -319,11 +310,55 @@ public class HomeFragment extends Fragment implements HomeView, OnMapReadyCallba
 
     public void onSetMapFrag() {
         //Setting the map in the fragment
+        if (!isAdded()) return;
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.Map);
         mapFragment.getMapAsync(this);
     }
 
+
+
+
+  void onGettingDriversLocation(String driverId){
+      ref = FirebaseDatabase.getInstance().getReference("DriverLocation");
+      GeoFire geoFire = new GeoFire(ref);
+
+      geoFire.getLocation(driverId, new com.firebase.geofire.LocationCallback() {
+          @Override
+          public void onLocationResult(String key, GeoLocation location) {
+              if (location != null) {
+                  longitude_driver = location.longitude;
+                  latitude_driver = location.latitude;
+
+                  Log.d("CompareLocation",String.format("The location for key %s is [%f,%f]", key, location.latitude, location.longitude));
+
+              } else {
+                  Log.d("CompareLocation",String.format("There is no location for key %s in GeoFire", key));
+
+              }
+          }
+          @Override
+          public void onCancelled(DatabaseError databaseError) {
+              Log.d("CompareLocation","There was an error getting the GeoFire location: " + databaseError);
+
+          }
+      });
+  }
+
+
+    private void updateCurrentLocationMarker( LatLng latLng_driver) {
+        if (driverLocationMarker != null) {
+            driverLocationMarker.setPosition(latLng_driver);
+            // Remove the mMap.animateCamera line to prevent automatic zooming out
+            map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng_driver, 15f));
+        } else {
+            MarkerOptions markerOptions = new MarkerOptions()
+                    .position(latLng_driver)
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.img_bus));
+            driverLocationMarker = map.addMarker(markerOptions);
+        }
+
+    }
 
 
     }

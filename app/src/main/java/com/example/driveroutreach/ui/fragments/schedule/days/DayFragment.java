@@ -1,6 +1,7 @@
-package com.example.driveroutreach.ui.fragments.schedule.daily.days;
+package com.example.driveroutreach.ui.fragments.schedule.days;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,13 +13,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.driveroutreach.R;
 import com.example.driveroutreach.adapters.TripAdapter;
 import com.example.driveroutreach.databinding.FragmentDayBinding;
 import com.example.driveroutreach.listeners.ScheduleListener;
 import com.example.driveroutreach.model.JourneyModel;
-import com.example.driveroutreach.ui.fragments.Home.HomeFragment;
-import com.example.driveroutreach.ui.fragments.schedule.ScheduleFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -31,6 +29,9 @@ public class DayFragment extends Fragment {
 
 
     ArrayList<JourneyModel> Trips;
+
+    SharedPreferences sp;
+    public final String DRIVER_ID_KEY = "driverId";
 
     public interface OnDataListenerDayFrag{
         void onDataReceivedFromDayFrag(String journeyId, String date);
@@ -79,10 +80,13 @@ public class DayFragment extends Fragment {
 
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
 
+        sp = getActivity().getSharedPreferences("sp", Context.MODE_PRIVATE);
+
+        String driverId= sp.getString(DRIVER_ID_KEY,null);
 
          Trips = new ArrayList<>();
 
-        firestore.collection("Journey").whereEqualTo("driver","1")
+        firestore.collection("Journey").whereEqualTo("driver",driverId)
                 .whereEqualTo("day",day).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -93,7 +97,7 @@ public class DayFragment extends Fragment {
                            for(QueryDocumentSnapshot document : task.getResult()){
 
                                JourneyModel journeyModel = document.toObject(JourneyModel.class);
-                               Log.d("schedule",journeyModel.getOrganization()+""+journeyModel.getDay());
+                               Log.d("schedule",journeyModel.getOrganization()+" "+journeyModel.getDay());
 
                                Trips.add(journeyModel);
                            }

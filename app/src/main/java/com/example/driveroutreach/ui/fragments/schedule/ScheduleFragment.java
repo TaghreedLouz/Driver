@@ -1,25 +1,22 @@
 package com.example.driveroutreach.ui.fragments.schedule;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RadioGroup;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import com.example.driveroutreach.R;
 import com.example.driveroutreach.adapters.DayVBAdapter;
 import com.example.driveroutreach.databinding.FragmentScheduleBinding;
 import com.example.driveroutreach.ui.fragments.BaseFragment;
-import com.example.driveroutreach.ui.fragments.schedule.all.AllFragment;
-import com.example.driveroutreach.ui.fragments.schedule.daily.DailyFragment;
-import com.example.driveroutreach.ui.fragments.schedule.daily.days.DayFragment;
+import com.example.driveroutreach.ui.fragments.schedule.days.DayFragment;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -29,6 +26,8 @@ public class ScheduleFragment extends BaseFragment {
 
     FragmentScheduleBinding binding;
 
+    SharedPreferences sp;
+    public final String DRIVER_ID_KEY = "driverId";
 
     public ScheduleFragment() {
         // Required empty public constructor
@@ -48,6 +47,13 @@ public class ScheduleFragment extends BaseFragment {
         // Inflate the layout for this fragment
          binding = FragmentScheduleBinding.inflate(inflater,container,false);
 
+        sp = getActivity().getSharedPreferences("sp", Context.MODE_PRIVATE);
+
+        String driverId= sp.getString(DRIVER_ID_KEY,null);
+
+        Log.d("DriverId","Driver ID is: " + driverId);
+
+
         ArrayList<String> days_tabs = new ArrayList<>();
         days_tabs.add(getString(R.string.tab_saturday));
         days_tabs.add(getString(R.string.tab_sunday));
@@ -60,7 +66,7 @@ public class ScheduleFragment extends BaseFragment {
         ArrayList<Fragment> fragments = new ArrayList<>();
         for (int i = 0; i < days_tabs.size(); i++) {
             Log.d("array",days_tabs.get(i));
-            fragments.add(DayFragment.newInstance("Tuesday")) ;
+            fragments.add(DayFragment.newInstance(days_tabs.get(i))) ;
         }
 
         DayVBAdapter dayVBAdapter = new DayVBAdapter(getActivity() ,fragments);

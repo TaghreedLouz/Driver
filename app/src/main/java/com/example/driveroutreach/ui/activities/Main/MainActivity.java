@@ -3,29 +3,21 @@ package com.example.driveroutreach.ui.activities.Main;
 import static android.app.PendingIntent.getActivity;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
-import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -36,10 +28,9 @@ import com.example.driveroutreach.R;
 import com.example.driveroutreach.databinding.ActivityMainBinding;
 import com.example.driveroutreach.ui.fragments.Home.HomeFragment;
 import com.example.driveroutreach.ui.fragments.schedule.ScheduleFragment;
-import com.example.driveroutreach.ui.fragments.schedule.daily.days.DayFragment;
+import com.example.driveroutreach.ui.fragments.schedule.days.DayFragment;
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
-import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -48,9 +39,7 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResponse;
-import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.location.SettingsClient;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -122,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements MainView, DayFrag
                 for (Location location : locationResult.getLocations()){
                     location.getLatitude();
                     location.getLongitude();
-                    geoFire.setLocation(driver_id, new GeoLocation(location.getLongitude(), location.getLatitude()));
+                    geoFire.setLocation(driver_id, new GeoLocation(location.getLatitude(), location.getLongitude()));
                     Log.d("MainActivityLOG", "onLocationResult: "+location.toString());
                 }
             }
