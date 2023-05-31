@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:backgroundTint="@color/white"
-    tools:context=".ui.fragments.schedule.daily.days.DayFragment">
+    tools:context=".ui.fragments.schedule.days.DayFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/RV_Day"
