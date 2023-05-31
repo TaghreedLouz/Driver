@@ -123,10 +123,12 @@ public class HomeFragment extends Fragment implements HomeView, OnMapReadyCallba
         onGettingDriversLocation(driverId);
 
         if (journeyId != null) {
-            Log.d("Databack", journeyId + "journeey iddd");
+            Log.d("Databack", journeyId + "journeey iddd" + date+"driverid"+driverId);
             MarkersPoistions = new ArrayList<>();
 
-            reference = FirebaseDatabase.getInstance().getReference("AttendanceConfirmation").child("20-May-2023")
+
+
+            reference = FirebaseDatabase.getInstance().getReference("AttendanceConfirmation").child(date)
                     .child(driverId).child(journeyId).get()
                     .addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                         @Override
@@ -158,13 +160,13 @@ public class HomeFragment extends Fragment implements HomeView, OnMapReadyCallba
                                                            } else {
                                                                //Put exception
                                                            }
-                                                           onSetMapFrag();
+
                                                        }
                                                    });
 
                                        }
                                    }
-
+                                onSetMapFrag();
                             } else {
                                 Log.d("realtimeDatabase", task.getException().getMessage());
                             }
@@ -200,12 +202,13 @@ public class HomeFragment extends Fragment implements HomeView, OnMapReadyCallba
     public void onMapReady(@NonNull GoogleMap googleMap) {
         map = googleMap;
 
-        for (com.example.driveroutreach.model.Location position : MarkersPoistions) {
+        if (!MarkersPoistions.isEmpty() ) {
+            for (com.example.driveroutreach.model.Location position : MarkersPoistions) {
                 //adding benf place markers
-            MarkerOptions markerOptions = new MarkerOptions().position(new LatLng(position.getLatitude(),position.getLongitude()));
-            Marker marker = googleMap.addMarker(markerOptions);
+                MarkerOptions markerOptions = new MarkerOptions().position(new LatLng(position.getLatitude(), position.getLongitude()));
+                Marker marker = googleMap.addMarker(markerOptions);
+            }
         }
-
 
         if (!MarkersPoistions.isEmpty()) {
             // Move the camera to the first marker in the array of benf

@@ -44,7 +44,7 @@ public class LoginActivity extends AppCompatActivity {
     DriversNumbers driversNumbers;
     SharedPreferences sp;
     SharedPreferences.Editor edit;
-    public final String DRIVER_ID_KEY = "driverId";
+    public final String DRIVER_ID_KEY = "driverId" , DRIVER_MOBILE_KEY = "driverMobile";
     public final String DRIVER_NUMBER_KEY = "driverNumber";
 
     @Override
@@ -98,7 +98,7 @@ public class LoginActivity extends AppCompatActivity {
                                 Log.d("LoginActivityLOG",String.valueOf(num.getMobile()));
                                 num.getId();
                                 edit.putString(DRIVER_ID_KEY,num.getId());
-                                edit.putString(DRIVER_ID_KEY,String.valueOf(num.getMobile()));
+                                edit.putString(DRIVER_MOBILE_KEY,String.valueOf(num.getMobile()));
                                 edit.commit();
                                   sendCodeVerification();
                                 binding.etMobile.setText("");
