@@ -84,6 +84,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 binding.progressBar.setVisibility(View.VISIBLE);
                 binding.btnLogin.setText(R.string.sending);
+                binding.etMobile.setEnabled(false);
                 binding.btnLogin.setEnabled(false);
 
                 firestore.collection("Drivers_numbers").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -101,11 +102,12 @@ public class LoginActivity extends AppCompatActivity {
                                 edit.putString(DRIVER_MOBILE_KEY,String.valueOf(num.getMobile()));
                                 edit.commit();
                                   sendCodeVerification();
-                                binding.etMobile.setText("");
+                              //  binding.etMobile.setText("");
 
                             }else {
                                 Log.d("LoginActivityLOG","Does not exist");
                                 setEnabledVisibility();
+                                Toast.makeText(LoginActivity.this, "your not Allow", Toast.LENGTH_SHORT).show();
                             }
                         }
 
@@ -115,9 +117,9 @@ public class LoginActivity extends AppCompatActivity {
                     }
                     }
                 });
-                if (binding.etMobile.getText().toString() != sp.getString(DRIVER_NUMBER_KEY,"not found")){
-                    Toast.makeText(LoginActivity.this, "your not Allow", Toast.LENGTH_SHORT).show();
-                }
+//                if (binding.etMobile.getText().toString() != sp.getString(DRIVER_NUMBER_KEY,"not found")){
+//                    Toast.makeText(LoginActivity.this, "your not Allow", Toast.LENGTH_SHORT).show();
+//                }
                 }
         });
 
@@ -143,8 +145,9 @@ public class LoginActivity extends AppCompatActivity {
                         @Override
                         public void onVerificationFailed(@NonNull FirebaseException e) {
                             Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                            binding.etMobile.setText("");
                             Log.e("LoginActivityLOG", e.toString());
-                            setEnabledVisibility();
+                            //setEnabledVisibility();
                         }
 
                         @Override
