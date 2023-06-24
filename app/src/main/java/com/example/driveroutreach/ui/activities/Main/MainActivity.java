@@ -1,17 +1,12 @@
 package com.example.driveroutreach.ui.activities.Main;
 
-import static android.app.PendingIntent.getActivity;
-
 import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
-import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -23,7 +18,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.driveroutreach.R;
@@ -32,26 +26,12 @@ import com.example.driveroutreach.ui.fragments.Home.HomeFragment;
 import com.example.driveroutreach.ui.fragments.schedule.ScheduleFragment;
 import com.example.driveroutreach.ui.fragments.schedule.days.DayFragment;
 import com.firebase.geofire.GeoFire;
-import com.firebase.geofire.GeoLocation;
-import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.LocationSettingsRequest;
-import com.google.android.gms.location.LocationSettingsResponse;
-import com.google.android.gms.location.SettingsClient;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.navigation.NavigationBarView;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
-import org.greenrobot.eventbus.EventBus;
 
 
 public class MainActivity extends AppCompatActivity implements MainView, DayFragment.OnDataListenerDayFrag {
@@ -71,8 +51,7 @@ public class MainActivity extends AppCompatActivity implements MainView, DayFrag
     FusedLocationProviderClient fusedLocationClient;
     SharedPreferences sp;
     SharedPreferences.Editor edit;
-    double longitude_driver;
-    double latitude_driver ;
+
     private LocationRequest locationRequest;
     private static final String DIALOG_SHOWN_KEY = "dialog_shown";
     LocationCallback locationCallback;
@@ -80,11 +59,8 @@ public class MainActivity extends AppCompatActivity implements MainView, DayFrag
     public final String DRIVER_ID_KEY = "driverId";
     GeoFire geoFire;
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        stopLocationUpdates();
-    }
+    boolean isClicked = false;
+    private static final int PERMISSIONS_REQUEST_LOCATION = 1001;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,77 +71,12 @@ public class MainActivity extends AppCompatActivity implements MainView, DayFrag
         sp = getSharedPreferences("sp", MODE_PRIVATE);
         edit = sp.edit();
 
-//        longitude_sp = sp.getFloat(LONGITUDE_KEY,0.0f);
-//        latitude_sp = sp.getFloat(LATITUDE_KEY,0.0f);
-//        if (longitude_sp == 0.0 && latitude_sp == 0.0){
-//            showLocationDialog();
-//        }
-
-        String driver_id = sp.getString(DRIVER_ID_KEY,"null_id");
-
-        Log.d("MainActivityLOG", "onCreate driver_id : "+driver_id);
-
-        ref = FirebaseDatabase.getInstance().getReference("DriverLocation");
-        geoFire = new GeoFire(ref);
 
 
-        locationCallback = new LocationCallback() {
-            @Override
-            public void onLocationResult(@NonNull LocationResult locationResult) {
 
-                if (locationResult == null){
-                    return;
-                }
-
-                for (Location location : locationResult.getLocations()){
-                    location.getLatitude();
-                    location.getLongitude();
-//                    if (location.getLatitude() != 0.0 && location.getLongitude() != 0.0){
-//                        showLocationDialog();
-//                    }
-                  //  showLocationDialog();
-//                    edit.putFloat(LATITUDE_KEY, (float) location.getLatitude());
-//                    edit.putFloat(LATITUDE_KEY, (float) location.getLongitude());
-                    geoFire.setLocation(driver_id, new GeoLocation(location.getLatitude(), location.getLongitude()));
-                    EventBus.getDefault().post(new LocationChanged(location.getLatitude(), location.getLongitude()));
-                    Log.d("MainActivityLOG", "onLocationResult: "+location.toString());
-                }
-            }
-        };
 
         String driverId= sp.getString(DRIVER_ID_KEY,null);
-        geoFire.getLocation(driverId, new com.firebase.geofire.LocationCallback() {
-            @Override
-            public void onLocationResult(String key, GeoLocation location) {
-                if (location != null) {
-                    longitude_driver = location.longitude;
-                    latitude_driver = location.latitude;
 
-
-                    Log.d("CompareLocation",String.format("The location for key %s is [%f,%f]", key, location.latitude, location.longitude));
-
-                } else {
-                    Log.d("CompareLocation",String.format("There is no location for key %s in GeoFire", key));
-                    showLocationDialog();
-
-                }
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.d("CompareLocation","There was an error getting the GeoFire location: " + databaseError);
-
-            }
-        });
-
-
-
-
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(MainActivity.this);
-
-        locationRequest = LocationRequest.create();
-        locationRequest.setInterval(4000);//sec
-        locationRequest.setFastestInterval(2000);
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
 
         MainPresenter mainPresenter = new MainPresenter(this);
@@ -178,6 +89,15 @@ public class MainActivity extends AppCompatActivity implements MainView, DayFrag
                 return true;
             }
         });
+        showLocationDialog();
+
+
+//        if (isClicked){
+//            showLocationDialog();
+//
+//        }else {
+//            startService(new Intent(MainActivity.this, LocationService.class));
+//        }
 
     }
 
@@ -193,6 +113,15 @@ public class MainActivity extends AppCompatActivity implements MainView, DayFrag
         getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
     }
 
+    @Override
+    public void onDataReceivedFromDayFrag(String journeyId, String date) {
+        Log.d("TripData", journeyId + " " + date);
+        HomeFragment homeFragment = HomeFragment.newInstance(journeyId, date);
+        getSupportFragmentManager().beginTransaction().add(R.id.container, homeFragment).commit();
+    }
+
+
+
     private void showLocationDialog() {
         dialog = new Dialog(MainActivity.this);
         View dialogView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.item_dialog, findViewById(R.id.custom_dialog));
@@ -203,9 +132,6 @@ public class MainActivity extends AppCompatActivity implements MainView, DayFrag
         btn_getLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dialog.dismiss();
-                if (ContextCompat.checkSelfPermission(MainActivity.this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                    checkSettingAndStartLocationUpdate();
 
                 // ااذا اخد البيرمشن ولا لا
                 if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
@@ -213,90 +139,20 @@ public class MainActivity extends AppCompatActivity implements MainView, DayFrag
                     startLocationService();
 
                 } else {
-                    askLocationPermission();
-                }
-
-                dialog.dismiss();
-            }
-        });
-
-        // Update shared preference to indicate dialog has been shown
-        edit.putBoolean(DIALOG_SHOWN_KEY, true);
-        edit.apply();
-    }
-
-
-    private void checkSettingAndStartLocationUpdate() {
-
-        LocationSettingsRequest request = new LocationSettingsRequest.Builder().addLocationRequest(locationRequest).build();
-
-        SettingsClient client = LocationServices.getSettingsClient(MainActivity.this);
-        Task<LocationSettingsResponse> locationSettingsResponseTask = client.checkLocationSettings(request);
-
-        locationSettingsResponseTask.addOnSuccessListener(new OnSuccessListener<LocationSettingsResponse>() {
-            @Override
-            public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
-                //settings of device are satisfied and we can start location update
-                startLocationUpdates();
-                dialog.dismiss();
-            }
-        });
-
-        locationSettingsResponseTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-
-                if (e instanceof ResolvableApiException) {
-                    ResolvableApiException apiException = (ResolvableApiException) e;
-                    try {
-                        apiException.startResolutionForResult(MainActivity.this, 1001);
-                    } catch (IntentSender.SendIntentException ex) {
-                        ex.printStackTrace();
-                    }
+                    ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_REQUEST_LOCATION);
                 }
 
             }
         });
-    }
 
-    private void startLocationUpdates() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
-    }
-
-    private void stopLocationUpdates() {
-        fusedLocationClient.removeLocationUpdates(locationCallback);
-    }
-
-    private void askLocationPermission() {
-        dialog.dismiss();
-        if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)) {
-                ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST_CODE);
-
-
-            } else {
-                ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST_CODE);
-            }
-        }
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        if (requestCode == LOCATION_REQUEST_CODE) {
+        if (requestCode == PERMISSIONS_REQUEST_LOCATION) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                checkSettingAndStartLocationUpdate();
+                startLocationService();
             } else {
                 Toast.makeText(this, "Location permission denied", Toast.LENGTH_SHORT).show();
 
@@ -312,10 +168,4 @@ public class MainActivity extends AppCompatActivity implements MainView, DayFrag
         isClicked = true;
     }
 
-    @Override
-    public void onDataReceivedFromDayFrag(String journeyId, String date) {
-        Log.d("TripData", journeyId + " " + date);
-        HomeFragment homeFragment = HomeFragment.newInstance(journeyId, date);
-        getSupportFragmentManager().beginTransaction().add(R.id.container, homeFragment).commit();
-    }
 }
