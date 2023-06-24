@@ -117,8 +117,6 @@ public class MainActivity extends AppCompatActivity implements MainView, DayFrag
 
 
     private void showLocationDialog() {
-
-
         dialog = new Dialog(MainActivity.this);
         View dialogView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.item_dialog, null);
         dialog.setContentView(dialogView);
@@ -217,6 +215,7 @@ public class MainActivity extends AppCompatActivity implements MainView, DayFrag
     private void startLocationService() {
         //يشغل كود السيرفس
         startService(new Intent(MainActivity.this, LocationService.class));
+        LocationService.setActivityContext(this);
         turnOnGPS();
     }
 
