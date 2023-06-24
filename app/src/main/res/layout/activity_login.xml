@@ -95,7 +95,7 @@
             android:fontFamily="@font/roboto_regular"
             android:gravity="center_vertical"
             android:inputType="phone"
-            android:maxLength="10"
+            android:maxLength="9"
             android:textColor="@color/dark_gray"
             tools:ignore="TouchTargetSizeCheck" />
 

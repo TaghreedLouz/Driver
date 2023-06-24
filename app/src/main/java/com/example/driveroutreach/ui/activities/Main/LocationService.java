@@ -5,6 +5,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.IBinder;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 
+import com.example.driveroutreach.R;
 import com.example.driveroutreach.model.DriversNumbers;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -31,6 +33,11 @@ public class LocationService extends Service implements LocationListener {
     private DatabaseReference locationRef;
     private DriversNumbers driver;
     Map<String, Object> locationMap;
+    public final String DRIVER_ID_KEY = "driverId";
+    SharedPreferences sp;
+    SharedPreferences.Editor edit;
+    private static final String CHANNEL_ID = "LocationServiceChannel";
+
 
     @Override
     public void onCreate() {
@@ -39,10 +46,29 @@ public class LocationService extends Service implements LocationListener {
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         locationRef = FirebaseDatabase.getInstance().getReference("DriverLocation");
         driver = new DriversNumbers();
+        sp = getSharedPreferences("sp", MODE_PRIVATE);
+        edit = sp.edit();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "Location Service", NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationManager manager = getSystemService(NotificationManager.class);
+            manager.createNotificationChannel(channel);
+        }
+
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
+        // notification
+        Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setContentTitle("Location")
+                .setContentText("Location...")
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .build();
+
+        // تشغيل السيرقيس في الفورجراوند
+        startForeground(1, notification);
 
         requestLocationUpdates();
 
@@ -59,13 +85,20 @@ public class LocationService extends Service implements LocationListener {
         double latitude = location.getLatitude();
         double longitude = location.getLongitude();
 
-        // Store latitude and longitude in a HashMap
+        // تخزين اللوكيشن في الهاشماب
         locationMap = new HashMap<>();
         locationMap.put("latitude", latitude);
         locationMap.put("longitude", longitude);
 
-        // Update the location in real-time using Firebase
-        locationRef.child(String.valueOf(driver.getMobile())).setValue(locationMap);
+        String driverId= sp.getString(DRIVER_ID_KEY,null);
+
+        // تحديث على اللوكيشن في الريل تايم
+        locationRef.child(String.valueOf(driverId)).setValue(locationMap);
+
+
+
+        Log.d("LocationService", "onLocationChanged:   "+driver.getMobile());
+        Log.d("LocationService", "onLocationChanged:   id  "+driverId);
 
         Log.d("LocationService", "Latitude: " + driver.getMobile() + " " + latitude + ", Longitude: " + longitude);
 
@@ -107,11 +140,18 @@ public class LocationService extends Service implements LocationListener {
         }
     }
 
+
+
+
     @Override
     public void onDestroy() {
         super.onDestroy();
         removeLocationUpdates();
         locationRef.child(String.valueOf(driver.getMobile())).setValue(locationMap);
+        // توقيف الفورجراوند
+        stopForeground(false);
 
     }
+
+
 }
