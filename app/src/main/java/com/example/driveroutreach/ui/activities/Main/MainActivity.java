@@ -1,7 +1,5 @@
 package com.example.driveroutreach.ui.activities.Main;
 
-import static android.app.PendingIntent.getActivity;
-
 import android.Manifest;
 import android.app.Dialog;
 import android.content.IntentSender;
@@ -48,8 +46,6 @@ import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
-import org.greenrobot.eventbus.EventBus;
 
 
 public class MainActivity extends AppCompatActivity implements MainView, DayFragment.OnDataListenerDayFrag {
@@ -160,29 +156,7 @@ public class MainActivity extends AppCompatActivity implements MainView, DayFrag
 
         });
 
-        String driverId= sp.getString(DRIVER_ID_KEY,null);
-        geoFire.getLocation(driverId, new com.firebase.geofire.LocationCallback() {
-            @Override
-            public void onLocationResult(String key, GeoLocation location) {
-                if (location != null) {
-                    longitude_driver = location.longitude;
-                    latitude_driver = location.latitude;
 
-
-                    Log.d("CompareLocation",String.format("The location for key %s is [%f,%f]", key, location.latitude, location.longitude));
-
-                } else {
-                    Log.d("CompareLocation",String.format("There is no location for key %s in GeoFire", key));
-                    showLocationDialog();
-
-                }
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.d("CompareLocation","There was an error getting the GeoFire location: " + databaseError);
-
-            }
-        });
 
 
 
