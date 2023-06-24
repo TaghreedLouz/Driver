@@ -37,7 +37,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
-public class LoginActivity extends AppCompatActivity implements LoginView {
+public class LoginActivity extends AppCompatActivity {
 
     ActivityLoginBinding binding;
     FirebaseFirestore firestore;
@@ -88,41 +88,38 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
                 binding.btnLogin.setText(R.string.sending);
                 binding.btnLogin.setEnabled(false);
 
-                loginPresenter.checkDriverIsExist();
-//                firestore.collection("Drivers_numbers").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                    if (task.isSuccessful()){
-//
-//                        for (QueryDocumentSnapshot document : task.getResult()){
-//                            DriversNumbers num = document.toObject(DriversNumbers.class);
-//
-//                            if (binding.etMobile.getText().toString().equals(String.valueOf(num.getMobile()))){
-//                                Log.d("LoginActivityLOG",String.valueOf(num.getMobile()));
-//                                num.getId();
-//                                edit.putString(DRIVER_ID_KEY,num.getId());
-//                                edit.putString(DRIVER_MOBILE_KEY,String.valueOf(num.getMobile()));
-//                                edit.commit();
-//                                  sendCodeVerification();
-//                                binding.etMobile.setText("");
-//                            //    return;
-//
-//                            }else {
-//                                Log.d("LoginActivityLOG","Does not exist");
-//                          //      Toast.makeText(LoginActivity.this, "your not Allow", Toast.LENGTH_SHORT).show();
-//                                setEnabledVisibility();
-//                            }
-//                        }
-//
-//
-//                    } else {
-//                        Log.d("LoginActivityLOG",task.getException().getMessage());
-//                    }
-//                    }
-//                });
-//                if (binding.etMobile.getText().toString() != sp.getString(DRIVER_NUMBER_KEY,"not found")){
-//                    Toast.makeText(LoginActivity.this, "your not Allow", Toast.LENGTH_SHORT).show();
-//                }
+                firestore.collection("Drivers_numbers").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()){
+
+                        for (QueryDocumentSnapshot document : task.getResult()){
+                            DriversNumbers num = document.toObject(DriversNumbers.class);
+
+                            if (binding.etMobile.getText().toString().equals(String.valueOf(num.getMobile()))){
+                                Log.d("LoginActivityLOG",String.valueOf(num.getMobile()));
+                                num.getId();
+                                edit.putString(DRIVER_ID_KEY,num.getId());
+                                edit.putString(DRIVER_MOBILE_KEY,String.valueOf(num.getMobile()));
+                                edit.commit();
+                                  sendCodeVerification();
+                                binding.etMobile.setText("");
+
+                            }else {
+                                Log.d("LoginActivityLOG","Does not exist");
+                                setEnabledVisibility();
+                            }
+                        }
+
+
+                    } else {
+                        Log.d("LoginActivityLOG",task.getException().getMessage());
+                    }
+                    }
+                });
+                if (binding.etMobile.getText().toString() != sp.getString(DRIVER_NUMBER_KEY,"not found")){
+                    Toast.makeText(LoginActivity.this, "your not Allow", Toast.LENGTH_SHORT).show();
+                }
                 }
         });
 
@@ -148,6 +145,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
                         @Override
                         public void onVerificationFailed(@NonNull FirebaseException e) {
                             Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                            binding.etMobile.setText("");
                             Log.e("LoginActivityLOG", e.toString());
                             setEnabledVisibility();
                         }

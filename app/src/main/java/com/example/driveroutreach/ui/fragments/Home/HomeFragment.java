@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.example.driveroutreach.R;
 import com.example.driveroutreach.databinding.FragmentHomeBinding;
 import com.example.driveroutreach.model.Benefeciares;
+import com.example.driveroutreach.ui.activities.Main.LocationChanged;
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -43,8 +44,6 @@ import java.util.ArrayList;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-
-import org.checkerframework.checker.index.qual.LengthOf;
 
 
 /**
@@ -103,6 +102,7 @@ public class HomeFragment extends Fragment implements HomeView, OnMapReadyCallba
             journeyId = getArguments().getString(ARG_JourneyId);
             date = getArguments().getString(ARG_Date);
         }
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -162,13 +162,13 @@ public class HomeFragment extends Fragment implements HomeView, OnMapReadyCallba
                                                            } else {
                                                                //Put exception
                                                            }
-                                                           onSetMapFrag();
+
                                                        }
                                                    });
 
                                        }
                                    }
-
+                                onSetMapFrag();
                             } else {
                                 Log.d("realtimeDatabase", task.getException().getMessage());
                             }
@@ -221,10 +221,10 @@ public class HomeFragment extends Fragment implements HomeView, OnMapReadyCallba
         Log.d("Locaaaation",new LatLng(longitude_driver,latitude_driver).toString());
         if (!MarkersPoistions.isEmpty()) {
             // Move the camera to the first marker in the array of benf
-            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(MarkersPoistions.get(0).getLatitude(), MarkersPoistions.get(0).getLongitude()), 17f));
+      //      googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(MarkersPoistions.get(0).getLatitude(), MarkersPoistions.get(0).getLongitude()), 17f));
         }
 
-        //updateCurrentLocationMarker(new LatLng(longitude_driver,latitude_driver));
+        updateCurrentLocationMarker(new LatLng(longitude_driver,latitude_driver));
 
  //check condition if we have the permission to get driver location, and if not we request it
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
@@ -269,7 +269,13 @@ public class HomeFragment extends Fragment implements HomeView, OnMapReadyCallba
 
 
 
+// Adjust the initial camera position and zoom level
+        double defaultLatitude = latitude_driver; // Replace with your desired latitude
+        double defaultLongitude = longitude_driver; // Replace with your desired longitude
+        float defaultZoomLevel = 12f; // Replace with your desired zoom level
 
+//        LatLng defaultLocation = new LatLng(defaultLatitude, defaultLongitude);
+//        map.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLocation, defaultZoomLevel));
 
         com.example.driveroutreach.model.Location specificLocation = new com.example.driveroutreach.model.Location(latitude_driver,longitude_driver); // Example specific location (San Francisco)
         com.example.driveroutreach.model.Location nearestLocation= findNearestLocation(specificLocation, MarkersPoistions);
@@ -339,7 +345,6 @@ public class HomeFragment extends Fragment implements HomeView, OnMapReadyCallba
 
                   Log.d("CompareLocation",String.format("The location for key %s is [%f,%f]", key, location.latitude, location.longitude));
 
-                  Log.d("CompareLocation","location: "+longitude_driver+" "+latitude_driver);
               } else {
                   Log.d("CompareLocation",String.format("There is no location for key %s in GeoFire", key));
 
@@ -372,8 +377,20 @@ public class HomeFragment extends Fragment implements HomeView, OnMapReadyCallba
 
     }
 
-
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onLocation(LocationChanged event) {
+        // Do something
+        if(event!=null){
+            Log.d("onLocation",event.latitude +" ,"+  event.longitude);
+        }
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().register(this);
+    }
+}
 
 
 

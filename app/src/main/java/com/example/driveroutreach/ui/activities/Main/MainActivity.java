@@ -49,6 +49,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import org.greenrobot.eventbus.EventBus;
+
 
 public class MainActivity extends AppCompatActivity implements MainView, DayFragment.OnDataListenerDayFrag {
     ActivityMainBinding binding;
@@ -61,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements MainView, DayFrag
     public final String LATITUDE_KEY = "latitude";
     public final String LONGITUDE_KEY = "longitude";
     AlertDialog alertDialog;
-    GeoFire geoFire;
+
     int LOCATION_REQUEST_CODE = 10001;
     FusedLocationProviderClient fusedLocationClient;
     SharedPreferences sp;
@@ -74,7 +76,12 @@ public class MainActivity extends AppCompatActivity implements MainView, DayFrag
     DatabaseReference ref ;
     public final String DRIVER_ID_KEY = "driverId";
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        showLocationDialog();
 
+    }
 
     @Override
     protected void onStop() {
@@ -91,12 +98,18 @@ public class MainActivity extends AppCompatActivity implements MainView, DayFrag
         sp = getSharedPreferences("sp", MODE_PRIVATE);
         edit = sp.edit();
 
+//        longitude_sp = sp.getFloat(LONGITUDE_KEY,0.0f);
+//        latitude_sp = sp.getFloat(LATITUDE_KEY,0.0f);
+//        if (longitude_sp == 0.0 && latitude_sp == 0.0){
+//            showLocationDialog();
+//        }
+
         String driver_id = sp.getString(DRIVER_ID_KEY,"null_id");
 
         Log.d("MainActivityLOG", "onCreate driver_id : "+driver_id);
 
         ref = FirebaseDatabase.getInstance().getReference("DriverLocation");
-        geoFire = new GeoFire(ref);
+        GeoFire geoFire = new GeoFire(ref);
 
         locationCallback = new LocationCallback() {
             @Override
@@ -109,8 +122,14 @@ public class MainActivity extends AppCompatActivity implements MainView, DayFrag
                 for (Location location : locationResult.getLocations()){
                     location.getLatitude();
                     location.getLongitude();
+//                    if (location.getLatitude() != 0.0 && location.getLongitude() != 0.0){
+//                        showLocationDialog();
+//                    }
+                  //  showLocationDialog();
+//                    edit.putFloat(LATITUDE_KEY, (float) location.getLatitude());
+//                    edit.putFloat(LATITUDE_KEY, (float) location.getLongitude());
                     geoFire.setLocation(driver_id, new GeoLocation(location.getLatitude(), location.getLongitude()));
-                    Log.d("MainActivityLOG", "onLocationResultFromGeo: "+location.toString());
+                    Log.d("MainActivityLOG", "onLocationResult: "+location.toString());
                 }
             }
         };
@@ -140,6 +159,32 @@ public class MainActivity extends AppCompatActivity implements MainView, DayFrag
             }
 
         });
+
+        String driverId= sp.getString(DRIVER_ID_KEY,null);
+        geoFire.getLocation(driverId, new com.firebase.geofire.LocationCallback() {
+            @Override
+            public void onLocationResult(String key, GeoLocation location) {
+                if (location != null) {
+                    longitude_driver = location.longitude;
+                    latitude_driver = location.latitude;
+
+
+                    Log.d("CompareLocation",String.format("The location for key %s is [%f,%f]", key, location.latitude, location.longitude));
+
+                } else {
+                    Log.d("CompareLocation",String.format("There is no location for key %s in GeoFire", key));
+                    showLocationDialog();
+
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d("CompareLocation","There was an error getting the GeoFire location: " + databaseError);
+
+            }
+        });
+
+
 
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(MainActivity.this);
@@ -216,6 +261,7 @@ public class MainActivity extends AppCompatActivity implements MainView, DayFrag
             public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
                 //settings of device are satisfied and we can start location update
                 startLocationUpdates();
+                dialog.dismiss();
             }
         });
 
@@ -255,6 +301,7 @@ public class MainActivity extends AppCompatActivity implements MainView, DayFrag
     }
 
     private void askLocationPermission() {
+        dialog.dismiss();
         if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)) {
                 ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST_CODE);
