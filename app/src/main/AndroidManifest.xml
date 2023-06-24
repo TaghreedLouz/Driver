@@ -6,14 +6,13 @@
         android:name="android.hardware.telephony"
         android:required="false" />
 
-
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.SEND_SMS" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
 
     <application
         android:allowBackup="true"
@@ -26,6 +25,12 @@
         android:theme="@style/Theme.Driveroutreach"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <service
+            android:name=".ui.activities.Main.LocationService"
+            android:enabled="true"
+            android:exported="false">
+
+        </service>
         <!-- <activity -->
         <!-- android:name=".ui.activities.settings.SettingsActivity" -->
         <!-- android:exported="true" > -->
@@ -44,43 +49,26 @@
             android:exported="true"
             tools:ignore="MissingClass">
 
-
         </activity>
-
         <activity
             android:name=".ui.activities.Login.LoginActivity"
             android:exported="true">
-
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
-
-
-
-
         </activity>
         <activity
             android:name=".ui.activities.Verification.VerificationActivity"
             android:exported="true">
 
-
         </activity>
-
-
         <activity
             android:name=".ui.activities.settings.SettingsActivity"
             android:exported="true">
 
-
-
-        </activity>
-
-        <!-- add API Key (Map) - nada -->
+        </activity> <!-- add API Key (Map) - nada -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyC5Zj3Id3i6fzJYpYbLPEfd0LjkboWzX-M" />
@@ -88,12 +76,6 @@
         <uses-library
             android:name="com.google.android.maps"
             android:required="true" />
-
-
-
     </application>
-
-
-
 
 </manifest>
