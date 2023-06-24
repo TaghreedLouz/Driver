@@ -45,6 +45,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -60,23 +61,20 @@ public class MainActivity extends AppCompatActivity implements MainView, DayFrag
     public final String LATITUDE_KEY = "latitude";
     public final String LONGITUDE_KEY = "longitude";
     AlertDialog alertDialog;
-
+    GeoFire geoFire;
     int LOCATION_REQUEST_CODE = 10001;
     FusedLocationProviderClient fusedLocationClient;
     SharedPreferences sp;
     SharedPreferences.Editor edit;
+    double longitude_driver;
+    double latitude_driver ;
     private LocationRequest locationRequest;
     private static final String DIALOG_SHOWN_KEY = "dialog_shown";
     LocationCallback locationCallback;
     DatabaseReference ref ;
     public final String DRIVER_ID_KEY = "driverId";
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        showLocationDialog();
 
-    }
 
     @Override
     protected void onStop() {
@@ -98,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements MainView, DayFrag
         Log.d("MainActivityLOG", "onCreate driver_id : "+driver_id);
 
         ref = FirebaseDatabase.getInstance().getReference("DriverLocation");
-        GeoFire geoFire = new GeoFire(ref);
+        geoFire = new GeoFire(ref);
 
         locationCallback = new LocationCallback() {
             @Override
@@ -112,10 +110,36 @@ public class MainActivity extends AppCompatActivity implements MainView, DayFrag
                     location.getLatitude();
                     location.getLongitude();
                     geoFire.setLocation(driver_id, new GeoLocation(location.getLatitude(), location.getLongitude()));
-                    Log.d("MainActivityLOG", "onLocationResult: "+location.toString());
+                    Log.d("MainActivityLOG", "onLocationResultFromGeo: "+location.toString());
                 }
             }
         };
+
+        String driverId= sp.getString(DRIVER_ID_KEY,null);
+        geoFire.getLocation(driverId, new com.firebase.geofire.LocationCallback() {
+            @Override
+            public void onLocationResult(String key, GeoLocation location) {
+                if (location != null) {
+                    longitude_driver = location.longitude;
+                    latitude_driver = location.latitude;
+
+
+                    Log.d("CompareLocation",String.format("The location for key %s is [%f,%f]", key, location.latitude, location.longitude));
+
+                } else {
+                    Log.d("CompareLocation",String.format("There is no location for key %s in GeoFire", key));
+                    showLocationDialog();
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d("CompareLocation","There was an error getting the GeoFire location: " + databaseError);
+
+            }
+
+        });
 
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(MainActivity.this);

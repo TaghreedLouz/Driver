@@ -44,6 +44,8 @@ import java.util.ArrayList;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 
+import org.checkerframework.checker.index.qual.LengthOf;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -160,13 +162,13 @@ public class HomeFragment extends Fragment implements HomeView, OnMapReadyCallba
                                                            } else {
                                                                //Put exception
                                                            }
-
+                                                           onSetMapFrag();
                                                        }
                                                    });
 
                                        }
                                    }
-                                onSetMapFrag();
+
                             } else {
                                 Log.d("realtimeDatabase", task.getException().getMessage());
                             }
@@ -210,12 +212,19 @@ public class HomeFragment extends Fragment implements HomeView, OnMapReadyCallba
             }
         }
 
+
+
+        MarkerOptions markersPoistionsDriver = new MarkerOptions().position(new LatLng(latitude_driver,longitude_driver));
+        Marker marker = googleMap.addMarker(markersPoistionsDriver);
+
+
+        Log.d("Locaaaation",new LatLng(longitude_driver,latitude_driver).toString());
         if (!MarkersPoistions.isEmpty()) {
             // Move the camera to the first marker in the array of benf
-      //      googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(MarkersPoistions.get(0).getLatitude(), MarkersPoistions.get(0).getLongitude()), 17f));
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(MarkersPoistions.get(0).getLatitude(), MarkersPoistions.get(0).getLongitude()), 17f));
         }
 
-        updateCurrentLocationMarker(new LatLng(longitude_driver,latitude_driver));
+        //updateCurrentLocationMarker(new LatLng(longitude_driver,latitude_driver));
 
  //check condition if we have the permission to get driver location, and if not we request it
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
@@ -260,19 +269,14 @@ public class HomeFragment extends Fragment implements HomeView, OnMapReadyCallba
 
 
 
-// Adjust the initial camera position and zoom level
-        double defaultLatitude = latitude_driver; // Replace with your desired latitude
-        double defaultLongitude = longitude_driver; // Replace with your desired longitude
-        float defaultZoomLevel = 12f; // Replace with your desired zoom level
 
-//        LatLng defaultLocation = new LatLng(defaultLatitude, defaultLongitude);
-//        map.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLocation, defaultZoomLevel));
 
         com.example.driveroutreach.model.Location specificLocation = new com.example.driveroutreach.model.Location(latitude_driver,longitude_driver); // Example specific location (San Francisco)
         com.example.driveroutreach.model.Location nearestLocation= findNearestLocation(specificLocation, MarkersPoistions);
 
         Log.d("Nearest location","Nearest location: " + nearestLocation.getLatitude() + ", " + nearestLocation.getLongitude());
 
+        Log.d("Nearest location","Nearest location: " + latitude_driver + ", " + longitude_driver);
 
         // Move the camera to the user's current location
      //   map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude_driver, longitude_driver), 20));
@@ -335,6 +339,7 @@ public class HomeFragment extends Fragment implements HomeView, OnMapReadyCallba
 
                   Log.d("CompareLocation",String.format("The location for key %s is [%f,%f]", key, location.latitude, location.longitude));
 
+                  Log.d("CompareLocation","location: "+longitude_driver+" "+latitude_driver);
               } else {
                   Log.d("CompareLocation",String.format("There is no location for key %s in GeoFire", key));
 
@@ -354,11 +359,15 @@ public class HomeFragment extends Fragment implements HomeView, OnMapReadyCallba
             driverLocationMarker.setPosition(latLng_driver);
             // Remove the mMap.animateCamera line to prevent automatic zooming out
             map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng_driver, 15f));
+
+            Log.d("DriverLocation","inside"+latLng_driver.toString());
         } else {
             MarkerOptions markerOptions = new MarkerOptions()
                     .position(latLng_driver)
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.img_bus));
             driverLocationMarker = map.addMarker(markerOptions);
+
+            Log.d("DriverLocation","outside"+latLng_driver.toString());
         }
 
     }

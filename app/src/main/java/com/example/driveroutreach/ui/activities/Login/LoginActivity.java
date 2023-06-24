@@ -37,13 +37,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements LoginView {
 
     ActivityLoginBinding binding;
     FirebaseFirestore firestore;
     DriversNumbers driversNumbers;
     SharedPreferences sp;
     SharedPreferences.Editor edit;
+    LoginPresenter loginPresenter;
     public final String DRIVER_ID_KEY = "driverId" , DRIVER_MOBILE_KEY = "driverMobile";
     public final String DRIVER_NUMBER_KEY = "driverNumber";
 
@@ -63,6 +64,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        loginPresenter = new LoginPresenter(this);
 
         sp = getSharedPreferences("sp", MODE_PRIVATE);
         edit = sp.edit();
@@ -86,38 +88,41 @@ public class LoginActivity extends AppCompatActivity {
                 binding.btnLogin.setText(R.string.sending);
                 binding.btnLogin.setEnabled(false);
 
-                firestore.collection("Drivers_numbers").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    if (task.isSuccessful()){
-
-                        for (QueryDocumentSnapshot document : task.getResult()){
-                            DriversNumbers num = document.toObject(DriversNumbers.class);
-
-                            if (binding.etMobile.getText().toString().equals(String.valueOf(num.getMobile()))){
-                                Log.d("LoginActivityLOG",String.valueOf(num.getMobile()));
-                                num.getId();
-                                edit.putString(DRIVER_ID_KEY,num.getId());
-                                edit.putString(DRIVER_MOBILE_KEY,String.valueOf(num.getMobile()));
-                                edit.commit();
-                                  sendCodeVerification();
-                                binding.etMobile.setText("");
-
-                            }else {
-                                Log.d("LoginActivityLOG","Does not exist");
-                                setEnabledVisibility();
-                            }
-                        }
-
-
-                    } else {
-                        Log.d("LoginActivityLOG",task.getException().getMessage());
-                    }
-                    }
-                });
-                if (binding.etMobile.getText().toString() != sp.getString(DRIVER_NUMBER_KEY,"not found")){
-                    Toast.makeText(LoginActivity.this, "your not Allow", Toast.LENGTH_SHORT).show();
-                }
+                loginPresenter.checkDriverIsExist();
+//                firestore.collection("Drivers_numbers").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                    if (task.isSuccessful()){
+//
+//                        for (QueryDocumentSnapshot document : task.getResult()){
+//                            DriversNumbers num = document.toObject(DriversNumbers.class);
+//
+//                            if (binding.etMobile.getText().toString().equals(String.valueOf(num.getMobile()))){
+//                                Log.d("LoginActivityLOG",String.valueOf(num.getMobile()));
+//                                num.getId();
+//                                edit.putString(DRIVER_ID_KEY,num.getId());
+//                                edit.putString(DRIVER_MOBILE_KEY,String.valueOf(num.getMobile()));
+//                                edit.commit();
+//                                  sendCodeVerification();
+//                                binding.etMobile.setText("");
+//                            //    return;
+//
+//                            }else {
+//                                Log.d("LoginActivityLOG","Does not exist");
+//                          //      Toast.makeText(LoginActivity.this, "your not Allow", Toast.LENGTH_SHORT).show();
+//                                setEnabledVisibility();
+//                            }
+//                        }
+//
+//
+//                    } else {
+//                        Log.d("LoginActivityLOG",task.getException().getMessage());
+//                    }
+//                    }
+//                });
+//                if (binding.etMobile.getText().toString() != sp.getString(DRIVER_NUMBER_KEY,"not found")){
+//                    Toast.makeText(LoginActivity.this, "your not Allow", Toast.LENGTH_SHORT).show();
+//                }
                 }
         });
 
@@ -174,4 +179,34 @@ public class LoginActivity extends AppCompatActivity {
             binding.etMobile.setEnabled(true);
             binding.btnLogin.setEnabled(true);
         }
+
+    @Override
+    public void onGetMobileNumber() {
+
+    }
+
+    @Override
+    public void onDriverFound(DriversNumbers num) {
+        if (binding.etMobile.getText().toString().equals(String.valueOf(num.getMobile()))){
+            Log.d("LoginActivityLOG",String.valueOf(num.getMobile()));
+            num.getId();
+            edit.putString(DRIVER_ID_KEY,num.getId());
+            edit.putString(DRIVER_MOBILE_KEY,String.valueOf(num.getMobile()));
+            edit.commit();
+            sendCodeVerification();
+            binding.etMobile.setText("");
+            //    return;
+
+        }else {
+            Log.d("LoginActivityLOG","Does not exist");
+            //      Toast.makeText(LoginActivity.this, "your not Allow", Toast.LENGTH_SHORT).show();
+            setEnabledVisibility();
+        }
+    }
+
+    @Override
+    public void onFail(Exception exception) {
+        Log.d("LoginActivityLOG",exception.getMessage());
+
+    }
 }
