@@ -1,9 +1,12 @@
 package com.example.driveroutreach.ui.activities.Main;
 
+import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.LocationManager;
@@ -17,6 +20,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 
@@ -37,7 +41,9 @@ public class LocationService extends Service implements LocationListener {
     SharedPreferences sp;
     SharedPreferences.Editor edit;
     private static final String CHANNEL_ID = "LocationServiceChannel";
+    private static final int PERMISSION_REQUEST_CODE = 1101;
 
+    static Activity activityContext;
 
     @Override
     public void onCreate() {
@@ -57,23 +63,79 @@ public class LocationService extends Service implements LocationListener {
 
     }
 
+
+    public static void setActivityContext(Activity activity) {
+        activityContext = activity;
+    }
+
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        // notification
-        Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setContentTitle("Location")
-                .setContentText("Location...")
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .build();
+
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            // Check if background location permission is granted
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+                    == PackageManager.PERMISSION_GRANTED) {
+                // Permission already granted
+                // You can proceed with using background location
+                Toast.makeText(this, "Background location permission granted", Toast.LENGTH_SHORT).show();
+            } else {
+                // Permission not granted, request it
+                ActivityCompat.requestPermissions(activityContext,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_BACKGROUND_LOCATION},
+                        PERMISSION_REQUEST_CODE);
+            }
+        } else {
+            // Background location permission is not required for earlier versions
+            // You can proceed with using location
+            Toast.makeText(this, "Background location permission not required", Toast.LENGTH_SHORT).show();
+
+        }
+
+        // Perform your location-related tasks here
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID, "channel name", NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationManager manager = getSystemService(NotificationManager.class);
+            manager.createNotificationChannel(notificationChannel);
+        }
+
+        Intent intent1 = new Intent(getBaseContext(), LocationService.class);
+        //take one value
+        intent1.setAction("stop");
+        PendingIntent pi = PendingIntent.getService(getBaseContext(), 0, intent1, PendingIntent.FLAG_IMMUTABLE);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID);
+        builder.setSmallIcon(R.drawable.icon_arrive);
+        builder.setContentTitle("Notification Title");
+        builder.setContentText("Notification Text");
+        builder.setPriority(NotificationCompat.PRIORITY_HIGH);
+        builder.addAction(R.drawable.ic_arrow_right, "Action", pi);
+
+
+        Notification n = builder.build();
+        startForeground(1,n);
+
+        if (intent.getAction() != null){
+            if (intent.getAction().equals("stop")){
+                stopSelf();
+            }
+        }
+
 
         // تشغيل السيرقيس في الفورجراوند
-        startForeground(1, notification);
+        startForeground(1, n);
 
         requestLocationUpdates();
 
         return START_STICKY;
     }
+
+
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -118,8 +180,7 @@ public class LocationService extends Service implements LocationListener {
     }
 
     private void requestLocationUpdates() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             if (locationManager != null) {
                 try {
                     locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
