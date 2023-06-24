@@ -54,7 +54,7 @@ String date;
         holder.ArrivalPlace.setText(journeyModel.getOrganization());
         holder.PickingupPlace.setText(journeyModel.getRegion());
 
-        SimpleDateFormat simpleformat = new SimpleDateFormat("dd-MMMM-yyyy ");
+        SimpleDateFormat simpleformat = new SimpleDateFormat("dd-MMMM-yyyy");
         date=simpleformat.format(Calendar.getInstance().getTime());
         holder.date.setText(date);
 
