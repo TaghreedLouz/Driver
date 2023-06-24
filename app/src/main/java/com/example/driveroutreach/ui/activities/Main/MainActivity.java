@@ -1,7 +1,10 @@
 package com.example.driveroutreach.ui.activities.Main;
 
+import static android.app.PendingIntent.getActivity;
+
 import android.Manifest;
 import android.app.Dialog;
+import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -14,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -47,6 +51,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import org.greenrobot.eventbus.EventBus;
+
 
 public class MainActivity extends AppCompatActivity implements MainView, DayFragment.OnDataListenerDayFrag {
     ActivityMainBinding binding;
@@ -55,11 +61,12 @@ public class MainActivity extends AppCompatActivity implements MainView, DayFrag
     Button btn_getLocation;
     public static final int REQUEST_LOCATION = 1;
     LocationManager locationManager;
-    String latitude, longitude, latitude_sp, longitude_sp;
+    Float latitude_sp, longitude_sp;
     public final String LATITUDE_KEY = "latitude";
     public final String LONGITUDE_KEY = "longitude";
     AlertDialog alertDialog;
-
+    double longitude_driver;
+    double latitude_driver ;
     int LOCATION_REQUEST_CODE = 10001;
     FusedLocationProviderClient fusedLocationClient;
     SharedPreferences sp;
@@ -71,13 +78,7 @@ public class MainActivity extends AppCompatActivity implements MainView, DayFrag
     LocationCallback locationCallback;
     DatabaseReference ref ;
     public final String DRIVER_ID_KEY = "driverId";
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        showLocationDialog();
-
-    }
+    GeoFire geoFire;
 
     @Override
     protected void onStop() {
@@ -105,7 +106,8 @@ public class MainActivity extends AppCompatActivity implements MainView, DayFrag
         Log.d("MainActivityLOG", "onCreate driver_id : "+driver_id);
 
         ref = FirebaseDatabase.getInstance().getReference("DriverLocation");
-        GeoFire geoFire = new GeoFire(ref);
+        geoFire = new GeoFire(ref);
+
 
         locationCallback = new LocationCallback() {
             @Override
@@ -125,6 +127,7 @@ public class MainActivity extends AppCompatActivity implements MainView, DayFrag
 //                    edit.putFloat(LATITUDE_KEY, (float) location.getLatitude());
 //                    edit.putFloat(LATITUDE_KEY, (float) location.getLongitude());
                     geoFire.setLocation(driver_id, new GeoLocation(location.getLatitude(), location.getLongitude()));
+                    EventBus.getDefault().post(new LocationChanged(location.getLatitude(), location.getLongitude()));
                     Log.d("MainActivityLOG", "onLocationResult: "+location.toString());
                 }
             }
@@ -147,16 +150,12 @@ public class MainActivity extends AppCompatActivity implements MainView, DayFrag
 
                 }
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 Log.d("CompareLocation","There was an error getting the GeoFire location: " + databaseError);
 
             }
-
         });
-
-
 
 
 
@@ -204,10 +203,14 @@ public class MainActivity extends AppCompatActivity implements MainView, DayFrag
         btn_getLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                dialog.dismiss();
                 if (ContextCompat.checkSelfPermission(MainActivity.this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                     checkSettingAndStartLocationUpdate();
 
+                // ااذا اخد البيرمشن ولا لا
+                if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+
+                    startLocationService();
 
                 } else {
                     askLocationPermission();
@@ -295,9 +298,18 @@ public class MainActivity extends AppCompatActivity implements MainView, DayFrag
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 checkSettingAndStartLocationUpdate();
             } else {
+                Toast.makeText(this, "Location permission denied", Toast.LENGTH_SHORT).show();
 
             }
         }
+    }
+
+
+    private void startLocationService() {
+        //يشغل كود السيرفس
+        startService(new Intent(MainActivity.this, LocationService.class));
+        dialog.dismiss();
+        isClicked = true;
     }
 
     @Override
