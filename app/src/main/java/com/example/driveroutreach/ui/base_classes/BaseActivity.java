@@ -1,4 +1,4 @@
-package com.example.driveroutreach.ui.activities;
+package com.example.driveroutreach.ui.base_classes;
 
 import android.content.Context;
 import android.os.Bundle;

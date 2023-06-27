@@ -1,5 +1,7 @@
 package com.example.driveroutreach.adapters;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,15 +24,19 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.MyViewHolderTr
 ArrayList<JourneyModel> journys;
 ScheduleListener scheduleListener;
 String date;
+int itemPosition;
+SharedPreferences sp;
+    SharedPreferences.Editor editor;
 
 
-    public TripAdapter(ArrayList<JourneyModel> journys) {
-        this.journys = journys;
-    }
 
-    public TripAdapter(ArrayList<JourneyModel> journys, ScheduleListener scheduleListener) {
+
+
+    public TripAdapter(ArrayList<JourneyModel> journys, Context context, ScheduleListener scheduleListener) {
         this.journys = journys;
         this.scheduleListener = scheduleListener;
+//        sp = context.getSharedPreferences("YourPreferencesName", Context.MODE_PRIVATE);
+//        editor =sp.edit();
     }
 
     @NonNull
@@ -47,6 +53,8 @@ String date;
             return;
         }
 
+
+
         JourneyModel journeyModel = journys.get(position);
         holder.TimeEnds.setText(journeyModel.getEnd());
         holder.TimeStart.setText(journeyModel.getStart());
@@ -58,15 +66,34 @@ String date;
         date=simpleformat.format(Calendar.getInstance().getTime());
         holder.date.setText(date);
 
+
+
+
         holder.startJourney.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 scheduleListener.StartJourney(journeyModel.getJourneyId(),date);
+                itemPosition = holder.getAdapterPosition();
+                holder.startJourney.setVisibility(View.GONE);
+                holder.endJourney.setVisibility(View.VISIBLE);
+
+//
+//                if (itemPosition != holder.getItemId()){
+//                    holder.startJourney.setEnabled(false);
+//                    holder.endJourney.setEnabled(false);
+//                }
             }
         });
 
 
+
+        holder.endJourney.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
 
     }
 
@@ -78,7 +105,7 @@ String date;
     class MyViewHolderTrip extends RecyclerView.ViewHolder {
 
         TextView TimeStart, TimeEnds, ArrivalPlace, PickingupPlace, itenaryId, date;
-        Button startJourney;
+        Button startJourney, endJourney;
         public MyViewHolderTrip(@NonNull ItemTripBinding binding) {
             super(binding.getRoot());
 
@@ -88,6 +115,7 @@ String date;
             PickingupPlace = binding.tvStartingPlace;
             itenaryId = binding.tvItineraryNumber;
             startJourney = binding.btnStartJourney;
+            endJourney = binding.btnEndJourney;
             date = binding.tvDate;
 
         }

@@ -3,15 +3,14 @@ package com.example.driveroutreach.ui.fragments.schedule.days;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.driveroutreach.adapters.TripAdapter;
 import com.example.driveroutreach.databinding.FragmentDayBinding;
@@ -31,7 +30,10 @@ public class DayFragment extends Fragment {
     ArrayList<JourneyModel> Trips;
 
     SharedPreferences sp;
+    SharedPreferences.Editor edit;
     public final String DRIVER_ID_KEY = "driverId";
+
+
 
     public interface OnDataListenerDayFrag{
         void onDataReceivedFromDayFrag(String journeyId, String date);
@@ -83,8 +85,11 @@ public class DayFragment extends Fragment {
         sp = getActivity().getSharedPreferences("sp", Context.MODE_PRIVATE);
 
         String driverId= sp.getString(DRIVER_ID_KEY,null);
+        edit = sp.edit();
 
          Trips = new ArrayList<>();
+
+
 
         firestore.collection("Journey").whereEqualTo("driver",driverId)
                 .whereEqualTo("day",day).get()
@@ -103,12 +108,17 @@ public class DayFragment extends Fragment {
                            }
 
 
-                           binding.RVDay.setAdapter(new TripAdapter(Trips, new ScheduleListener() {
+                           binding.RVDay.setAdapter(new TripAdapter(Trips, getActivity(),new ScheduleListener() {
                                @Override
                                public void StartJourney(String journeyId, String date) {
                                    if (onDataListenerDayFrag != null) {
                                        onDataListenerDayFrag.onDataReceivedFromDayFrag(journeyId,date);
-                                    //   getParentFragmentManager().beginTransaction().replace(R.id.container, new HomeFragment()).commit();
+
+                                        edit.putString("journeyDate",date);
+                                        edit.putString("journeyId",journeyId);
+                                        edit.putBoolean("started",true);
+                                        edit.commit();
+
                                    }else {
                                        Log.d("transaction","Wrong Operation");
                                    }

@@ -52,24 +52,18 @@
             app:layout_constraintTop_toBottomOf="@id/tv_attendance" />
 
 
-        <com.google.android.material.tabs.TabLayout
-
-            android:id="@+id/tb_attendance"
+        <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_14sdp"
-            android:contentDescription="Attendance"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:id="@+id/rv_attendings"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:padding="@dimen/_20sdp"
+            app:layout_constraintTop_toBottomOf="@id/tv_date"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_date" />
-
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/vp_attendance"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tb_attendance" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:listitem="@layout/item_archive_details"
+            />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

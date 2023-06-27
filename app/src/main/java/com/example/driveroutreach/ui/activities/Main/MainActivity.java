@@ -17,7 +17,6 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
@@ -27,21 +26,16 @@ import com.example.driveroutreach.databinding.ActivityMainBinding;
 import com.example.driveroutreach.ui.fragments.Home.HomeFragment;
 import com.example.driveroutreach.ui.fragments.schedule.ScheduleFragment;
 import com.example.driveroutreach.ui.fragments.schedule.days.DayFragment;
-import com.firebase.geofire.GeoFire;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.ResolvableApiException;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResponse;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.navigation.NavigationBarView;
-import com.google.firebase.database.DatabaseReference;
 
 
 public class MainActivity extends AppCompatActivity implements MainView, DayFragment.OnDataListenerDayFrag {
@@ -104,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements MainView, DayFrag
 
     @Override
     public void onSelectedNavIcon(Fragment fragment) {
-        getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.container, fragment).commit();
     }
 
     @Override
