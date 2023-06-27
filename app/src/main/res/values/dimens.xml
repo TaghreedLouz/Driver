@@ -86,6 +86,8 @@
     <dimen name="sdp_game_icon_height">@dimen/_93sdp</dimen>
     <dimen name="sdp_game_icon_width">@dimen/_109sdp</dimen>
     <dimen name="rating_margin_notification">-51.4dp</dimen>
+    <dimen name="dot_margin">@dimen/_3sdp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 
 
 </resources>

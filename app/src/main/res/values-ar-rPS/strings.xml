@@ -64,5 +64,12 @@
     <string name="ok">تم</string>
     <string name="determine_the_accuracy_of_your_location">تحديد موقعك الحالي</string>
 
+    <string name="skip">Skip</string>
+    <string name="next">Next</string>
+    <string name="tv_aboutus">About us</string>
+    <string name="tv_content">Running since 2012, this project focuses on addressing the specific transport needs of people with face disabilities, and has shown itself as vital to the lives of many residents of the Gaza Strip. The service provided increases the accessibility of education and rehabilitation services across the Gaza Strip, and people have come to rely upon the services provided. The project directly helps around 230 people, including university students and employees who are unable to transport themselves to and from their commitments.</string>
+    <string name="btn_email">Email</string>
+    <string name="btn_phone">Phone</string>
+
 
 </resources>

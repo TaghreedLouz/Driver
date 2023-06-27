@@ -164,7 +164,7 @@ public class LocationService extends Service implements LocationListener {
 
         Log.d("LocationService", "Latitude: " + driver.getMobile() + " " + latitude + ", Longitude: " + longitude);
 
-        Toast.makeText(this, "Latitude: " + latitude + ", Longitude: " + longitude, Toast.LENGTH_SHORT).show();
+      //  Toast.makeText(this, "Latitude: " + latitude + ", Longitude: " + longitude, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -202,8 +202,6 @@ public class LocationService extends Service implements LocationListener {
     }
 
 
-
-
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -213,6 +211,4 @@ public class LocationService extends Service implements LocationListener {
         stopForeground(false);
 
     }
-
-
 }
