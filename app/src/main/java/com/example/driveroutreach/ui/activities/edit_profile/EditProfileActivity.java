@@ -2,16 +2,17 @@ package com.example.driveroutreach.ui.activities.edit_profile;
 
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.TextView;
 import android.widget.Toast;
-
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,11 +20,15 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.driveroutreach.databinding.ActivityEditProfileBinding;
 import com.example.driveroutreach.model.DriverProfile;
+import com.example.driveroutreach.ui.activities.Verification.VerificationActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-
+import com.google.firebase.FirebaseException;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
@@ -33,6 +38,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class EditProfileActivity extends AppCompatActivity {
 
@@ -40,10 +46,11 @@ public class EditProfileActivity extends AppCompatActivity {
     FirebaseStorage firebaseStorage;
     FirebaseFirestore firestore;
     SharedPreferences sp;
-
+    FirebaseAuth firebaseAuth;
     public final String DRIVER_ID_KEY = "driverId";
 
     Uri  imgUrl;
+    PhoneAuthCredential c;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +59,7 @@ public class EditProfileActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         firebaseStorage =firebaseStorage = FirebaseStorage.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
         firestore=FirebaseFirestore.getInstance();
         sp = getSharedPreferences("sp", MODE_PRIVATE);
 
@@ -72,6 +80,28 @@ public class EditProfileActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent inetent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(inetent, 10);
+            }
+        });
+
+
+
+        binding.etMobile.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                if (i == EditorInfo.IME_ACTION_DONE) {
+                    String newNumber = binding.etMobile.getText().toString().trim();
+
+                 //   updateNumber(enteredText);
+                    if (!newNumber.isEmpty()){
+//                       startActivity(new Intent(getBaseContext(), VerificationActivity.class).putExtra("fromWhere",false).putExtra("newNumber",newNumber));
+                           updateNumber(newNumber);
+                        return true;
+                    } else {
+                        Toast.makeText(EditProfileActivity.this, "Enter a new number", Toast.LENGTH_SHORT).show();
+                    }
+                    }
+                // Return false if you haven't handled the event
+                return false;
             }
         });
     }
@@ -158,5 +188,52 @@ public class EditProfileActivity extends AppCompatActivity {
                     }
                 });
     }
+
+
+    void updateNumber(String newNumber) {
+
+
+      //  FirebaseUser user = firebaseAuth.getCurrentUser();
+
+
+        PhoneAuthCredential credentialCompleted ;
+        PhoneAuthProvider.getInstance().verifyPhoneNumber(
+                "+970" + newNumber,
+                240,
+                TimeUnit.SECONDS,
+                this,
+                new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+                    @Override
+                    public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
+                        Log.e("LoginActivityLOG", "done");
+                    }
+
+                    @Override
+                    public void onVerificationFailed(@NonNull FirebaseException e) {
+                        Log.d("verification",e.getMessage());
+                    //    setEnabledVisibility();
+                    }
+
+                    @Override
+                    public void onCodeSent(@NonNull String verificationId, @NonNull PhoneAuthProvider.ForceResendingToken token) {
+                        super.onCodeSent(verificationId, token);
+
+                        Log.d("verificationIdEdit",verificationId+"  "+"from edit");
+                        Intent intent = new Intent(EditProfileActivity.this, VerificationActivity.class);
+                        intent.putExtra("verificationIdEdit", verificationId);
+                        intent.putExtra("number", newNumber);
+                        intent.putExtra("fromWhere",false);
+                        startActivity(intent);
+                        finish();
+
+                    }
+                }
+        );
+
+
+
+    }
+
+
 }
 

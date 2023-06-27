@@ -15,7 +15,7 @@ import androidx.fragment.app.Fragment;
 import com.example.driveroutreach.R;
 import com.example.driveroutreach.adapters.DayVBAdapter;
 import com.example.driveroutreach.databinding.FragmentScheduleBinding;
-import com.example.driveroutreach.ui.fragments.BaseFragment;
+import com.example.driveroutreach.ui.base_classes.BaseFragment;
 import com.example.driveroutreach.ui.fragments.schedule.days.DayFragment;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
