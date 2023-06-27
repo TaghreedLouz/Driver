@@ -1,4 +1,4 @@
-package com.example.driveroutreach.ui.fragments;
+package com.example.driveroutreach.ui.base_classes;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

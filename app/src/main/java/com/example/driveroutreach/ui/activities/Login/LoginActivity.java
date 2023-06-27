@@ -65,9 +65,11 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         firestore = FirebaseFirestore.getInstance();
 
 
+
         binding.btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
 
                 String mobile = binding.etMobile.getText().toString().trim();
                 if (TextUtils.isEmpty(mobile)) {
@@ -85,9 +87,11 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                     if (task.isSuccessful()){
+                        Log.d("LoginActivityLOG","أغصاااابي فرطت ");
 
                         for (QueryDocumentSnapshot document : task.getResult()){
                             DriversNumbers num = document.toObject(DriversNumbers.class);
+                            Log.d("LoginActivityLOG",String.valueOf(num.getMobile()));
 
                             if (binding.etMobile.getText().toString().equals(String.valueOf(num.getMobile()))){
                                 Log.d("LoginActivityLOG",String.valueOf(num.getMobile()));
@@ -150,6 +154,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
                             Intent intent = new Intent(LoginActivity.this, VerificationActivity.class);
                             intent.putExtra("verificationId", verificationId);
                             intent.putExtra("resendingToken", token);
+                            intent.putExtra("fromWhere",true);
                             setEnabledVisibility();
                             startActivity(intent);
                             finish();

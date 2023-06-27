@@ -1,22 +1,21 @@
 package com.example.driveroutreach.ui.activities.Main;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.location.LocationManager;
-import android.os.Build;
-import android.os.IBinder;
-import android.Manifest;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -28,6 +27,8 @@ import com.example.driveroutreach.R;
 import com.example.driveroutreach.model.DriversNumbers;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -156,6 +157,9 @@ public class LocationService extends Service implements LocationListener {
 
         // تحديث على اللوكيشن في الريل تايم
         locationRef.child(String.valueOf(driverId)).setValue(locationMap);
+
+
+        EventBus.getDefault().post(new LocationChanged(location.getLatitude(), location.getLongitude()));
 
 
 
