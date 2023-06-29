@@ -14,10 +14,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.driveroutreach.databinding.ItemTripBinding;
 import com.example.driveroutreach.listeners.ScheduleListener;
 import com.example.driveroutreach.model.JourneyModel;
+import com.example.driveroutreach.ui.app_utility.AppUtility;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 public class TripAdapter extends RecyclerView.Adapter<TripAdapter.MyViewHolderTrip> {
 
@@ -26,7 +25,7 @@ ScheduleListener scheduleListener;
 String date;
 int itemPosition;
 SharedPreferences sp;
-    SharedPreferences.Editor editor;
+SharedPreferences.Editor editor;
 
 
 
@@ -62,10 +61,10 @@ SharedPreferences sp;
         holder.ArrivalPlace.setText(journeyModel.getOrganization());
         holder.PickingupPlace.setText(journeyModel.getRegion());
 
-        SimpleDateFormat simpleformat = new SimpleDateFormat("dd-MMMM-yyyy");
-        date=simpleformat.format(Calendar.getInstance().getTime());
-        holder.date.setText(date);
+//        SimpleDateFormat simpleformat = new SimpleDateFormat("dd-MMMM-yyyy");
+//        date=simpleformat.format(Calendar.getInstance().getTime());
 
+        holder.date.setText(AppUtility.getDate());
 
 
 
@@ -78,11 +77,7 @@ SharedPreferences sp;
                 holder.startJourney.setVisibility(View.GONE);
                 holder.endJourney.setVisibility(View.VISIBLE);
 
-//
-//                if (itemPosition != holder.getItemId()){
-//                    holder.startJourney.setEnabled(false);
-//                    holder.endJourney.setEnabled(false);
-//                }
+
             }
         });
 
