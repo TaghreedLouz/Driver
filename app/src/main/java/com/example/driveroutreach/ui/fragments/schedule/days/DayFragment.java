@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -16,38 +15,51 @@ import com.example.driveroutreach.adapters.TripAdapter;
 import com.example.driveroutreach.databinding.FragmentDayBinding;
 import com.example.driveroutreach.listeners.ScheduleListener;
 import com.example.driveroutreach.model.JourneyModel;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
+import com.example.driveroutreach.ui.fragments.Home.HomeFragment;
 
 import java.util.ArrayList;
 
-public class DayFragment extends Fragment {
-
-
-    ArrayList<JourneyModel> Trips;
+public class DayFragment extends Fragment implements DayView{
 
     SharedPreferences sp;
     SharedPreferences.Editor edit;
     public final String DRIVER_ID_KEY = "driverId";
+    FragmentDayBinding binding;
+
+    @Override
+    public void onGettingScheduleSuccess(ArrayList<JourneyModel> Trips) {
+                                    binding.RVDay.setAdapter(new TripAdapter(Trips, getActivity(),new ScheduleListener() {
+                                @Override
+                                public void StartJourney(String journeyId, String date) {
+
+                                    edit.putString("journeyDate",date);
+                                    edit.putString("journeyId",journeyId);
+                                    edit.putBoolean("started",true);
+                                    edit.commit();
+
+                                    getParentFragmentManager().beginTransaction().replace(com.google.android.material.R.id.container,new HomeFragment()).addToBackStack(null).commit();
 
 
 
-    public interface OnDataListenerDayFrag{
-        void onDataReceivedFromDayFrag(String journeyId, String date);
+
+                                }
+                            }));
+                            binding.RVDay.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL,false));
+
     }
 
-    OnDataListenerDayFrag onDataListenerDayFrag;
+    @Override
+    public void onGettingScheduleFailure(Exception e) {
+          Log.d(DayFragment.class.getName(),e.getMessage());
+    }
 
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+
+
     private static final String ARG_day = "day";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
+
     private String day;
     private String mParam2;
 
@@ -76,76 +88,76 @@ public class DayFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        FragmentDayBinding binding = FragmentDayBinding.inflate(inflater,container,false);
+        binding = FragmentDayBinding.inflate(inflater,container,false);
 
-
-
-        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
 
         sp = getActivity().getSharedPreferences("sp", Context.MODE_PRIVATE);
 
         String driverId= sp.getString(DRIVER_ID_KEY,null);
         edit = sp.edit();
 
-         Trips = new ArrayList<>();
 
+            DayPresenter dayPresenter = new DayPresenter(this);
+            dayPresenter.gettingSchedule(day,driverId);
 
-
-        firestore.collection("Journey").whereEqualTo("driver",driverId)
-                .whereEqualTo("day",day).get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                       if (task.isSuccessful()){
-                           Log.d("schedule",task.getResult().toString());
-
-                           for(QueryDocumentSnapshot document : task.getResult()){
-
-                               JourneyModel journeyModel = document.toObject(JourneyModel.class);
-                               Log.d("schedule",journeyModel.getOrganization()+" "+journeyModel.getDay());
-
-                               Trips.add(journeyModel);
-                           }
-
-
-                           binding.RVDay.setAdapter(new TripAdapter(Trips, getActivity(),new ScheduleListener() {
-                               @Override
-                               public void StartJourney(String journeyId, String date) {
-                                   if (onDataListenerDayFrag != null) {
-                                       onDataListenerDayFrag.onDataReceivedFromDayFrag(journeyId,date);
-
-                                        edit.putString("journeyDate",date);
-                                        edit.putString("journeyId",journeyId);
-                                        edit.putBoolean("started",true);
-                                        edit.commit();
-
-                                   }else {
-                                       Log.d("transaction","Wrong Operation");
-                                   }
-
-                               }
-                           }));
-                           binding.RVDay.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false));
-
-                       }   else {
-                           Log.d("schedule",task.getException().getMessage());
-                       }
-                    }
-                });
+//        firestore.collection("Journey").whereEqualTo("driver",driverId)
+//                .whereEqualTo("day",day).get()
+//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                       if (task.isSuccessful()){
+//                           Log.d("schedule",task.getResult().toString());
+//
+//                           for(QueryDocumentSnapshot document : task.getResult()){
+//
+//                               JourneyModel journeyModel = document.toObject(JourneyModel.class);
+//                               Log.d("schedule",journeyModel.getOrganization()+" "+journeyModel.getDay());
+//
+//                               Trips.add(journeyModel);
+//                           }
+//
+//
+//                           binding.RVDay.setAdapter(new TripAdapter(Trips, getActivity(),new ScheduleListener() {
+//                               @Override
+//                               public void StartJourney(String journeyId, String date) {
+//
+//
+//
+//
+//
+//                                   edit.putString("journeyDate",date);
+//                                   edit.putString("journeyId",journeyId);
+//                                   edit.putBoolean("started",true);
+//                                   edit.commit();
+////
+////                                   getChildFragmentManager().beginTransaction().replace(R.id.container, new HomeFragment()).commit();
+////                                   if (onDataListenerDayFrag != null) {
+////                                       onDataListenerDayFrag.onDataReceivedFromDayFrag(journeyId,date);
+////
+////                                        edit.putString("journeyDate",date);
+////                                        edit.putString("journeyId",journeyId);
+////                                        edit.putBoolean("started",true);
+////                                        edit.commit();
+////
+////                                   }else {
+////                                       Log.d("transaction","Wrong Operation");
+////                                   }
+//
+//                               }
+//                           }));
+//                           binding.RVDay.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false));
+//
+//                       }   else {
+//                           Log.d("schedule",task.getException().getMessage());
+//                       }
+//                    }
+//                });
 
 
 
         return binding.getRoot();
     }
 
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        try {
-            onDataListenerDayFrag = (OnDataListenerDayFrag) context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString() + " must implement OnDataListener");
-        }
-    }
+
 }
 

@@ -19,8 +19,6 @@ import com.example.driveroutreach.R;
 import com.example.driveroutreach.databinding.FragmentHomeBinding;
 import com.example.driveroutreach.model.Benefeciares;
 import com.example.driveroutreach.ui.activities.Main.LocationChanged;
-import com.firebase.geofire.GeoFire;
-import com.firebase.geofire.GeoLocation;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -35,7 +33,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -104,10 +101,10 @@ public class HomeFragment extends Fragment implements HomeView, OnMapReadyCallba
             date = getArguments().getString(ARG_Date);
         }
 
-//        if (!EventBus.getDefault().isRegistered(this)) {
-//            EventBus.getDefault().register(this);
-//        }
-        EventBus.getDefault().register(this);
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+     //   EventBus.getDefault().register(this);
 
 
     }
@@ -129,7 +126,6 @@ public class HomeFragment extends Fragment implements HomeView, OnMapReadyCallba
         String driverId= sp.getString(DRIVER_ID_KEY,null);
 
 
-    //    onGettingDriversLocation(driverId);
 
         onLocation(new LocationChanged());
 
@@ -182,8 +178,9 @@ public class HomeFragment extends Fragment implements HomeView, OnMapReadyCallba
                                                             });
 
                                                 }
+                                                onSetMapFrag();
                                             }
-                                            onSetMapFrag();
+
                                         } else {
                                             Log.d("realtimeDatabase", task.getException().getMessage());
                                         }
@@ -222,7 +219,7 @@ public class HomeFragment extends Fragment implements HomeView, OnMapReadyCallba
     public void onMapReady(@NonNull GoogleMap googleMap) {
         map = googleMap;
 
-        if (!MarkersPoistions.isEmpty() ) {
+        if (MarkersPoistions != null ) {
             for (com.example.driveroutreach.model.Location position : MarkersPoistions) {
                 //adding benf place markers
                 MarkerOptions markerOptions = new MarkerOptions().position(new LatLng(position.getLatitude(), position.getLongitude()));
@@ -230,11 +227,7 @@ public class HomeFragment extends Fragment implements HomeView, OnMapReadyCallba
 
                 Log.d("client_location",new LatLng(position.getLatitude(), position.getLongitude()).toString());
 
-                LatLngBounds.Builder builder = new LatLngBounds.Builder();
-                builder.include(new LatLng(latitude_driver,longitude_driver));
-                builder.include(new LatLng(position.getLatitude(), position.getLongitude()));
-                LatLngBounds bounds = builder.build();
-                googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 20));
+
             }
         }
 
@@ -243,6 +236,10 @@ public class HomeFragment extends Fragment implements HomeView, OnMapReadyCallba
         MarkerOptions markersPoistionsDriver = new MarkerOptions().position(new LatLng(latitude_driver,longitude_driver));
         Marker marker = googleMap.addMarker(markersPoistionsDriver);
 
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+        builder.include(new LatLng(latitude_driver,longitude_driver));
+        LatLngBounds bounds = builder.build();
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 19));
 
 
         Log.d("Locaaaation",new LatLng(longitude_driver,latitude_driver).toString());
@@ -256,7 +253,6 @@ public class HomeFragment extends Fragment implements HomeView, OnMapReadyCallba
                 Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             // When permission is granted
             // Call method
-
             startLocationUpdates();
 
         } else {
@@ -289,28 +285,18 @@ public class HomeFragment extends Fragment implements HomeView, OnMapReadyCallba
 
 
     private void startLocationUpdates() {
-
-
-
-
-// Adjust the initial camera position and zoom level
-//        double defaultLatitude = latitude_driver; // Replace with your desired latitude
-//        double defaultLongitude = longitude_driver; // Replace with your desired longitude
-//        float defaultZoomLevel = 12f; // Replace with your desired zoom level
-
-//        LatLng defaultLocation = new LatLng(defaultLatitude, defaultLongitude);
-//        map.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLocation, defaultZoomLevel));
-
         com.example.driveroutreach.model.Location specificLocation = new com.example.driveroutreach.model.Location(latitude_driver,longitude_driver); // Example specific location (San Francisco)
-        com.example.driveroutreach.model.Location nearestLocation= findNearestLocation(specificLocation, MarkersPoistions);
+
+      if (MarkersPoistions != null && specificLocation != null){
+          com.example.driveroutreach.model.Location nearestLocation= findNearestLocation(specificLocation, MarkersPoistions);
+      }
 
      //   Log.d("Nearest location","Nearest location: " + latitude_driver + ", " + longitude_driver);
        // Log.d("Nearest location","Nearest location: " + ", " + nearestLocation.getLongitude());
 
 
 
-        // Move the camera to the user's current location
-     //   map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude_driver, longitude_driver), 20));
+
     }
 
     private com.example.driveroutreach.model.Location findNearestLocation(com.example.driveroutreach.model.Location specificLocation, ArrayList<com.example.driveroutreach.model.Location> locations) {
@@ -355,33 +341,6 @@ public class HomeFragment extends Fragment implements HomeView, OnMapReadyCallba
     }
 
 
-
-
-  void onGettingDriversLocation(String driverId){
-      ref = FirebaseDatabase.getInstance().getReference("DriverLocation");
-      GeoFire geoFire = new GeoFire(ref);
-
-      geoFire.getLocation(driverId, new com.firebase.geofire.LocationCallback() {
-          @Override
-          public void onLocationResult(String key, GeoLocation location) {
-              if (location != null) {
-                  longitude_driver = location.longitude;
-                  latitude_driver = location.latitude;
-
-                  Log.d("CompareLocation",String.format("The location for key %s is [%f,%f]", key, location.latitude, location.longitude));
-
-              } else {
-                  Log.d("CompareLocation",String.format("There is no location for key %s in GeoFire", key));
-
-              }
-          }
-          @Override
-          public void onCancelled(DatabaseError databaseError) {
-              Log.d("CompareLocation","There was an error getting the GeoFire location: " + databaseError);
-
-          }
-      });
-  }
 
 
 

@@ -83,6 +83,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
                 binding.btnLogin.setText(R.string.sending);
                 binding.btnLogin.setEnabled(false);
 
+
                 firestore.collection("Drivers_numbers").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -114,6 +115,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
                     }
                     }
                 });
+
                 if (binding.etMobile.getText().toString() != sp.getString(DRIVER_NUMBER_KEY,"not found")){
                     Toast.makeText(LoginActivity.this, "your not Allow", Toast.LENGTH_SHORT).show();
                 }

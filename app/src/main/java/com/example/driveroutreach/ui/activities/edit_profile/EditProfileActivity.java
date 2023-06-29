@@ -18,6 +18,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
+import com.example.driveroutreach.R;
 import com.example.driveroutreach.databinding.ActivityEditProfileBinding;
 import com.example.driveroutreach.model.DriverProfile;
 import com.example.driveroutreach.ui.activities.Verification.VerificationActivity;
@@ -40,7 +42,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-public class EditProfileActivity extends AppCompatActivity {
+public class EditProfileActivity extends AppCompatActivity implements EditProfileView {
 
     ActivityEditProfileBinding binding;
     FirebaseStorage firebaseStorage;
@@ -48,7 +50,8 @@ public class EditProfileActivity extends AppCompatActivity {
     SharedPreferences sp;
     FirebaseAuth firebaseAuth;
     public final String DRIVER_ID_KEY = "driverId";
-
+    EditProfilePresenter editProfilePresenter;
+    String driverId;
     Uri  imgUrl;
     PhoneAuthCredential c;
 
@@ -58,10 +61,13 @@ public class EditProfileActivity extends AppCompatActivity {
         binding=ActivityEditProfileBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        firebaseStorage =firebaseStorage = FirebaseStorage.getInstance();
+         editProfilePresenter = new EditProfilePresenter(this);
+
+        firebaseStorage  = FirebaseStorage.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
         firestore=FirebaseFirestore.getInstance();
         sp = getSharedPreferences("sp", MODE_PRIVATE);
+        driverId =sp.getString(DRIVER_ID_KEY,null);
 
         DriverProfile driver_profile = getIntent().getParcelableExtra("Driver_Profile");
 
@@ -71,9 +77,21 @@ public class EditProfileActivity extends AppCompatActivity {
         binding.tvDayOff.setText(driver_profile.getDayOff());
         binding.tvRegion.setText(driver_profile.getRegion());
 
+        editProfilePresenter.gettingProfileImage(sp.getString(DRIVER_ID_KEY,null));
 
 
 
+
+
+
+
+       binding.topAppBar.setNavigationOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+
+        onBackPressed();
+    }
+});
 
         binding.imgProfile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,16 +109,15 @@ public class EditProfileActivity extends AppCompatActivity {
                 if (i == EditorInfo.IME_ACTION_DONE) {
                     String newNumber = binding.etMobile.getText().toString().trim();
 
-                 //   updateNumber(enteredText);
+
                     if (!newNumber.isEmpty()){
-//                       startActivity(new Intent(getBaseContext(), VerificationActivity.class).putExtra("fromWhere",false).putExtra("newNumber",newNumber));
                            updateNumber(newNumber);
                         return true;
                     } else {
                         Toast.makeText(EditProfileActivity.this, "Enter a new number", Toast.LENGTH_SHORT).show();
                     }
                     }
-                // Return false if you haven't handled the event
+
                 return false;
             }
         });
@@ -113,11 +130,11 @@ public class EditProfileActivity extends AppCompatActivity {
             Uri img_uri = data.getData();
             binding.imgProfile.setImageURI(img_uri);
 
-            // todo: remove the comment when Taghreed finishes the login
             if (img_uri != null) uploadImage(img_uri);
         }
     }
- //todo: make in the firebase var for img url .. test this function ..
+
+
     void uploadImage(Uri profile_img_uri){
 
         //Setting the progress
@@ -157,6 +174,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
                         // Error, Image not uploaded
                         progressDialog.dismiss();
+                        Log.d("Failure", e.getMessage());
                         Toast.makeText(getBaseContext(), "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
 
@@ -173,10 +191,10 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     void storeImgInProfile(){
-        Map<String , Object> setLocation = new HashMap<>();
-        setLocation.put("ImgUrl",  imgUrl.toString());
+        Map<String , Object> setImg = new HashMap<>();
+        setImg.put("ImgUrl",  imgUrl.toString());
 
-        firestore.collection("Beneficiaries").document("1").update(setLocation)
+        firestore.collection("Driver").document(sp.getString(DRIVER_ID_KEY,null)).update(setImg)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -191,16 +209,10 @@ public class EditProfileActivity extends AppCompatActivity {
 
 
     void updateNumber(String newNumber) {
-
-
-      //  FirebaseUser user = firebaseAuth.getCurrentUser();
-
-
         PhoneAuthCredential credentialCompleted ;
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
                 "+970" + newNumber,
-                240,
-                TimeUnit.SECONDS,
+                60, TimeUnit.SECONDS,
                 this,
                 new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
                     @Override
@@ -232,6 +244,22 @@ public class EditProfileActivity extends AppCompatActivity {
 
 
 
+    }
+
+
+    @Override
+    public void onGettingImgeSuccess(String img) {
+
+        Glide.with(getBaseContext()).load(img)
+                .into(binding.imgProfile);
+
+        Log.d("Success",img);
+    }
+
+    @Override
+    public void onGettingImgFailure(Exception e) {
+       binding.imgProfile.setImageResource(R.drawable.profile_avtar);
+     Log.d("FailureImg",e.getMessage());
     }
 
 

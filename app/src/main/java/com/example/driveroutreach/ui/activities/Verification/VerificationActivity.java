@@ -68,11 +68,13 @@ public class VerificationActivity extends AppCompatActivity {
                        binding.btnLogin.setEnabled(false);
 
                        code = binding.pinView.getText().toString();
+
+                       Log.d("code",binding.pinView.toString().trim());
+
                        if (verificationId != null) {
                            binding.progressBar.setVisibility(View.VISIBLE);
+
                            phoneAuthCredential = PhoneAuthProvider.getCredential(verificationId, code);
-
-
 
                            Log.d("fromWhere","login");
                            FirebaseAuth.getInstance().signInWithCredential(phoneAuthCredential)
@@ -103,7 +105,7 @@ public class VerificationActivity extends AppCompatActivity {
 
                        setEnabledVisibility();
                        Log.e("VerificationActivityLOG","Click");
-                       if (TextUtils.isEmpty(binding.pinView.getText().toString().trim())) {
+                       if (TextUtils.isEmpty(binding.pinView.getText().toString())) {
                            binding.pinView.setError("Enter verification code");
                            binding.pinView.setLineColor(getResources().getColor(R.color.baby_red));
                            Toast.makeText(getApplicationContext(), "Enter verification code", Toast.LENGTH_SHORT).show();
@@ -121,8 +123,9 @@ public class VerificationActivity extends AppCompatActivity {
 
                                Log.d("inside if","inside");
                                Log.d("verificationIdEdit",getIntent().getStringExtra("verificationIdEdit"));
-                                updatePhoneNumber(verificationIdEdit,binding.pinView.toString().trim());
+                               Log.d("code",binding.pinView.toString().trim());
 
+                                updatePhoneNumber(getIntent().getStringExtra("verificationIdEdit"),binding.pinView.getText().toString());
                            }
                        }
 
@@ -328,7 +331,7 @@ public class VerificationActivity extends AppCompatActivity {
     }
 
 
-    private void updatePhoneNumber( String verificationCode, String verificationId) {
+    private void updatePhoneNumber(String verificationId, String verificationCode) {
         PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, verificationCode);
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser != null) {
