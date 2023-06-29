@@ -9,7 +9,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,9 +22,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.driveroutreach.R;
 import com.example.driveroutreach.databinding.ActivityMainBinding;
-import com.example.driveroutreach.ui.fragments.Home.HomeFragment;
 import com.example.driveroutreach.ui.fragments.schedule.ScheduleFragment;
-import com.example.driveroutreach.ui.fragments.schedule.days.DayFragment;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.LocationRequest;
@@ -38,7 +35,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.navigation.NavigationBarView;
 
 
-public class MainActivity extends AppCompatActivity implements MainView, DayFragment.OnDataListenerDayFrag {
+public class MainActivity extends AppCompatActivity implements MainView {
     ActivityMainBinding binding;
     BottomSheetBehavior bottomSheetBehavior;
     Dialog dialog;
@@ -101,12 +98,7 @@ public class MainActivity extends AppCompatActivity implements MainView, DayFrag
         getSupportFragmentManager().beginTransaction().add(R.id.container, fragment).commit();
     }
 
-    @Override
-    public void onDataReceivedFromDayFrag(String journeyId, String date) {
-        Log.d("TripData", journeyId + " " + date);
-        HomeFragment homeFragment = HomeFragment.newInstance(journeyId, date);
-        getSupportFragmentManager().beginTransaction().add(R.id.container, homeFragment).commit();
-    }
+
 
 
 

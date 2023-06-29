@@ -1,20 +1,17 @@
 package com.example.driveroutreach.ui.fragments.Profile;
 
-import android.app.Notification;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.MediaPlayer;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.fragment.app.Fragment;
+
+import com.bumptech.glide.Glide;
 import com.example.driveroutreach.R;
 import com.example.driveroutreach.databinding.FragmentProfileBinding;
 import com.example.driveroutreach.model.DriverProfile;
@@ -23,28 +20,18 @@ import com.example.driveroutreach.ui.activities.contact_us.ContactUsActivity;
 import com.example.driveroutreach.ui.activities.edit_profile.EditProfileActivity;
 import com.example.driveroutreach.ui.activities.notification.NotificationActivity;
 import com.example.driveroutreach.ui.activities.settings.SettingsActivity;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link ProfileFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ProfileFragment extends Fragment {
+public class ProfileFragment extends Fragment implements ProfileView{
 
     SharedPreferences sp;
     public final String DRIVER_ID_KEY = "driverId";
-
+    FragmentProfileBinding binding;
 
     DriverProfile driverProfileObject;
 
@@ -93,35 +80,17 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        FragmentProfileBinding binding = FragmentProfileBinding.inflate(inflater,container,false);
-
-        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+         binding = FragmentProfileBinding.inflate(inflater,container,false);
 
         sp = getActivity().getSharedPreferences("sp", Context.MODE_PRIVATE);
-
         String driverId= sp.getString(DRIVER_ID_KEY,null);
 
-           firestore.collection("Driver").document(driverId).get()
-                           .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                               @Override
-                               public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                   Log.d("Driver",task.getResult().toString());
-                                   if (task.isSuccessful()){
+        ProfilePresenter profilePresenter = new ProfilePresenter(this);
 
+        profilePresenter.driverInfo(driverId);
 
-                                     driverProfileObject = task.getResult().toObject(DriverProfile.class);
-                                     Log.d("Driver",task.getResult().toString());
-                                     binding.tvName.setText(driverProfileObject.getName());
-                                     binding.tvNumber.setText("+972".concat(String.valueOf(driverProfileObject.getMobile())));
+        profilePresenter.gettingProfileImage(driverId);
 
-                                       } else {
-
-                                       Log.d("Driver's info", task.getException().getMessage());
-
-                                   }
-
-                               }
-                           });
 
                 binding.linLayoutContactUs.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -177,9 +146,30 @@ public class ProfileFragment extends Fragment {
 
 
     @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
+    public void onDriverInfoFailure(Exception e) {
+        Log.d(getClass().getName(),e.getMessage());
+    }
 
-//        sendData =(sendData) context;
+    @Override
+    public void onDriverInfoSuccess(DriverProfile driverProfile) {
+
+        driverProfileObject = driverProfile;
+        binding.tvName.setText(driverProfile.getName());
+        binding.tvNumber.setText("+972".concat(String.valueOf(driverProfile.getMobile())));
+
+    }
+
+    @Override
+    public void onGettingImgeSuccess(String img) {
+        Glide.with(getActivity()).load(img)
+                .into(binding.imgProfile);
+
+        Log.d("Success",img);
+    }
+
+    @Override
+    public void onGettingImgFailure(Exception e) {
+        binding.imgProfile.setImageResource(R.drawable.profile_avtar);
+        Log.d("FailureImg",e.getMessage());
     }
 }

@@ -13,7 +13,7 @@ public class DriverProfile implements Parcelable {
     String dayOff;
 
     String ImgUrl;
-    LatLng coordinates;
+
 
 
     public DriverProfile(String name, int mobile, String region, int vichuleId, String dayOff, LatLng coordinates) {
@@ -22,7 +22,16 @@ public class DriverProfile implements Parcelable {
         this.region = region;
         this.vichuleId = vichuleId;
         this.dayOff = dayOff;
-        this.coordinates = coordinates;
+
+    }
+
+    public DriverProfile(String name, int mobile, String region, int vichuleId, String dayOff, String imgUrl) {
+        this.name = name;
+        this.mobile = mobile;
+        this.region = region;
+        this.vichuleId = vichuleId;
+        this.dayOff = dayOff;
+        this.ImgUrl = imgUrl;
     }
 
     public DriverProfile() {
@@ -42,6 +51,7 @@ public class DriverProfile implements Parcelable {
         region = in.readString();
         vichuleId = in.readInt();
         dayOff = in.readString();
+        ImgUrl =in.readString();
 
     }
 
@@ -97,12 +107,13 @@ public class DriverProfile implements Parcelable {
         this.dayOff = dayOff;
     }
 
-    public LatLng getCoordinates() {
-        return coordinates;
+
+    public String getImgUrl() {
+        return ImgUrl;
     }
 
-    public void setCoordinates(LatLng coordinates) {
-        this.coordinates = coordinates;
+    public void setImgUrl(String imgUrl) {
+        ImgUrl = imgUrl;
     }
 
     @Override
@@ -117,6 +128,7 @@ public class DriverProfile implements Parcelable {
               parcel.writeString(this.region);
               parcel.writeInt(this.vichuleId);
               parcel.writeString(this.dayOff);
+              parcel.writeString(this.ImgUrl);
 
     }
 }

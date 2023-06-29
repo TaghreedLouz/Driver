@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.example.driveroutreach.adapters.bottomSheetAdapter;
 import com.example.driveroutreach.databinding.BottomSheetDialogBinding;
 import com.example.driveroutreach.model.Benefeciares;
+import com.example.driveroutreach.ui.app_utility.AppUtility;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -29,9 +30,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 public class AttendanceBottomSheet extends BottomSheetDialogFragment {
 
@@ -60,10 +59,10 @@ public class AttendanceBottomSheet extends BottomSheetDialogFragment {
 
         names = new ArrayList<>();
 
-        SimpleDateFormat simpleformat = new SimpleDateFormat("dd-MMMM-yyyy");
-        date=simpleformat.format(Calendar.getInstance().getTime());
+//        SimpleDateFormat simpleformat = new SimpleDateFormat("dd-MMMM-yyyy");
+//        date=simpleformat.format(Calendar.getInstance().getTime());
 
-        binding.tvDate.setText(date);
+        binding.tvDate.setText(AppUtility.getDate());
 
         reference = FirebaseDatabase.getInstance().getReference("AttendanceConfirmation").child("31-May-2023")
                 .child(driverId).child(journeyId).get()
