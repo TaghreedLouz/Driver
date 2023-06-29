@@ -16,6 +16,7 @@ import com.example.driveroutreach.R;
 import com.example.driveroutreach.databinding.FragmentProfileBinding;
 import com.example.driveroutreach.model.DriverProfile;
 import com.example.driveroutreach.ui.activities.Login.LoginActivity;
+import com.example.driveroutreach.ui.activities.about_us.AboutUsActivity;
 import com.example.driveroutreach.ui.activities.contact_us.ContactUsActivity;
 import com.example.driveroutreach.ui.activities.edit_profile.EditProfileActivity;
 import com.example.driveroutreach.ui.activities.notification.NotificationActivity;
@@ -109,8 +110,7 @@ public class ProfileFragment extends Fragment implements ProfileView{
                 binding.linLayoutAboutUs.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-//                        Intent intent = new Intent(getActivity(), Abou.class);
-//                        startActivity(intent);
+                        startActivity(new Intent(getActivity(), AboutUsActivity.class));
                     }
                 });
 
