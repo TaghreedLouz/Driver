@@ -34,7 +34,7 @@ SharedPreferences.Editor editor;
     public TripAdapter(ArrayList<JourneyModel> journys, Context context, ScheduleListener scheduleListener) {
         this.journys = journys;
         this.scheduleListener = scheduleListener;
-//        sp = context.getSharedPreferences("YourPreferencesName", Context.MODE_PRIVATE);
+//        sp = context.getSharedPreferences("sp", Context.MODE_PRIVATE);
 //        editor =sp.edit();
     }
 
