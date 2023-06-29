@@ -31,9 +31,9 @@ public class AboutUsActivity extends AppCompatActivity {
                     @Override
                     public void onActivityResult(Boolean result) {
                         if (result){
-                            Toast.makeText(AboutUsActivity.this, "Permission granted", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getBaseContext(), "Permission granted", Toast.LENGTH_SHORT).show();
                         }else {
-                            Toast.makeText(AboutUsActivity.this, "Permission denied", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getBaseContext(), "Permission denied", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -46,7 +46,6 @@ public class AboutUsActivity extends AppCompatActivity {
                 String phone = "+970593887076";
                 intent.setData(Uri.parse("tel:"+phone));
                 startActivity(intent);
-
             }
         });
 

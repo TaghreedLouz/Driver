@@ -80,45 +80,13 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
                 }
 
                 binding.progressBar.setVisibility(View.VISIBLE);
+                binding.etMobile.setEnabled(false);
                 binding.btnLogin.setText(R.string.sending);
                 binding.btnLogin.setEnabled(false);
 
 
-                firestore.collection("Drivers_numbers").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    if (task.isSuccessful()){
-                        Log.d("LoginActivityLOG","أغصاااابي فرطت ");
+                loginPresenter.checkDriverIsExist();
 
-                        for (QueryDocumentSnapshot document : task.getResult()){
-                            DriversNumbers num = document.toObject(DriversNumbers.class);
-                            Log.d("LoginActivityLOG",String.valueOf(num.getMobile()));
-
-                            if (binding.etMobile.getText().toString().equals(String.valueOf(num.getMobile()))){
-                                Log.d("LoginActivityLOG",String.valueOf(num.getMobile()));
-                                num.getId();
-                                edit.putString(DRIVER_ID_KEY,num.getId());
-                                edit.putString(DRIVER_MOBILE_KEY,String.valueOf(num.getMobile()));
-                                edit.commit();
-                                  sendCodeVerification();
-                                binding.etMobile.setText("");
-
-                            }else {
-                                Log.d("LoginActivityLOG","Does not exist");
-                                setEnabledVisibility();
-                            }
-                        }
-
-
-                    } else {
-                        Log.d("LoginActivityLOG",task.getException().getMessage());
-                    }
-                    }
-                });
-
-                if (binding.etMobile.getText().toString() != sp.getString(DRIVER_NUMBER_KEY,"not found")){
-                    Toast.makeText(LoginActivity.this, "your not Allow", Toast.LENGTH_SHORT).show();
-                }
                 }
         });
 
@@ -179,11 +147,6 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         }
 
     @Override
-    public void onGetMobileNumber() {
-
-    }
-
-    @Override
     public void onDriverFound(DriversNumbers num) {
         if (binding.etMobile.getText().toString().equals(String.valueOf(num.getMobile()))){
             Log.d("LoginActivityLOG",String.valueOf(num.getMobile()));
@@ -192,14 +155,14 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
             edit.putString(DRIVER_MOBILE_KEY,String.valueOf(num.getMobile()));
             edit.commit();
             sendCodeVerification();
-            binding.etMobile.setText("");
             //    return;
 
         }else {
             Log.d("LoginActivityLOG","Does not exist");
-            //      Toast.makeText(LoginActivity.this, "your not Allow", Toast.LENGTH_SHORT).show();
             setEnabledVisibility();
         }
+
+        binding.etMobile.setText("");
     }
 
     @Override
