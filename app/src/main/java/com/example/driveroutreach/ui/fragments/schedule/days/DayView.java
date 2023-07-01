@@ -9,4 +9,8 @@ public interface DayView {
     void  onGettingScheduleSuccess(ArrayList<JourneyModel> Trips);
     void  onGettingScheduleFailure(Exception e);
 
+
+    void storeArchivedJourneySuccess();
+    void storeArchivedJourneyFailure(Exception e);
+
 }

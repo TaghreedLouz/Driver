@@ -7,21 +7,22 @@ public class AppUtility {
 
 
   public static String getDate(){
-        SimpleDateFormat simpleformat = new SimpleDateFormat("dd-MMMM-yyyy");
-       String date=simpleformat.format(Calendar.getInstance().getTime());
-       return date;
+       return new SimpleDateFormat("dd-MMMM-yyyy").format(Calendar.getInstance().getTime());
     }
 
 
     public static String getDateTime(){
-        SimpleDateFormat simpleformat = new SimpleDateFormat("dd-MMMM-yyyy hh-mm-ss");
-        String date=simpleformat.format(Calendar.getInstance().getTime());
-        return date;
+        return new SimpleDateFormat("dd-MMMM-yyyy hh-mm-ss").format(Calendar.getInstance().getTime());
     }
 
 
 
+    public static String getToday(){
+        return  new SimpleDateFormat("EEEE").format(Calendar.getInstance().getTime());
+    }
 
-
+    public static String getTime(){
+        return new SimpleDateFormat("hh:mm aa").format(Calendar.getInstance().getTime());
+    }
 
 }

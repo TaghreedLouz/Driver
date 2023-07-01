@@ -2,6 +2,7 @@ package com.example.driveroutreach.ui.activities.Verification;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -21,7 +22,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 
-public class VerificationActivity extends AppCompatActivity {
+public class VerificationActivity extends AppCompatActivity implements VerificationView{
     ActivityVerificationBinding binding;
     String verificationId , verificationIdEdite;
     private PhoneAuthProvider.ForceResendingToken token , tokenEdite;
@@ -31,6 +32,10 @@ public class VerificationActivity extends AppCompatActivity {
     String verificationIdEdit;
     PhoneAuthCredential phoneAuthCredentialEdite , phoneAuthCredential;
 
+    public final String DRIVER_ID_KEY = "driverId";
+
+    SharedPreferences sp;
+
 
     @SuppressLint("ResourceAsColor")
     @Override
@@ -39,6 +44,8 @@ public class VerificationActivity extends AppCompatActivity {
         binding = ActivityVerificationBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        VerificationPresenter presenter = new VerificationPresenter(this);
+
         verificationId = getIntent().getStringExtra("verificationId");
         token = getIntent().getParcelableExtra("resendingToken");
 
@@ -46,6 +53,9 @@ public class VerificationActivity extends AppCompatActivity {
         newNumber = getIntent().getStringExtra("number");
         verificationIdEdit = getIntent().getStringExtra("verificationIdEdit");
         boolean fromlogin = getIntent().getBooleanExtra("fromWhere",false);
+
+
+        sp = getSharedPreferences("sp", MODE_PRIVATE);
 
         Log.d("activity",String.valueOf(getIntent().getBooleanExtra("fromWhere",false)));
 
@@ -125,7 +135,8 @@ public class VerificationActivity extends AppCompatActivity {
                                Log.d("verificationIdEdit",getIntent().getStringExtra("verificationIdEdit"));
                                Log.d("code",binding.pinView.toString().trim());
 
-                                updatePhoneNumber(getIntent().getStringExtra("verificationIdEdit"),binding.pinView.getText().toString());
+                               presenter.updatePhoneNumber(getIntent().getStringExtra("verificationIdEdit"),binding.pinView.getText().toString(),sp.getString(DRIVER_ID_KEY,null),Integer.parseInt(newNumber));
+                                //updatePhoneNumber(getIntent().getStringExtra("verificationIdEdit"),binding.pinView.getText().toString());
                            }
                        }
 
