@@ -17,16 +17,12 @@ import com.example.driveroutreach.databinding.ActivityLoginBinding;
 import com.example.driveroutreach.model.DriversNumbers;
 import com.example.driveroutreach.ui.activities.Main.MainActivity;
 import com.example.driveroutreach.ui.activities.Verification.VerificationActivity;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.concurrent.TimeUnit;
 
@@ -38,7 +34,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     SharedPreferences sp;
     SharedPreferences.Editor edit;
     LoginPresenter loginPresenter;
-    public final String DRIVER_ID_KEY = "driverId" , DRIVER_MOBILE_KEY = "driverMobile";
+    public final String DRIVER_ID_KEY = "driverId" , DRIVER_MOBILE_KEY = "driverMobile", DRIVER_NAME_KEY ="driverName";
     public final String DRIVER_NUMBER_KEY = "driverNumber";
 
     @Override

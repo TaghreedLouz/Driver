@@ -1,7 +1,5 @@
 package com.example.driveroutreach.model;
 
-import com.google.firebase.firestore.DocumentReference;
-
 import java.util.ArrayList;
 
 public class JourneyModel {
@@ -12,11 +10,12 @@ public class JourneyModel {
     String end;
     String organization;
 
-    ArrayList<DocumentReference> beneficiaries;
+    ArrayList<String> beneficiaries;
 
     String day;
 
     String journeyId;
+    boolean isEnabled;
 
 
     ArrayList<SchedualAllModel> all = new ArrayList<>();
@@ -24,7 +23,7 @@ public class JourneyModel {
     public JourneyModel() {
     }
 
-    public JourneyModel(String driver, String region, String start, String end, String organization, ArrayList<DocumentReference> beneficiaries, String day, String journeyId) {
+    public JourneyModel(String driver, String region, String start, String end, String organization, ArrayList<String> beneficiaries, String day, String journeyId) {
         this.driver = driver;
         this.region = region;
         this.start = start;
@@ -33,8 +32,21 @@ public class JourneyModel {
         this.beneficiaries = beneficiaries;
         this.day = day;
         this.journeyId = journeyId;
+        this.isEnabled =true;
     }
 
+
+    public JourneyModel(String driver, String region, String start, String end, String organization, ArrayList<String> beneficiaries, String journeyId) {
+        this.driver = driver;
+        this.region = region;
+        this.start = start;
+        this.end = end;
+        this.organization = organization;
+        this.beneficiaries = beneficiaries;
+        this.day = day;
+        this.journeyId = journeyId;
+        this.isEnabled =true;
+    }
     public ArrayList<SchedualAllModel> getAll() {
         return all;
     }
@@ -83,11 +95,11 @@ public class JourneyModel {
         this.organization = organization;
     }
 
-    public ArrayList<DocumentReference> getBeneficiaries() {
+    public ArrayList<String> getBeneficiaries() {
         return beneficiaries;
     }
 
-    public void setBeneficiaries(ArrayList<DocumentReference> beneficiaries) {
+    public void setBeneficiaries(ArrayList<String> beneficiaries) {
         this.beneficiaries = beneficiaries;
     }
 
@@ -105,5 +117,13 @@ public class JourneyModel {
 
     public void setJourneyId(String journeyId) {
         this.journeyId = journeyId;
+    }
+
+    public boolean isEnabled() {
+        return isEnabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        isEnabled = enabled;
     }
 }
