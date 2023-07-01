@@ -111,7 +111,8 @@ public class EditProfileActivity extends AppCompatActivity implements EditProfil
 
 
                     if (!newNumber.isEmpty()){
-                           updateNumber(newNumber);
+                        editProfilePresenter.updateNumber(newNumber,EditProfileActivity.this);
+                           //updateNumber(newNumber);
                         return true;
                     } else {
                         Toast.makeText(EditProfileActivity.this, "Enter a new number", Toast.LENGTH_SHORT).show();
@@ -260,6 +261,17 @@ public class EditProfileActivity extends AppCompatActivity implements EditProfil
     public void onGettingImgFailure(Exception e) {
        binding.imgProfile.setImageResource(R.drawable.profile_avtar);
      Log.d("FailureImg",e.getMessage());
+    }
+
+    @Override
+    public void onSendCode(String verificationId, String newNumber) {
+        Log.d("verificationIdEdit",verificationId+"  "+"from edit");
+        Intent intent = new Intent(EditProfileActivity.this, VerificationActivity.class);
+        intent.putExtra("verificationIdEdit", verificationId);
+        intent.putExtra("number", newNumber);
+        intent.putExtra("fromWhere",false);
+        startActivity(intent);
+        finish();
     }
 
 

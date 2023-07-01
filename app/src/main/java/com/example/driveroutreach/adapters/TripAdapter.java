@@ -2,6 +2,8 @@ package com.example.driveroutreach.adapters;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,10 +15,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.driveroutreach.databinding.ItemTripBinding;
 import com.example.driveroutreach.listeners.ScheduleListener;
+import com.example.driveroutreach.model.ArichivedJourney;
 import com.example.driveroutreach.model.JourneyModel;
 import com.example.driveroutreach.ui.app_utility.AppUtility;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class TripAdapter extends RecyclerView.Adapter<TripAdapter.MyViewHolderTrip> {
 
@@ -25,7 +32,8 @@ ScheduleListener scheduleListener;
 String date;
 int itemPosition;
 SharedPreferences sp;
-SharedPreferences.Editor editor;
+SharedPreferences.Editor edit;
+HashMap<String, Integer> FinishedJourneys;
 
 
 
@@ -34,8 +42,8 @@ SharedPreferences.Editor editor;
     public TripAdapter(ArrayList<JourneyModel> journys, Context context, ScheduleListener scheduleListener) {
         this.journys = journys;
         this.scheduleListener = scheduleListener;
-//        sp = context.getSharedPreferences("YourPreferencesName", Context.MODE_PRIVATE);
-//        editor =sp.edit();
+        sp = context.getSharedPreferences("sp", Context.MODE_PRIVATE);
+        edit =sp.edit();
     }
 
     @NonNull
@@ -52,19 +60,58 @@ SharedPreferences.Editor editor;
             return;
         }
 
-
-
         JourneyModel journeyModel = journys.get(position);
+
+
+        //here we check the values of sp to make save the state of the adapter
+
+        if (sp.getInt("startedPosition",-1) == holder.getAdapterPosition() &&
+            sp.getString("journeyId",null).equals(journeyModel.getJourneyId()) ){
+
+            holder.startJourney.setEnabled(false);
+            holder.startJourney.setVisibility(View.GONE);
+            holder.endJourney.setVisibility(View.VISIBLE);
+            holder.startJourney.setEnabled(journeyModel.isEnabled());
+
+        }
+
+        Gson gson2 = new Gson();
+        String storedMap=sp.getString("FinishedJourneys",null);
+        Type type = new TypeToken<HashMap<String, Integer>>(){}.getType();
+        HashMap<String, Integer> storedHashMap = gson2.fromJson(storedMap, type);
+        if (storedHashMap != null){
+            for(String journeyID : storedHashMap.keySet() ){
+                if (journeyID.equals(journeyModel.getJourneyId())
+                        && storedHashMap.get(journeyID) == holder.getAdapterPosition()){
+
+                    holder.startJourney.setEnabled(journeyModel.isEnabled());
+                }
+            }
+
+            Log.d("hash","from sp"+storedHashMap.toString());
+        }
+
+
+
+
         holder.TimeEnds.setText(journeyModel.getEnd());
         holder.TimeStart.setText(journeyModel.getStart());
         holder.itenaryId.setText("Itinerary"+journeyModel.getJourneyId());
         holder.ArrivalPlace.setText(journeyModel.getOrganization());
         holder.PickingupPlace.setText(journeyModel.getRegion());
 
-//        SimpleDateFormat simpleformat = new SimpleDateFormat("dd-MMMM-yyyy");
-//        date=simpleformat.format(Calendar.getInstance().getTime());
+
+// todo: uncomment this block of code, in the end when the database entry is complete
+
+//        if (AppUtility.getToday().equals(journeyModel.getDay())) {
+//            holder.date.setText(AppUtility.getDate());
+//        } else {
+//            holder.date.setVisibility(View.GONE);
+//            holder.startJourney.setVisibility(View.GONE);
+//        }
 
         holder.date.setText(AppUtility.getDate());
+
 
 
 
@@ -72,20 +119,58 @@ SharedPreferences.Editor editor;
             @Override
             public void onClick(View view) {
 
-                scheduleListener.StartJourney(journeyModel.getJourneyId(),date);
                 itemPosition = holder.getAdapterPosition();
                 holder.startJourney.setVisibility(View.GONE);
                 holder.endJourney.setVisibility(View.VISIBLE);
 
+                edit.putString("journeyDate",AppUtility.getDate());
+                edit.putString("journeyId",journeyModel.getJourneyId());
+                edit.putBoolean("started",true);
+                edit.putInt("startedPosition",itemPosition);
 
+                edit.putString("journeyStartDate",AppUtility.getTime());
+                edit.commit();
+
+                 journeyModel.setEnabled(false);
+                 notifyDataSetChanged();
+
+                scheduleListener.StartJourney(journeyModel.getJourneyId(),date);
             }
         });
 
-
+        FinishedJourneys = new HashMap<String, Integer>();
 
         holder.endJourney.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                edit.putString("journeyDate",null);
+                edit.putString("journeyId",null);
+                edit.putBoolean("started",false);
+                edit.putInt("startedPosition",-1);
+
+//                edit.putInt("finishedPosition",itemPosition);
+
+
+                FinishedJourneys.put(journeyModel.getJourneyId(),holder.getAdapterPosition());
+                edit.putString("FinishedJourneys",   new Gson().toJson(FinishedJourneys));
+                edit.commit();
+
+                Log.d("hash",FinishedJourneys.toString());
+                holder.endJourney.setEnabled(false);
+                holder.endJourney.setBackgroundColor(Color.GRAY);
+                journeyModel.setEnabled(true);
+                notifyDataSetChanged();
+
+
+
+                scheduleListener.EndJourney(new ArichivedJourney(
+                        journeyModel.getDriver(),
+                        journeyModel.getRegion(),
+                        sp.getString("journeyStartDate",null),
+                        AppUtility.getTime(),
+                        journeyModel.getOrganization(),
+                        AppUtility.getDate(),
+                        journeyModel.getJourneyId()));
 
             }
         });
@@ -94,7 +179,7 @@ SharedPreferences.Editor editor;
 
     @Override
     public int getItemCount() {
-        return journys.size();
+        return journys != null? journys.size() :0 ;
     }
 
     class MyViewHolderTrip extends RecyclerView.ViewHolder {

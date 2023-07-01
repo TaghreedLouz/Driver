@@ -1,26 +1,36 @@
 package com.example.driveroutreach.ui.fragments.archive;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.driveroutreach.R;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
 import com.example.driveroutreach.adapters.ArchiveAdapter;
-import com.example.driveroutreach.databinding.FragmentAllBinding;
 import com.example.driveroutreach.databinding.FragmentArchiveBinding;
+import com.example.driveroutreach.model.ArichivedJourney;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link ArchiveFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ArchiveFragment extends Fragment {
+public class ArchiveFragment extends Fragment implements ArichiveView {
 
+
+    ArchivePresenter presenter;
+
+    SharedPreferences sp;
+    SharedPreferences.Editor edit;
+    public final String DRIVER_ID_KEY = "driverId";
+    FragmentArchiveBinding binding;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -64,11 +74,29 @@ public class ArchiveFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        FragmentArchiveBinding binding = FragmentArchiveBinding.inflate(inflater,container,false);
-        // Inflate the layout for this fragment
+         binding = FragmentArchiveBinding.inflate(inflater,container,false);
 
-        binding.rvArchive.setAdapter(new ArchiveAdapter());
-        binding.rvArchive.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false));
+        presenter = new ArchivePresenter(this);
+        sp = getActivity().getSharedPreferences("sp", Context.MODE_PRIVATE);
+
+        String driverId= sp.getString(DRIVER_ID_KEY,null);
+        edit = sp.edit();
+
+        presenter.gettingArchivedJourneys(driverId);
+
         return binding.getRoot();
+    }
+
+    @Override
+    public void onGettingArchivedJourneysSuccess(ArrayList<ArichivedJourney> journeys) {
+
+
+        binding.rvArchive.setAdapter(new ArchiveAdapter(journeys));
+        binding.rvArchive.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false));
+    }
+
+    @Override
+    public void onGettingArchivedJourneysFailure(Exception e) {
+        Log.d("failure",e.getMessage());
     }
 }
