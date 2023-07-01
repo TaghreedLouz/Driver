@@ -1,4 +1,4 @@
-package com.example.driveroutreach.ui.activities.Verification;
+package com.example.driveroutreach.ui.activities.verification;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;

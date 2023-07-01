@@ -1,4 +1,4 @@
-package com.example.driveroutreach.ui.activities;
+package com.example.driveroutreach.ui.activities.splash;
 
 import android.content.Intent;
 import android.content.SharedPreferences;

@@ -19,6 +19,7 @@ import com.example.driveroutreach.R;
 import com.example.driveroutreach.databinding.FragmentHomeBinding;
 import com.example.driveroutreach.model.Benefeciares;
 import com.example.driveroutreach.ui.activities.Main.LocationChanged;
+import com.example.driveroutreach.ui.base_classes.BaseFragment;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -49,7 +50,7 @@ import java.util.ArrayList;
  * Use the {@link HomeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HomeFragment extends Fragment implements HomeView, OnMapReadyCallback {
+public class HomeFragment extends BaseFragment implements HomeView, OnMapReadyCallback {
     BottomSheetBehavior bottomSheetBehavior;
     GoogleMap map;
 
@@ -65,9 +66,7 @@ public class HomeFragment extends Fragment implements HomeView, OnMapReadyCallba
     ArrayList<String> benf;
     Marker driverLocationMarker;
     HomePresenter homePresenter;
-    SharedPreferences sp;
     public final String DRIVER_ID_KEY = "driverId";
-
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -119,11 +118,10 @@ public class HomeFragment extends Fragment implements HomeView, OnMapReadyCallba
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
 
-        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+        firestore = FirebaseFirestore.getInstance();
 
-        sp = getActivity().getSharedPreferences("sp", Context.MODE_PRIVATE);
 
-        String driverId= sp.getString(DRIVER_ID_KEY,null);
+         String driverId= sp.getString(DRIVER_ID_KEY,null);
 
 
 
