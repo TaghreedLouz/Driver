@@ -22,7 +22,7 @@ import com.bumptech.glide.Glide;
 import com.example.driveroutreach.R;
 import com.example.driveroutreach.databinding.ActivityEditProfileBinding;
 import com.example.driveroutreach.model.DriverProfile;
-import com.example.driveroutreach.ui.activities.Verification.VerificationActivity;
+import com.example.driveroutreach.ui.activities.verification.VerificationActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
