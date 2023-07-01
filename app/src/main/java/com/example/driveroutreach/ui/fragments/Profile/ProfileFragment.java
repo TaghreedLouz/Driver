@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
@@ -21,6 +22,7 @@ import com.example.driveroutreach.ui.activities.contact_us.ContactUsActivity;
 import com.example.driveroutreach.ui.activities.edit_profile.EditProfileActivity;
 import com.example.driveroutreach.ui.activities.notification.NotificationActivity;
 import com.example.driveroutreach.ui.activities.settings.SettingsActivity;
+import com.example.driveroutreach.ui.base_classes.BaseFragment;
 import com.google.firebase.auth.FirebaseAuth;
 
 /**
@@ -28,12 +30,11 @@ import com.google.firebase.auth.FirebaseAuth;
  * Use the {@link ProfileFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ProfileFragment extends Fragment implements ProfileView{
+public class ProfileFragment extends BaseFragment implements ProfileView{
 
-    SharedPreferences sp;
+
     public final String DRIVER_ID_KEY = "driverId";
     FragmentProfileBinding binding;
-
     DriverProfile driverProfileObject;
 
 
@@ -83,16 +84,23 @@ public class ProfileFragment extends Fragment implements ProfileView{
         // Inflate the layout for this fragment
          binding = FragmentProfileBinding.inflate(inflater,container,false);
 
-        sp = getActivity().getSharedPreferences("sp", Context.MODE_PRIVATE);
-        String driverId= sp.getString(DRIVER_ID_KEY,null);
 
-        ProfilePresenter profilePresenter = new ProfilePresenter(this);
+      if (sp != null){
+          String driverId = sp.getString(DRIVER_ID_KEY, null);
+          if (driverId != null) {
+              ProfilePresenter profilePresenter = new ProfilePresenter(this);
 
-        profilePresenter.driverInfo(driverId);
+              profilePresenter.driverInfo(driverId);
 
-        profilePresenter.gettingProfileImage(driverId);
+              profilePresenter.gettingProfileImage(driverId);
+              Log.d("sp_driverId", "onCreateView: sp_driverId nooooooooooooooooooooooot  "+driverId);
 
+          }
 
+      } else {
+            Toast.makeText(getActivity(), "nulllllllll", Toast.LENGTH_SHORT).show();
+            Log.d("sp_driverId", "onCreateView: sp_driverId nullllllllllllllllllllll   ");
+        }
                 binding.linLayoutContactUs.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

@@ -16,7 +16,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 public class LoginPresenter {
 
-    LoginView view;
+    private LoginView view;
     private FirebaseFirestore firestore;
 
     public LoginPresenter(LoginView view) {
@@ -24,24 +24,25 @@ public class LoginPresenter {
         firestore = FirebaseFirestore.getInstance();
     }
 
-
-    public void checkDriverIsExist(){
-        firestore.collection("Drivers_numbers").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()){
-
-                    for (QueryDocumentSnapshot document : task.getResult()){
-                        DriversNumbers num = document.toObject(DriversNumbers.class);
-                        view.onDriverFound(num);
+    public void checkDriverIsExist(String mobile) {
+        firestore.collection("Benf_Numbers").get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                boolean numberFound = false;
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    DriversNumbers num = document.toObject(DriversNumbers.class);
+                    if (mobile.equals(String.valueOf(num.getMobile()))) {
+                        numberFound = true;
+                        view.isDriver(num);
+                        break;
                     }
-
-
-                } else {
-                    view.onFail(task.getException());
                 }
+                if (!numberFound) {
+                    view.numberNotFound();
+                }
+            } else {
+                view.onFail(task.getException());
             }
         });
-
     }
+
 }

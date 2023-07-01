@@ -11,29 +11,22 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+
 public class BaseFragment extends Fragment {
+    public FirebaseFirestore firestore;
+    public SharedPreferences sp;
 
-
-   public SharedPreferences sp;
-    public SharedPreferences.Editor edit;
-
-    public final String DRIVER_ID_KEY = "driverId" , DRIVER_MOBILE_KEY = "driverMobile", DRIVER_NAME_KEY ="driverName";
-
-    public String driverId,driverName;
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        sp = getActivity().getSharedPreferences("sp", Context.MODE_PRIVATE);
+    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        //View rootView = inflater.inflate(R.id, container, false);
-
-
-        sp = getActivity().getSharedPreferences("sp", Context.MODE_PRIVATE);
-        edit = sp.edit();
-
-       driverId= sp.getString(DRIVER_ID_KEY,null);
-
-
-
+        firestore = FirebaseFirestore.getInstance();
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 }
