@@ -1,8 +1,6 @@
 package com.example.driveroutreach.ui.fragments.Home;
 
 import android.Manifest;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
@@ -67,6 +65,8 @@ public class HomeFragment extends BaseFragment implements HomeView, OnMapReadyCa
     Marker driverLocationMarker;
     HomePresenter homePresenter;
     public final String DRIVER_ID_KEY = "driverId";
+
+
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -150,6 +150,8 @@ public class HomeFragment extends BaseFragment implements HomeView, OnMapReadyCa
 
 
                                                 benf =(ArrayList<String>) dataSnapshot.getValue();
+
+                                       //         edit.putString("Attended",benf.toString());
 
                                                 Log.d("DataReturned", benf.toString());
 

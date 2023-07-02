@@ -1,4 +1,4 @@
-package com.example.driveroutreach.ui.activities.verification;
+package com.example.driveroutreach.ui.activities.Verification;
 
 import android.util.Log;
 
@@ -16,9 +16,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class VerificationPresenter extends BasePresenter {
-    com.example.driveroutreach.ui.activities.Verification.VerificationView view;
+  VerificationView view;
 
-    public VerificationPresenter(com.example.driveroutreach.ui.activities.Verification.VerificationView view) {
+    public VerificationPresenter(VerificationView view) {
         this.view = view;
     }
 

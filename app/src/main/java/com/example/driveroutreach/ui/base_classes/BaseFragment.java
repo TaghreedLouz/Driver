@@ -17,10 +17,13 @@ public class BaseFragment extends Fragment {
     public FirebaseFirestore firestore;
     public SharedPreferences sp;
 
+    public SharedPreferences.Editor edit;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         sp = getActivity().getSharedPreferences("sp", Context.MODE_PRIVATE);
+        edit= sp.edit();
     }
 
     @Nullable

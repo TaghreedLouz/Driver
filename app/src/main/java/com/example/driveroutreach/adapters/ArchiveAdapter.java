@@ -20,8 +20,6 @@ ArrayList<ArichivedJourney> journeys;
         this.journeys = journeys;
     }
 
-    public ArchiveAdapter() {
-    }
 
     @NonNull
     @Override

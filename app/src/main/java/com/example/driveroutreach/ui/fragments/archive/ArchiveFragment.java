@@ -23,8 +23,6 @@ import java.util.ArrayList;
  * create an instance of this fragment.
  */
 public class ArchiveFragment extends Fragment implements ArichiveView {
-
-
     ArchivePresenter presenter;
 
     SharedPreferences sp;

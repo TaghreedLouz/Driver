@@ -1,4 +1,4 @@
-package com.example.driveroutreach.ui.activities.verification;
+package com.example.driveroutreach.ui.activities.Verification;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -22,7 +22,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 
-public class VerificationActivity extends AppCompatActivity implements com.example.driveroutreach.ui.activities.Verification.VerificationView {
+public class VerificationActivity extends AppCompatActivity implements VerificationView {
     ActivityVerificationBinding binding;
     String verificationId , verificationIdEdite;
     private PhoneAuthProvider.ForceResendingToken token , tokenEdite;
