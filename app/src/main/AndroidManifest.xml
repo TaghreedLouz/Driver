@@ -72,7 +72,7 @@
             android:name=".ui.activities.Login.LoginActivity"
             android:exported="true"></activity>
         <activity
-            android:name=".ui.activities.verification.VerificationActivity"
+            android:name=".ui.activities.Verification.VerificationActivity"
             android:exported="true" />
         <activity
             android:name=".ui.activities.settings.SettingsActivity"

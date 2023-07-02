@@ -28,7 +28,6 @@ public class ArchivePresenter extends BasePresenter {
 
                         if (task.isSuccessful()){
 
-
                             ArrayList<ArichivedJourney> journeys = (ArrayList<ArichivedJourney>) task.getResult().toObjects(ArichivedJourney.class);
                             view.onGettingArchivedJourneysSuccess(journeys);
                         }else {

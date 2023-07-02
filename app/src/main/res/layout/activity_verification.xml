@@ -7,7 +7,7 @@
     android:padding="@dimen/_13sdp"
     android:gravity="center"
     android:background="@color/white"
-    tools:context=".ui.activities.verification.VerificationActivity">
+    tools:context=".ui.activities.Verification.VerificationActivity">
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/tv_resend"

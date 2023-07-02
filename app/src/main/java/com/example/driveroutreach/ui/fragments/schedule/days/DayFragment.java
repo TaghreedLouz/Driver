@@ -1,7 +1,5 @@
 package com.example.driveroutreach.ui.fragments.schedule.days;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,8 +20,7 @@ import java.util.ArrayList;
 
 public class DayFragment extends BaseFragment implements DayView{
 
-    SharedPreferences sp;
-    SharedPreferences.Editor edit;
+
     public final String DRIVER_ID_KEY = "driverId";
     FragmentDayBinding binding;
     DayPresenter dayPresenter;
@@ -106,10 +103,10 @@ public class DayFragment extends BaseFragment implements DayView{
         binding = FragmentDayBinding.inflate(inflater,container,false);
 
 
-        sp = getActivity().getSharedPreferences("sp", Context.MODE_PRIVATE);
+
 
         String driverId= sp.getString(DRIVER_ID_KEY,null);
-        edit = sp.edit();
+
 
 
         Log.d("driver",driverId);

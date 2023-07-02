@@ -16,7 +16,7 @@ import com.example.driveroutreach.R;
 import com.example.driveroutreach.databinding.ActivityLoginBinding;
 import com.example.driveroutreach.model.DriversNumbers;
 import com.example.driveroutreach.ui.activities.Main.MainActivity;
-import com.example.driveroutreach.ui.activities.verification.VerificationActivity;
+import com.example.driveroutreach.ui.activities.Verification.VerificationActivity;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
