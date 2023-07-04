@@ -33,7 +33,7 @@ String date;
 int itemPosition;
 SharedPreferences sp;
 SharedPreferences.Editor edit;
-HashMap<String, Integer> FinishedJourneys;
+HashMap<String, Integer> FinishedJourneys = new HashMap<String, Integer>();;
 
 
 
@@ -44,6 +44,14 @@ HashMap<String, Integer> FinishedJourneys;
         this.scheduleListener = scheduleListener;
         sp = context.getSharedPreferences("sp", Context.MODE_PRIVATE);
         edit =sp.edit();
+
+
+        Gson gson2 = new Gson();
+        String storedMap=sp.getString("FinishedJourneys",null);
+
+        Type type = new TypeToken<HashMap<String, Integer>>(){}.getType();
+        if (storedMap != null)
+            FinishedJourneys = gson2.fromJson(storedMap, type);
     }
 
     @NonNull
@@ -75,20 +83,16 @@ HashMap<String, Integer> FinishedJourneys;
 
         }
 
-        Gson gson2 = new Gson();
-        String storedMap=sp.getString("FinishedJourneys",null);
-        Type type = new TypeToken<HashMap<String, Integer>>(){}.getType();
-        HashMap<String, Integer> storedHashMap = gson2.fromJson(storedMap, type);
-        if (storedHashMap != null){
-            for(String journeyID : storedHashMap.keySet() ){
+        if (FinishedJourneys != null){
+            for(String journeyID : FinishedJourneys.keySet() ){
                 if (journeyID.equals(journeyModel.getJourneyId())
-                        && storedHashMap.get(journeyID) == holder.getAdapterPosition()){
+                        && FinishedJourneys.get(journeyID) == holder.getAdapterPosition()){
 
                     holder.startJourney.setEnabled(journeyModel.isEnabled());
                 }
             }
 
-            Log.d("hash","from sp"+storedHashMap.toString());
+            Log.d("hash","from sp"+FinishedJourneys.toString());
         }
 
 
@@ -138,7 +142,7 @@ HashMap<String, Integer> FinishedJourneys;
             }
         });
 
-        FinishedJourneys = new HashMap<String, Integer>();
+
 
         holder.endJourney.setOnClickListener(new View.OnClickListener() {
             @Override

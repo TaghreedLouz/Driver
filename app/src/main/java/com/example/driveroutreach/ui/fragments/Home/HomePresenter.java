@@ -1,7 +1,5 @@
 package com.example.driveroutreach.ui.fragments.Home;
 
-import androidx.fragment.app.Fragment;
-
 import java.util.ArrayList;
 
 public class HomePresenter {
@@ -11,9 +9,7 @@ public class HomePresenter {
         this.view = view;
     }
 
-    public void SettingMap() {
-        view.onSetMapFrag();
-    }
+
 
 
 

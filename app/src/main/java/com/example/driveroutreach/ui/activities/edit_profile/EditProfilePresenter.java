@@ -64,14 +64,10 @@ public class EditProfilePresenter extends BasePresenter {
 
                         view.onSendCode( verificationId, newNumber);
 
-
                     }
                 }
         );
-
-
-
-    }
+   }
 
 
 }
