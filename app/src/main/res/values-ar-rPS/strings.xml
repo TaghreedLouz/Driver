@@ -64,12 +64,20 @@
     <string name="ok">تم</string>
     <string name="determine_the_accuracy_of_your_location">تحديد موقعك الحالي</string>
 
-    <string name="skip">Skip</string>
-    <string name="next">Next</string>
-    <string name="tv_aboutus">About us</string>
-    <string name="tv_content">Running since 2012, this project focuses on addressing the specific transport needs of people with face disabilities, and has shown itself as vital to the lives of many residents of the Gaza Strip. The service provided increases the accessibility of education and rehabilitation services across the Gaza Strip, and people have come to rely upon the services provided. The project directly helps around 230 people, including university students and employees who are unable to transport themselves to and from their commitments.</string>
-    <string name="btn_email">Email</string>
-    <string name="btn_phone">Phone</string>
+    <string name="onboarding_image" />
+    <string name="title_activity_about_us">AboutUsActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="previous">Previous</string>
+
+    <string name="skip">تخطي</string>
+    <string name="notifacation_describtion">هل تود رؤية مواقع المستفيدين؟!</string>
+    <string name="next">التالي</string>
+    <string name="tv_aboutus">من نحن</string>
+    <string name="tv_content">يعمل هذا المشروع منذ عام 2012 ، ويركز على تلبية احتياجات النقل المحددة للأشخاص ذوي الإعاقة ، وقد أظهر نفسه على أنه حيوي لحياة العديد من سكان قطاع غزة. تزيد الخدمة المقدمة من إمكانية الوصول إلى خدمات التعليم وإعادة التأهيل في جميع أنحاء قطاع غزة ، وأصبح الناس يعتمدون على الخدمات المقدمة. يساعد المشروع بشكل مباشر حوالي 230 شخصًا ، بما في ذلك طلاب الجامعات والموظفون غير القادرين على الانتقال من التزاماتهم وإليها.</string>
+    <string name="btn_email">بريد الكتروني</string>
+    <string name="btn_phone">الهاتف</string>
 
 
 </resources>

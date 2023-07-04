@@ -25,6 +25,7 @@ import androidx.core.content.ContextCompat;
 
 import com.example.driveroutreach.R;
 import com.example.driveroutreach.model.DriversNumbers;
+import com.example.driveroutreach.ui.fragments.Home.HomeFragment;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -106,16 +107,17 @@ public class LocationService extends Service implements LocationListener {
         }
 
         Intent intent1 = new Intent(getBaseContext(), LocationService.class);
+        //Intent intent1 = new Intent(getBaseContext(), HomeFragment.class);
         //take one value
         intent1.setAction("stop");
         PendingIntent pi = PendingIntent.getService(getBaseContext(), 0, intent1, PendingIntent.FLAG_IMMUTABLE);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID);
         builder.setSmallIcon(R.drawable.icon_arrive);
-        builder.setContentTitle("Notification Title");
-        builder.setContentText("Notification Text");
+        builder.setContentTitle("Driver");
+        builder.setContentText(getString(R.string.notifacation_describtion));
         builder.setPriority(NotificationCompat.PRIORITY_HIGH);
-        builder.addAction(R.drawable.ic_arrow_right, "Action", pi);
+        builder.addAction(R.drawable.ic_arrow_right, "show", pi);
 
 
         Notification n = builder.build();
@@ -180,16 +182,17 @@ public class LocationService extends Service implements LocationListener {
          float distance = locationA.distanceTo(locationB);
 
 
+      locationRef.child(String.valueOf(driverId)).setValue(locationMap);
 
          Log.d("distance",String.valueOf(distance));
 
          if (distance>50){
-             SvaingLocation(location, driverId);
+          //   SvaingLocation(location, driverId);
          }
 
 
      } else {
-         SvaingLocation(location, driverId);
+    //    SvaingLocation(location, driverId);
      }
 
 
@@ -208,7 +211,7 @@ public class LocationService extends Service implements LocationListener {
         edit.putString("longitude",String.valueOf(location.getLongitude()));
         edit.commit();
         EventBus.getDefault().post(new LocationChanged(location.getLatitude(), location.getLongitude()));
-        locationRef.child(String.valueOf(driverId)).setValue(locationMap);
+      //  locationRef.child(String.valueOf(driverId)).setValue(locationMap);
     }
 
     @Override
