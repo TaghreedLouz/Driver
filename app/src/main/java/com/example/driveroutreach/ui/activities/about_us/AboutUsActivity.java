@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.example.driveroutreach.R;
 import com.example.driveroutreach.databinding.ActivityAboutUsBinding;
+import com.example.driveroutreach.ui.app_utility.AppUtility;
 
 public class AboutUsActivity extends AppCompatActivity {
 
@@ -31,9 +32,9 @@ public class AboutUsActivity extends AppCompatActivity {
                     @Override
                     public void onActivityResult(Boolean result) {
                         if (result){
-                            Toast.makeText(getBaseContext(), "Permission granted", Toast.LENGTH_SHORT).show();
+                            AppUtility.showSnackbar(binding.getRoot(),"Call Permission granted");
                         }else {
-                            Toast.makeText(getBaseContext(), "Permission denied", Toast.LENGTH_SHORT).show();
+                            AppUtility.showSnackbar(binding.getRoot(),"Call Permission denied");
                         }
                     }
                 });
@@ -54,7 +55,7 @@ public class AboutUsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent=new Intent(Intent.ACTION_SENDTO);
-                String mail =" info@interpal.org";
+                String mail ="info@interpal.org";
                 intent.setData(Uri.parse("mailto:"+mail));
                 startActivity(intent);
             }

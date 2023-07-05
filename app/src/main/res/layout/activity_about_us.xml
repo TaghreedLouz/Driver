@@ -96,8 +96,8 @@
                 android:textColor="@color/dark_gray"
                 android:backgroundTint="@color/gray_bac_circle"
                 android:drawableLeft="@drawable/ic_baseline_phone_24"
-                android:text="@string/btn_phone"
-                android:paddingHorizontal="@dimen/_85sdp"
+                android:text="+970593887076"
+                android:paddingHorizontal="@dimen/_20sdp"
                 android:layout_gravity="center"
                 android:textAllCaps="false"
                 app:layout_constraintTop_toBottomOf="@+id/ll3" />
@@ -111,8 +111,8 @@
                 android:textColor="@color/dark_gray"
                 android:layout_marginBottom="@dimen/_100sdp"
                 android:backgroundTint="@color/gray_bac_circle"
-                android:text="@string/btn_email"
-                android:paddingHorizontal="@dimen/_85sdp"
+                android:text="info@interpal.org"
+                android:paddingHorizontal="@dimen/_20sdp"
                 android:layout_gravity="center"
                 android:textAllCaps="false"
                 app:layout_constraintTop_toBottomOf="@+id/ll3" />
