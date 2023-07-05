@@ -53,6 +53,7 @@ public class OnboardingActivity extends AppCompatActivity {
                         binding.btnNext.setText("Start");
                         binding.btnNext.setBackground(ContextCompat.getDrawable(getBaseContext(), R.drawable.img_bg_3));
                         binding.btnNext.setTextSize(10f);
+                        binding.btnSkip.setVisibility(View.GONE);
                     } else if (binding.viewPager.getCurrentItem()  == 1){
                         // Reset the text of the Next button
                         binding.btnNext.setBackground(ContextCompat.getDrawable(getBaseContext(), R.drawable.img_bg_2));

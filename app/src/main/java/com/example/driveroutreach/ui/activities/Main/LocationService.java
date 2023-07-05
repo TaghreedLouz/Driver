@@ -157,10 +157,14 @@ public class LocationService extends Service implements LocationListener {
 
         // تحديث على اللوكيشن في الريل تايم
 
-        locationRef.child(String.valueOf(driverId)).setValue(locationMap);
-        EventBus.getDefault().post(new LocationChanged(location.getLatitude(), location.getLongitude()));
 
 
+
+
+     String PreLat   = sp.getString("latitude",null);
+     String Prelong =  sp.getString("longitude",null);
+
+     if (PreLat != null && Prelong !=null){
 
 
 //     String PreLat   = sp.getString("latitude",null);
