@@ -1,5 +1,10 @@
 package com.example.driveroutreach.ui.app_utility;
 
+import android.view.View;
+
+import com.example.driveroutreach.ui.activities.Main.LocationService;
+import com.google.android.material.snackbar.Snackbar;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -15,7 +20,9 @@ public class AppUtility {
         return new SimpleDateFormat("dd-MMMM-yyyy hh-mm-ss").format(Calendar.getInstance().getTime());
     }
 
-
+    public static void showSnackbar(View view, String message) {
+        Snackbar.make(view, message, Snackbar.LENGTH_LONG).show();
+    }
 
     public static String getToday(){
         return  new SimpleDateFormat("EEEE").format(Calendar.getInstance().getTime());

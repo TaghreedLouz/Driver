@@ -17,6 +17,7 @@ import com.example.driveroutreach.databinding.ActivityLoginBinding;
 import com.example.driveroutreach.model.DriversNumbers;
 import com.example.driveroutreach.ui.activities.Main.MainActivity;
 import com.example.driveroutreach.ui.activities.Verification.VerificationActivity;
+import com.example.driveroutreach.ui.app_utility.AppUtility;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -65,7 +66,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
             if (TextUtils.isEmpty(mobile)) {
                 binding.etMobile.setError("Enter your phone number");
                 setEnabledVisibility();
-                Toast.makeText(getApplicationContext(), "Enter your phone", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "Enter your phone", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -96,7 +97,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
 
                     @Override
                     public void onVerificationFailed(@NonNull FirebaseException e) {
-                        Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        AppUtility.showSnackbar(binding.getRoot(),e.getMessage());
                         binding.etMobile.setText("");
                         Log.e("LoginActivityLOG", e.toString());
                         setEnabledVisibility();
@@ -155,7 +156,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     public void numberNotFound() {
         Log.d("LoginActivityLOG", "Does not exist");
         setEnabledVisibility();
-        Toast.makeText(getApplicationContext(), "You're not allowed to login.", Toast.LENGTH_SHORT).show();
+        AppUtility.showSnackbar(binding.getRoot(),"You're not allowed to login.");
     }
 
     @Override

@@ -25,6 +25,7 @@ import androidx.core.content.ContextCompat;
 
 import com.example.driveroutreach.R;
 import com.example.driveroutreach.model.DriversNumbers;
+import com.example.driveroutreach.ui.app_utility.AppUtility;
 import com.example.driveroutreach.ui.fragments.Home.HomeFragment;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -83,7 +84,8 @@ public class LocationService extends Service implements LocationListener {
                     == PackageManager.PERMISSION_GRANTED) {
                 // Permission already granted
                 // You can proceed with using background location
-                Toast.makeText(this, "Background location permission granted", Toast.LENGTH_SHORT).show();
+                AppUtility.showSnackbar(activityContext.findViewById(android.R.id.content),"Background location permission granted");
+
             } else {
                 // Permission not granted, request it
                 ActivityCompat.requestPermissions(activityContext,
@@ -93,7 +95,8 @@ public class LocationService extends Service implements LocationListener {
         } else {
             // Background location permission is not required for earlier versions
             // You can proceed with using location
-            Toast.makeText(this, "Background location permission not required", Toast.LENGTH_SHORT).show();
+            AppUtility.showSnackbar(activityContext.findViewById(android.R.id.content),"Background location permission not required");
+         //   Toast.makeText(this, "Background location permission not required", Toast.LENGTH_SHORT).show();
 
         }
 
