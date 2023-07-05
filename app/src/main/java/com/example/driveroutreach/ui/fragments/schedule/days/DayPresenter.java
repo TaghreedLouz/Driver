@@ -67,4 +67,20 @@ public class DayPresenter extends BasePresenter {
                     }
                 });
     }
+
+
+    void storeArchivedJourney2(ArichivedJourney journey, String driverId){
+
+        firestore.collection("Journey_Archive").document()
+                .set(journey).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()){
+                            view.storeArchivedJourneySuccess();
+                        }else {
+                            view.storeArchivedJourneyFailure(task.getException());
+                        }
+                    }
+                });
+    }
 }

@@ -1,8 +1,6 @@
 package com.example.driveroutreach.ui.fragments.Home;
 
 import android.Manifest;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,6 +17,7 @@ import com.example.driveroutreach.R;
 import com.example.driveroutreach.databinding.FragmentHomeBinding;
 import com.example.driveroutreach.model.Benefeciares;
 import com.example.driveroutreach.ui.activities.Main.LocationChanged;
+import com.example.driveroutreach.ui.base_classes.BaseFragment;
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -40,6 +39,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -52,7 +52,7 @@ import java.util.ArrayList;
  * Use the {@link HomeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HomeFragment extends Fragment implements HomeView, OnMapReadyCallback {
+public class HomeFragment extends BaseFragment implements HomeView, OnMapReadyCallback {
     BottomSheetBehavior bottomSheetBehavior;
     GoogleMap map;
 
@@ -68,7 +68,7 @@ public class HomeFragment extends Fragment implements HomeView, OnMapReadyCallba
     ArrayList<String> benf;
     Marker driverLocationMarker;
     HomePresenter homePresenter;
-    SharedPreferences sp;
+   // SharedPreferences sp;
     public final String DRIVER_ID_KEY = "driverId";
 
     Marker driver_marker;
@@ -126,7 +126,7 @@ public class HomeFragment extends Fragment implements HomeView, OnMapReadyCallba
 
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
 
-        sp = getActivity().getSharedPreferences("sp", Context.MODE_PRIVATE);
+    //    sp = getActivity().getSharedPreferences("sp", Context.MODE_PRIVATE);
 
         String driverId= sp.getString(DRIVER_ID_KEY,null);
 
@@ -159,6 +159,11 @@ public class HomeFragment extends Fragment implements HomeView, OnMapReadyCallba
 
                                                 benf =(ArrayList<String>) dataSnapshot.getValue();
 
+
+
+                                                edit.putString("attending",  new Gson().toJson(benf));
+                                                edit.commit();
+
                                                 Log.d("DataReturned", benf.toString());
 
                                             }
@@ -180,6 +185,8 @@ public class HomeFragment extends Fragment implements HomeView, OnMapReadyCallba
                                                                         Marker marker = map.addMarker(markerOptions);
 
 
+
+
                                                                         MarkersPoistions.add(new com.example.driveroutreach.model.Location(benefeciares.getLocation().getLatitude(),benefeciares.getLocation().getLongitude()));
                                                                     } else {
                                                                         //Put exception
@@ -190,7 +197,7 @@ public class HomeFragment extends Fragment implements HomeView, OnMapReadyCallba
                                                             });
 
                                                 }
-                                              Log.d("clientMarkers",markedPositionMarker.toString());
+//                                              Log.d("clientMarkers",markedPositionMarker.toString());
                                                 onSetMapFrag();
 
                                             }

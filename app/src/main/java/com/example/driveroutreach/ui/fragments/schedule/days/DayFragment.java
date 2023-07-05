@@ -42,7 +42,8 @@ public class DayFragment extends BaseFragment implements DayView{
 
                                         @Override
                                         public void EndJourney(ArichivedJourney journey) {
-                                            dayPresenter.storeArchivedJourney(journey,journey.getDriver());
+                                         //   dayPresenter.storeArchivedJourney(journey,journey.getDriver());
+                                            dayPresenter.storeArchivedJourney2(journey, journey.getDriver());
                                         }
 
 
@@ -64,6 +65,16 @@ public class DayFragment extends BaseFragment implements DayView{
     @Override
     public void storeArchivedJourneyFailure(Exception e) {
         Log.d("StoredArchive",e.getMessage());
+
+    }
+
+    @Override
+    public void storeArchivedJourneySuccess2() {
+
+    }
+
+    @Override
+    public void storeArchivedJourneyFailure2(Exception e) {
 
     }
 

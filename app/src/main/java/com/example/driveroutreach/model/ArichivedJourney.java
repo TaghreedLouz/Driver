@@ -1,5 +1,7 @@
 package com.example.driveroutreach.model;
 
+import java.util.ArrayList;
+
 public class ArichivedJourney {
 
       String driver ;
@@ -9,9 +11,10 @@ public class ArichivedJourney {
         String organization ;
         String date;
         String journeyId ;
+        ArrayList<String> attending;
 
 
-    public ArichivedJourney(String driver, String region, String start, String end, String organization, String date, String journeyId) {
+    public ArichivedJourney(String driver, String region, String start, String end, String organization, String date, String journeyId, ArrayList<String> attending) {
         this.driver = driver;
         this.region = region;
         this.start = start;
@@ -19,9 +22,18 @@ public class ArichivedJourney {
         this.organization = organization;
         this.date = date;
         this.journeyId = journeyId;
+        this.attending = attending;
     }
 
     public ArichivedJourney() {
+    }
+
+    public ArrayList<String> getAttending() {
+        return attending;
+    }
+
+    public void setAttending(ArrayList<String> attending) {
+        this.attending = attending;
     }
 
     public String getDate() {

@@ -80,7 +80,9 @@ public class ArchiveFragment extends Fragment implements ArichiveView {
         String driverId= sp.getString(DRIVER_ID_KEY,null);
         edit = sp.edit();
 
+
         presenter.gettingArchivedJourneys(driverId);
+
 
         return binding.getRoot();
     }
