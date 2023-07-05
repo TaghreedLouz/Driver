@@ -158,43 +158,10 @@ public class LocationService extends Service implements LocationListener {
         String driverId= sp.getString(DRIVER_ID_KEY,null);
 
         // تحديث على اللوكيشن في الريل تايم
+        locationRef.child(String.valueOf(driverId)).setValue(locationMap);
 
 
-
-
-
-     String PreLat   = sp.getString("latitude",null);
-     String Prelong =  sp.getString("longitude",null);
-
-     if (PreLat != null && Prelong !=null){
-
-
-         Location locationA = new Location("point A");
-
-         locationA.setLatitude(Double.parseDouble(PreLat));
-         locationA.setLongitude(Double.parseDouble(Prelong));
-
-         Location locationB = new Location("point B");
-
-         locationB.setLatitude(latitude);
-         locationB.setLongitude(longitude);
-
-         float distance = locationA.distanceTo(locationB);
-
-
-      locationRef.child(String.valueOf(driverId)).setValue(locationMap);
-
-         Log.d("distance",String.valueOf(distance));
-
-         if (distance>50){
-          //   SvaingLocation(location, driverId);
-         }
-
-
-     } else {
-    //    SvaingLocation(location, driverId);
-     }
-
+        EventBus.getDefault().post(new LocationChanged(location.getLatitude(), location.getLongitude()));
 
 
 
@@ -203,15 +170,7 @@ public class LocationService extends Service implements LocationListener {
 
         Log.d("LocationService", "Latitude: " + driver.getMobile() + " " + latitude + ", Longitude: " + longitude);
 
-      //  Toast.makeText(this, "Latitude: " + latitude + ", Longitude: " + longitude, Toast.LENGTH_SHORT).show();
-    }
-
-    private void SvaingLocation(Location location, String driverId) {
-        edit.putString("latitude",String.valueOf(location.getLatitude()));
-        edit.putString("longitude",String.valueOf(location.getLongitude()));
-        edit.commit();
-        EventBus.getDefault().post(new LocationChanged(location.getLatitude(), location.getLongitude()));
-      //  locationRef.child(String.valueOf(driverId)).setValue(locationMap);
+        Toast.makeText(this, "Latitude: " + latitude + ", Longitude: " + longitude, Toast.LENGTH_SHORT).show();
     }
 
     @Override
