@@ -54,7 +54,7 @@ public class AboutUsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent=new Intent(Intent.ACTION_SENDTO);
-                String mail =" info@interpal.org";
+                String mail ="info@interpal.org";
                 intent.setData(Uri.parse("mailto:"+mail));
                 startActivity(intent);
             }
