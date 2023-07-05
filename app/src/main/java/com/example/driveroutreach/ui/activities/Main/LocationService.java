@@ -25,6 +25,7 @@ import androidx.core.content.ContextCompat;
 
 import com.example.driveroutreach.R;
 import com.example.driveroutreach.model.DriversNumbers;
+import com.example.driveroutreach.ui.fragments.Home.HomeFragment;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -106,16 +107,17 @@ public class LocationService extends Service implements LocationListener {
         }
 
         Intent intent1 = new Intent(getBaseContext(), LocationService.class);
+        //Intent intent1 = new Intent(getBaseContext(), HomeFragment.class);
         //take one value
         intent1.setAction("stop");
         PendingIntent pi = PendingIntent.getService(getBaseContext(), 0, intent1, PendingIntent.FLAG_IMMUTABLE);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID);
         builder.setSmallIcon(R.drawable.icon_arrive);
-        builder.setContentTitle("Notification Title");
-        builder.setContentText("Notification Text");
+        builder.setContentTitle("Driver");
+        builder.setContentText(getString(R.string.notifacation_describtion));
         builder.setPriority(NotificationCompat.PRIORITY_HIGH);
-        builder.addAction(R.drawable.ic_arrow_right, "Action", pi);
+        builder.addAction(R.drawable.ic_arrow_right, "show", pi);
 
 
         Notification n = builder.build();
@@ -156,46 +158,10 @@ public class LocationService extends Service implements LocationListener {
         String driverId= sp.getString(DRIVER_ID_KEY,null);
 
         // تحديث على اللوكيشن في الريل تايم
+        locationRef.child(String.valueOf(driverId)).setValue(locationMap);
 
 
-
-
-
-     String PreLat   = sp.getString("latitude",null);
-     String Prelong =  sp.getString("longitude",null);
-
-     if (PreLat != null && Prelong !=null){
-
-
-//     String PreLat   = sp.getString("latitude",null);
-//     String Prelong =  sp.getString("longitude",null);
-//
-//     if (PreLat != null && Prelong !=null){
-//
-//
-//         Location locationA = new Location("point A");
-//
-//         locationA.setLatitude(Double.parseDouble(PreLat));
-//         locationA.setLongitude(Double.parseDouble(Prelong));
-//
-//         Location locationB = new Location("point B");
-//
-//         locationB.setLatitude(latitude);
-//         locationB.setLongitude(longitude);
-//
-//         float distance = locationA.distanceTo(locationB);
-//
-//
-//
-//         Log.d("distance",String.valueOf(distance));
-//
-//         if (distance>50){
-//             SvaingLocation(location, driverId);
-//         }
-//     } else {
-//         SvaingLocation(location, driverId);
-//     }
-
+        EventBus.getDefault().post(new LocationChanged(location.getLatitude(), location.getLongitude()));
 
 
 
@@ -204,15 +170,7 @@ public class LocationService extends Service implements LocationListener {
 
         Log.d("LocationService", "Latitude: " + driver.getMobile() + " " + latitude + ", Longitude: " + longitude);
 
-      //  Toast.makeText(this, "Latitude: " + latitude + ", Longitude: " + longitude, Toast.LENGTH_SHORT).show();
-    }
-
-    private void SvaingLocation(Location location, String driverId) {
-        edit.putString("latitude",String.valueOf(location.getLatitude()));
-        edit.putString("longitude",String.valueOf(location.getLongitude()));
-        edit.commit();
-        EventBus.getDefault().post(new LocationChanged(location.getLatitude(), location.getLongitude()));
-        locationRef.child(String.valueOf(driverId)).setValue(locationMap);
+        Toast.makeText(this, "Latitude: " + latitude + ", Longitude: " + longitude, Toast.LENGTH_SHORT).show();
     }
 
     @Override
