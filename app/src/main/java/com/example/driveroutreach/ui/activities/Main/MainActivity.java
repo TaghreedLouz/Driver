@@ -22,6 +22,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.driveroutreach.R;
 import com.example.driveroutreach.databinding.ActivityMainBinding;
+import com.example.driveroutreach.ui.app_utility.AppUtility;
 import com.example.driveroutreach.ui.fragments.schedule.ScheduleFragment;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.ResolvableApiException;
@@ -142,7 +143,8 @@ public class MainActivity extends AppCompatActivity implements MainView {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 startLocationService();
             } else {
-                Toast.makeText(this, "Location permission denied", Toast.LENGTH_SHORT).show();
+             //   Toast.makeText(this, "Location permission denied", Toast.LENGTH_SHORT).show();
+                AppUtility.showSnackbar(binding.getRoot(),"Location permission denied");
             }
         }
     }
@@ -164,7 +166,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
             try {
                 LocationSettingsResponse response = task.getResult(ApiException.class);
                 // تم تفعيل نظام تحديد المواقع بنجاح
-                Toast.makeText(MainActivity.this, "Location enabled successfully", Toast.LENGTH_SHORT).show();
+                AppUtility.showSnackbar(binding.getRoot(),"Location enabled successfully");
             } catch (ApiException e) {
                 switch (e.getStatusCode()) {
                     case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
@@ -189,10 +191,12 @@ public class MainActivity extends AppCompatActivity implements MainView {
         if (requestCode == 2) {
             if (resultCode == RESULT_OK) {
                 // تم تفعيل Location
-                Toast.makeText(this, "Location enabled successfully", Toast.LENGTH_SHORT).show();
+             //   Toast.makeText(this, "Location enabled successfully", Toast.LENGTH_SHORT).show();
+                AppUtility.showSnackbar(binding.getRoot(),"Location enabled successfully");
             } else if (resultCode == RESULT_CANCELED) {
                 // تم إلغاء تفعيل Location
-                Toast.makeText(this, "Location is deactivated", Toast.LENGTH_SHORT).show();
+             //   Toast.makeText(this, "Location is deactivated", Toast.LENGTH_SHORT).show();
+                AppUtility.showSnackbar(binding.getRoot(),"Location is deactivated");
             }
         }
     }

@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.driveroutreach.R;
 import com.example.driveroutreach.databinding.ActivityVerificationBinding;
 import com.example.driveroutreach.ui.activities.Main.MainActivity;
+import com.example.driveroutreach.ui.app_utility.AppUtility;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -95,7 +96,7 @@ public class VerificationActivity extends AppCompatActivity implements Verificat
                                            finish();
                                        } else {
                                            binding.pinView.setLineColor(getResources().getColor(R.color.baby_red));
-                                           Toast.makeText(VerificationActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                           AppUtility.showSnackbar(binding.getRoot(),task.getException().getMessage());
                                            Log.e("VerificationActivityLOG","   =====>  "+task.getException().getMessage().toString());
                                        }
                                    });
@@ -118,7 +119,7 @@ public class VerificationActivity extends AppCompatActivity implements Verificat
                        if (TextUtils.isEmpty(binding.pinView.getText().toString())) {
                            binding.pinView.setError("Enter verification code");
                            binding.pinView.setLineColor(getResources().getColor(R.color.baby_red));
-                           Toast.makeText(getApplicationContext(), "Enter verification code", Toast.LENGTH_SHORT).show();
+                           AppUtility.showSnackbar(binding.getRoot(),"Enter verification code");
                            Log.e("VerificationActivityLOG", "empty");
                            return;
                        } else {
@@ -353,10 +354,12 @@ public class VerificationActivity extends AppCompatActivity implements Verificat
                             if (task.isSuccessful()) {
                                 // Phone number update successful
 
-                                Toast.makeText(getApplicationContext(), "Phone number updated successfully", Toast.LENGTH_SHORT).show();
+                                AppUtility.showSnackbar(binding.getRoot(),"Phone number updated successfully");
                             } else {
                                 // Phone number update failed
                                 Log.d("PhoneNum updated failed", task.getException().getMessage());
+                                //AppUtility.showSnackbar(binding.getRoot(),"Failed to update phone number: " + task.getException().getMessage());
+
                                 Toast.makeText(getApplicationContext(), "Failed to update phone number: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         }

@@ -66,7 +66,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
             if (TextUtils.isEmpty(mobile)) {
                 binding.etMobile.setError("Enter your phone number");
                 setEnabledVisibility();
-                Toast.makeText(getApplicationContext(), "Enter your phone", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "Enter your phone", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -97,7 +97,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
 
                     @Override
                     public void onVerificationFailed(@NonNull FirebaseException e) {
-                        Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        AppUtility.showSnackbar(binding.getRoot(),e.getMessage());
                         binding.etMobile.setText("");
                         Log.e("LoginActivityLOG", e.toString());
                         setEnabledVisibility();
