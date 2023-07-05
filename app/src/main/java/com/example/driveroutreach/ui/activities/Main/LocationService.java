@@ -157,40 +157,40 @@ public class LocationService extends Service implements LocationListener {
 
         // تحديث على اللوكيشن في الريل تايم
 
+        locationRef.child(String.valueOf(driverId)).setValue(locationMap);
+        EventBus.getDefault().post(new LocationChanged(location.getLatitude(), location.getLongitude()));
 
 
 
 
-     String PreLat   = sp.getString("latitude",null);
-     String Prelong =  sp.getString("longitude",null);
-
-     if (PreLat != null && Prelong !=null){
-
-
-         Location locationA = new Location("point A");
-
-         locationA.setLatitude(Double.parseDouble(PreLat));
-         locationA.setLongitude(Double.parseDouble(Prelong));
-
-         Location locationB = new Location("point B");
-
-         locationB.setLatitude(latitude);
-         locationB.setLongitude(longitude);
-
-         float distance = locationA.distanceTo(locationB);
-
-
-
-         Log.d("distance",String.valueOf(distance));
-
-         if (distance>50){
-             SvaingLocation(location, driverId);
-         }
-
-
-     } else {
-         SvaingLocation(location, driverId);
-     }
+//     String PreLat   = sp.getString("latitude",null);
+//     String Prelong =  sp.getString("longitude",null);
+//
+//     if (PreLat != null && Prelong !=null){
+//
+//
+//         Location locationA = new Location("point A");
+//
+//         locationA.setLatitude(Double.parseDouble(PreLat));
+//         locationA.setLongitude(Double.parseDouble(Prelong));
+//
+//         Location locationB = new Location("point B");
+//
+//         locationB.setLatitude(latitude);
+//         locationB.setLongitude(longitude);
+//
+//         float distance = locationA.distanceTo(locationB);
+//
+//
+//
+//         Log.d("distance",String.valueOf(distance));
+//
+//         if (distance>50){
+//             SvaingLocation(location, driverId);
+//         }
+//     } else {
+//         SvaingLocation(location, driverId);
+//     }
 
 
 
