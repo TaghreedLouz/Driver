@@ -13,7 +13,7 @@ public class ArichivedJourney {
         String journeyId ;
         ArrayList<String> attending;
 
-
+       boolean ischildAdapterSectionVisible;
     public ArichivedJourney(String driver, String region, String start, String end, String organization, String date, String journeyId, ArrayList<String> attending) {
         this.driver = driver;
         this.region = region;
@@ -23,6 +23,7 @@ public class ArichivedJourney {
         this.date = date;
         this.journeyId = journeyId;
         this.attending = attending;
+        ischildAdapterSectionVisible = false;
     }
 
     public ArichivedJourney() {
@@ -92,5 +93,13 @@ public class ArichivedJourney {
 
     public void setJourneyId(String journeyId) {
         this.journeyId = journeyId;
+    }
+
+    public boolean isIschildAdapterSectionVisible() {
+        return ischildAdapterSectionVisible;
+    }
+
+    public void setIschildAdapterSectionVisible(boolean ischildAdapterSectionVisible) {
+        this.ischildAdapterSectionVisible = ischildAdapterSectionVisible;
     }
 }

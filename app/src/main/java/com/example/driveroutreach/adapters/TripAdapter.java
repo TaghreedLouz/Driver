@@ -212,6 +212,7 @@ HashMap<String, Integer> FinishedJourneys = new HashMap<String, Integer>();;
             endJourney = binding.btnEndJourney;
             date = binding.tvDate;
 
+
         }
     }
 }

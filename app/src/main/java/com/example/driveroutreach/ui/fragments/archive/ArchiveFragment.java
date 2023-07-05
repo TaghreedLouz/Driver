@@ -91,7 +91,7 @@ public class ArchiveFragment extends Fragment implements ArichiveView {
     public void onGettingArchivedJourneysSuccess(ArrayList<ArichivedJourney> journeys) {
 
 
-        binding.rvArchive.setAdapter(new ArchiveAdapter(journeys));
+        binding.rvArchive.setAdapter(new ArchiveAdapter(journeys,getContext()));
         binding.rvArchive.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false));
     }
 
