@@ -54,6 +54,7 @@ public class EditProfilePresenter extends BasePresenter {
 
                     @Override
                     public void onVerificationFailed(@NonNull FirebaseException e) {
+                        view.onVerificationFailed(e);
                         Log.d("verification",e.getMessage());
                         //    setEnabledVisibility();
                     }

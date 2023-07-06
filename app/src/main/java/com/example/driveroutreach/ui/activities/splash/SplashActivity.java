@@ -1,20 +1,22 @@
 package com.example.driveroutreach.ui.activities.splash;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-
-import androidx.appcompat.app.AppCompatActivity;
+import android.util.Log;
 
 import com.example.driveroutreach.R;
 import com.example.driveroutreach.ui.activities.Login.LoginActivity;
 import com.example.driveroutreach.ui.activities.onboarding.OnboardingActivity;
+import com.example.driveroutreach.ui.app_utility.AppUtility;
+import com.example.driveroutreach.ui.base_classes.BaseActivity;
 
-public class SplashActivity extends AppCompatActivity {
+import java.text.SimpleDateFormat;
 
-    SharedPreferences sp;
-    SharedPreferences.Editor edit;
+public class SplashActivity extends BaseActivity {
+
+//    SharedPreferences sp;
+//    SharedPreferences.Editor edit;
     public static final String IS_FIRST_KEY = "firstTime";
 
     @Override
@@ -22,8 +24,10 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        sp = getSharedPreferences("sp", MODE_PRIVATE);
-        edit = sp.edit();
+//        sp = getSharedPreferences("sp", MODE_PRIVATE);
+//        edit = sp.edit();
+
+        checkNewDay();
 
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -39,5 +43,48 @@ public class SplashActivity extends AppCompatActivity {
                 finish();
             }
         }, 4000);
+
+
+
+
+
     }
+
+    private void checkNewDay() {
+        SimpleDateFormat date= new SimpleDateFormat("dd-MMMM-yyyy");
+
+        String previous = sp.getString("createdSps",null);
+        Log.d("boolean",previous);
+        if(previous != null){
+          boolean x = previous.equals(AppUtility.getDate());
+            Log.d("boolean",String.valueOf(x));
+          if (!x){
+              Log.d("boolean",String.valueOf(x)+"inside");
+              edit.putString("FinishedJourneys",null);
+              edit.putString("attending",null);
+              edit.commit();
+          }
+        }
+
+//        Date created;
+//        Date currentDate;
+//
+//        try {
+//             created=   date.parse(sp.getString("createdSps",null));
+//             currentDate = date.parse(AppUtility.getDate());
+//            if (sp!=null){
+//                if (previous != null){
+//                    if (created.compareTo(currentDate)<0){
+//                        edit.putString("FinishedJourneys",null);
+//                        edit.putString("attending",null);
+//                        edit.commit();
+//                    }
+//                }
+//            }
+//        } catch (ParseException e) {
+//            throw new RuntimeException(e);
+//        }
+    }
+
+
 }

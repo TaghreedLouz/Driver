@@ -8,5 +8,7 @@ public interface EditProfileView {
 
    void onSendCode(String verificationId, String newNumber);
 
+   void onVerificationFailed(Exception e);
+
 
 }

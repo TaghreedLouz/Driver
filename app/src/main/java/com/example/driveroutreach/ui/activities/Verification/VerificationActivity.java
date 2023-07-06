@@ -376,7 +376,9 @@ public class VerificationActivity extends BaseActivity implements VerificationVi
     @Override
     public void onChangeNumberFailure(Exception e) {
         AppUtility.showSnackbar(binding.getRoot(),e.getMessage());
+        Log.d("FailureUpdating",e.getMessage());
         binding.pinView.setError(getString(R.string.num_change_error));
         binding.pinView.setLineColor(getResources().getColor(R.color.baby_red));
+
     }
 }
