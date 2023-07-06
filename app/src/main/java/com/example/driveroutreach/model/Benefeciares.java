@@ -20,6 +20,7 @@ public class Benefeciares implements Parcelable {
 
     GeoPoint location;
     String documentId;
+    String ImgUrl;
 
 
     public Benefeciares(GeoPoint location) {
@@ -27,6 +28,20 @@ public class Benefeciares implements Parcelable {
     }
 
     public Benefeciares() {
+    }
+
+    public Benefeciares(String name, int mobile, String region, String address, String age, String disabilityType, String organization, String gender, GeoPoint location, String documentId, String imgUrl) {
+        this.name = name;
+        this.mobile = mobile;
+        this.region = region;
+        this.address = address;
+        this.age = age;
+        this.disabilityType = disabilityType;
+        this.organization = organization;
+        this.gender = gender;
+        this.location = location;
+        this.documentId = documentId;
+        ImgUrl = imgUrl;
     }
 
     public Benefeciares(String name, int mobile, String region, String address, String age, String disabilityType, String organization, String gender, String documentId) {
@@ -64,6 +79,14 @@ public class Benefeciares implements Parcelable {
             return new Benefeciares[size];
         }
     };
+
+    public String getImgUrl() {
+        return ImgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        ImgUrl = imgUrl;
+    }
 
     public GeoPoint getLocation() {
         return location;

@@ -1,5 +1,7 @@
 package com.example.driveroutreach.ui.fragments.schedule.days;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -24,12 +26,18 @@ public class DayPresenter extends BasePresenter {
         Trips = new ArrayList<>();
     }
 
-    void gettingSchedule(String day, String driverId){
+    void gettingSchedule(String day, String driverId, Context context, String title){
+        //Setting the progress
+        ProgressDialog progressDialog= new ProgressDialog(context);
+        progressDialog.setTitle(title);
+        progressDialog.show();
+
         firestore.collection("Journey").whereEqualTo("driver",driverId)
                 .whereEqualTo("day",day).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        progressDialog.dismiss();
                         if (task.isSuccessful()){
                             Log.d("schedule",task.getResult().toString());
 
@@ -39,6 +47,7 @@ public class DayPresenter extends BasePresenter {
                                 Log.d("schedule",journeyModel.getOrganization()+" "+journeyModel.getDay());
 
                               Trips.add(journeyModel);
+
                             }
 
                               view.onGettingScheduleSuccess(Trips);
@@ -47,16 +56,19 @@ public class DayPresenter extends BasePresenter {
                         }   else {
                             view.onGettingScheduleFailure(task.getException());
 
+
                         }
                     }
                 });
     }
 
 
-    void storeArchivedJourney(ArichivedJourney journey, String driverId){
 
-        firestore.collection("Journey_Archive").document(driverId)
-                .collection("Journeys").document().set(journey).addOnCompleteListener(new OnCompleteListener<Void>() {
+
+    void storeArchivedJourney2(ArichivedJourney journey, String driverId){
+
+        firestore.collection("Journey_Archive").document()
+                .set(journey).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()){

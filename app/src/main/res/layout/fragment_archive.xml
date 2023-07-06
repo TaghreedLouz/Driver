@@ -46,6 +46,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
+            android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_25sdp"
@@ -58,28 +59,8 @@
             app:layout_constraintTop_toTopOf="parent" />
 
 
-        <ImageView
-            android:id="@+id/icon_calender"
-            android:layout_width="@dimen/_22sdp"
-            android:layout_height="@dimen/_22sdp"
-            android:layout_marginStart="@dimen/_105sdp"
-            android:layout_marginTop="@dimen/_65sdp"
-            android:src="@drawable/ic_baseline_calendar_month_24"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/sea_green" />
 
-        <TextView
-            android:id="@+id/tv_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_5sdp"
-            android:layout_marginTop="@dimen/_65sdp"
-            android:text="14-5-2023"
-            android:textColor="@color/black"
-            android:textSize="@dimen/_15sdp"
-            app:layout_constraintStart_toEndOf="@id/icon_calender"
-            app:layout_constraintTop_toTopOf="parent" />
+
 
 
         <androidx.recyclerview.widget.RecyclerView
@@ -91,7 +72,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.482"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_date"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title"
             tools:listitem="@layout/item_archive" />
 
 

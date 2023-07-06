@@ -26,7 +26,6 @@ import androidx.core.content.ContextCompat;
 import com.example.driveroutreach.R;
 import com.example.driveroutreach.model.DriversNumbers;
 import com.example.driveroutreach.ui.app_utility.AppUtility;
-import com.example.driveroutreach.ui.fragments.Home.HomeFragment;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -109,11 +108,12 @@ public class LocationService extends Service implements LocationListener {
             manager.createNotificationChannel(notificationChannel);
         }
 
-        Intent intent1 = new Intent(getBaseContext(), LocationService.class);
-        //Intent intent1 = new Intent(getBaseContext(), HomeFragment.class);
+      //  Intent intent1 = new Intent(getBaseContext(), LocationService.class);
+        Intent intent1 = new Intent(getBaseContext(), MainActivity.class);
         //take one value
         intent1.setAction("stop");
-        PendingIntent pi = PendingIntent.getService(getBaseContext(), 0, intent1, PendingIntent.FLAG_IMMUTABLE);
+      //  PendingIntent pi = PendingIntent.getService(getBaseContext(), 0, intent1, PendingIntent.FLAG_IMMUTABLE);
+        PendingIntent pi = PendingIntent.getActivity(getBaseContext(), 0, intent1, PendingIntent.FLAG_IMMUTABLE);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID);
         builder.setSmallIcon(R.drawable.icon_arrive);

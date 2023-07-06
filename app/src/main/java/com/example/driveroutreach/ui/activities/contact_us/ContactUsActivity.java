@@ -1,23 +1,19 @@
 package com.example.driveroutreach.ui.activities.contact_us;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
-
-
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.driveroutreach.databinding.ActivityContactUsBinding;
 import com.example.driveroutreach.model.ContactUs;
 import com.example.driveroutreach.ui.app_utility.AppUtility;
+import com.example.driveroutreach.ui.base_classes.BaseActivity;
 
 
-public class ContactUsActivity extends AppCompatActivity implements ContactUsView{
+public class ContactUsActivity extends BaseActivity implements ContactUsView{
 
     ActivityContactUsBinding binding;
-    SharedPreferences sp;
-    public final String DRIVER_ID_KEY = "driverId";
+  //  SharedPreferences sp;
+   // public final String DRIVER_ID_KEY = "driverId";
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +40,7 @@ public class ContactUsActivity extends AppCompatActivity implements ContactUsVie
                 } else {
                     contactUs.setMessage(binding.etMessage.getText().toString());
                     contactUs.setTitle(binding.etSubject.getText().toString());
-                    contactUsPresenter.storeMessage(driverId,contactUs);
+                    contactUsPresenter.sendingMessage(contactUs);
 
 
                 }
@@ -57,15 +53,17 @@ public class ContactUsActivity extends AppCompatActivity implements ContactUsVie
 
     }
 
+
     @Override
-    public void onStoringMessageSuccess() {
-        Toast.makeText(ContactUsActivity.this, "Message has been sent Successfully", Toast.LENGTH_SHORT).show();
-        binding.etSubject.setText("");
-        binding.etMessage.setText("");
+    public void onSendingMessageSuccess() {
+        AppUtility.showSnackbar(binding.getRoot(),"Message");
+
+
     }
 
     @Override
-    public void onStoringMessageFailure(Exception e) {
-        Toast.makeText(this, "Something went wrong. Please try again later", Toast.LENGTH_SHORT).show();
+    public void onSendingMessageFailure(Exception e) {
+        AppUtility.showSnackbar(binding.getRoot(),e.getMessage());
+
     }
 }

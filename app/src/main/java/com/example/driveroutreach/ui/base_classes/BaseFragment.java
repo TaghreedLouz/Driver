@@ -18,12 +18,14 @@ public class BaseFragment extends Fragment {
     public SharedPreferences sp;
 
     public SharedPreferences.Editor edit;
+    public final String DRIVER_ID_KEY = "driverId";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         sp = getActivity().getSharedPreferences("sp", Context.MODE_PRIVATE);
         edit= sp.edit();
+
     }
 
     @Nullable

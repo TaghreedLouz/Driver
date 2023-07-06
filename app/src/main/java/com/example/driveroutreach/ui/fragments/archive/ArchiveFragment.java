@@ -1,7 +1,6 @@
 package com.example.driveroutreach.ui.fragments.archive;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.example.driveroutreach.adapters.ArchiveAdapter;
 import com.example.driveroutreach.databinding.FragmentArchiveBinding;
 import com.example.driveroutreach.model.ArichivedJourney;
+import com.example.driveroutreach.ui.base_classes.BaseFragment;
 
 import java.util.ArrayList;
 
@@ -22,12 +22,12 @@ import java.util.ArrayList;
  * Use the {@link ArchiveFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ArchiveFragment extends Fragment implements ArichiveView {
+public class ArchiveFragment extends BaseFragment implements ArichiveView {
     ArchivePresenter presenter;
 
-    SharedPreferences sp;
-    SharedPreferences.Editor edit;
-    public final String DRIVER_ID_KEY = "driverId";
+//    SharedPreferences sp;
+//    SharedPreferences.Editor edit;
+//    public final String DRIVER_ID_KEY = "driverId";
     FragmentArchiveBinding binding;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -80,7 +80,9 @@ public class ArchiveFragment extends Fragment implements ArichiveView {
         String driverId= sp.getString(DRIVER_ID_KEY,null);
         edit = sp.edit();
 
+
         presenter.gettingArchivedJourneys(driverId);
+
 
         return binding.getRoot();
     }
@@ -89,7 +91,7 @@ public class ArchiveFragment extends Fragment implements ArichiveView {
     public void onGettingArchivedJourneysSuccess(ArrayList<ArichivedJourney> journeys) {
 
 
-        binding.rvArchive.setAdapter(new ArchiveAdapter(journeys));
+        binding.rvArchive.setAdapter(new ArchiveAdapter(journeys,getContext()));
         binding.rvArchive.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false));
     }
 

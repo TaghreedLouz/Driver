@@ -2,7 +2,6 @@ package com.example.driveroutreach.ui.activities.Verification;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -10,12 +9,12 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.driveroutreach.R;
 import com.example.driveroutreach.databinding.ActivityVerificationBinding;
 import com.example.driveroutreach.ui.activities.Main.MainActivity;
 import com.example.driveroutreach.ui.app_utility.AppUtility;
+import com.example.driveroutreach.ui.base_classes.BaseActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -23,19 +22,19 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 
-public class VerificationActivity extends AppCompatActivity implements VerificationView {
+public class VerificationActivity extends BaseActivity implements VerificationView {
     ActivityVerificationBinding binding;
     String verificationId , verificationIdEdite;
     private PhoneAuthProvider.ForceResendingToken token , tokenEdite;
-    String activityName;
+
     String code;
     String newNumber;
     String verificationIdEdit;
     PhoneAuthCredential phoneAuthCredentialEdite , phoneAuthCredential;
 
-    public final String DRIVER_ID_KEY = "driverId";
+  //  public final String DRIVER_ID_KEY = "driverId";
 
-    SharedPreferences sp;
+
 
 
     @SuppressLint("ResourceAsColor")
@@ -56,7 +55,7 @@ public class VerificationActivity extends AppCompatActivity implements Verificat
         boolean fromlogin = getIntent().getBooleanExtra("fromWhere",false);
 
 
-        sp = getSharedPreferences("sp", MODE_PRIVATE);
+
 
         Log.d("activity",String.valueOf(getIntent().getBooleanExtra("fromWhere",false)));
 
@@ -365,5 +364,19 @@ public class VerificationActivity extends AppCompatActivity implements Verificat
                         }
                     });
         }
+    }
+
+    @Override
+    public void onChangeNumberSuccess() {
+
+        AppUtility.showSnackbar(binding.getRoot(),getString(R.string.num_change_success));
+        startActivity(new Intent(getBaseContext(), MainActivity.class));
+    }
+
+    @Override
+    public void onChangeNumberFailure(Exception e) {
+        AppUtility.showSnackbar(binding.getRoot(),e.getMessage());
+        binding.pinView.setError(getString(R.string.num_change_error));
+        binding.pinView.setLineColor(getResources().getColor(R.color.baby_red));
     }
 }

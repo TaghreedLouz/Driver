@@ -1,9 +1,6 @@
 package com.example.driveroutreach.ui.fragments.schedule;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,8 +23,6 @@ public class ScheduleFragment extends BaseFragment {
 
     FragmentScheduleBinding binding;
 
-    SharedPreferences sp;
-    public final String DRIVER_ID_KEY = "driverId";
 
     public ScheduleFragment() {
         // Required empty public constructor
@@ -47,11 +42,7 @@ public class ScheduleFragment extends BaseFragment {
         // Inflate the layout for this fragment
          binding = FragmentScheduleBinding.inflate(inflater,container,false);
 
-        sp = getActivity().getSharedPreferences("sp", Context.MODE_PRIVATE);
 
-        String driverId= sp.getString(DRIVER_ID_KEY,null);
-
-        Log.d("DriverId","Driver ID is: " + driverId);
 
 
         ArrayList<String> days_tabs = new ArrayList<>();

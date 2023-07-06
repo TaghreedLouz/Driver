@@ -1,14 +1,11 @@
 package com.example.driveroutreach.ui.fragments.Profile;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
@@ -33,10 +30,11 @@ import com.google.firebase.auth.FirebaseAuth;
 public class ProfileFragment extends BaseFragment implements ProfileView{
 
 
-    public final String DRIVER_ID_KEY = "driverId";
+   // public final String DRIVER_ID_KEY = "driverId";
     FragmentProfileBinding binding;
     DriverProfile driverProfileObject;
-
+    ProfilePresenter profilePresenter;
+    String driverId;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -84,11 +82,12 @@ public class ProfileFragment extends BaseFragment implements ProfileView{
         // Inflate the layout for this fragment
          binding = FragmentProfileBinding.inflate(inflater,container,false);
 
+        profilePresenter = new ProfilePresenter(this);
 
       if (sp != null){
-          String driverId = sp.getString(DRIVER_ID_KEY, null);
+           driverId = sp.getString(DRIVER_ID_KEY, null);
           if (driverId != null) {
-              ProfilePresenter profilePresenter = new ProfilePresenter(this);
+
 
               profilePresenter.driverInfo(driverId);
 
@@ -98,7 +97,7 @@ public class ProfileFragment extends BaseFragment implements ProfileView{
           }
 
       } else {
-            Toast.makeText(getActivity(), "nulllllllll", Toast.LENGTH_SHORT).show();
+
             Log.d("sp_driverId", "onCreateView: sp_driverId nullllllllllllllllllllll   ");
         }
                 binding.linLayoutContactUs.setOnClickListener(new View.OnClickListener() {
@@ -169,7 +168,12 @@ public class ProfileFragment extends BaseFragment implements ProfileView{
 
     @Override
     public void onGettingImgeSuccess(String img) {
-        Glide.with(getActivity()).load(img)
+
+       if (!isAdded()) return;
+
+
+
+       Glide.with(getActivity()).load(img)
                 .into(binding.imgProfile);
 
         Log.d("Success",img);
@@ -179,5 +183,14 @@ public class ProfileFragment extends BaseFragment implements ProfileView{
     public void onGettingImgFailure(Exception e) {
         binding.imgProfile.setImageResource(R.drawable.profile_avtar);
         Log.d("FailureImg",e.getMessage());
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (!isAdded()) return;
+
+
+        profilePresenter.gettingProfileImage(driverId);
     }
 }

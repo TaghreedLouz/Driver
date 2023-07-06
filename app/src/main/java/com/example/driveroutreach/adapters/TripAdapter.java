@@ -152,7 +152,7 @@ HashMap<String, Integer> FinishedJourneys = new HashMap<String, Integer>();;
                 edit.putBoolean("started",false);
                 edit.putInt("startedPosition",-1);
 
-//                edit.putInt("finishedPosition",itemPosition);
+
 
 
                 FinishedJourneys.put(journeyModel.getJourneyId(),holder.getAdapterPosition());
@@ -166,6 +166,15 @@ HashMap<String, Integer> FinishedJourneys = new HashMap<String, Integer>();;
                 notifyDataSetChanged();
 
 
+                String serializedList = sp.getString("attending", null);
+                ArrayList<String> attendingArrayList;
+                if (serializedList != null) {
+                    Type type = new TypeToken<ArrayList<String>>() {}.getType();
+                    attendingArrayList = new Gson().fromJson(serializedList, type);
+                    Log.d("show",attendingArrayList.toString());
+                } else {
+                    attendingArrayList = new ArrayList<>();
+                }
 
                 scheduleListener.EndJourney(new ArichivedJourney(
                         journeyModel.getDriver(),
@@ -174,7 +183,8 @@ HashMap<String, Integer> FinishedJourneys = new HashMap<String, Integer>();;
                         AppUtility.getTime(),
                         journeyModel.getOrganization(),
                         AppUtility.getDate(),
-                        journeyModel.getJourneyId()));
+                        journeyModel.getJourneyId(),
+                        attendingArrayList));
 
             }
         });
@@ -201,6 +211,7 @@ HashMap<String, Integer> FinishedJourneys = new HashMap<String, Integer>();;
             startJourney = binding.btnStartJourney;
             endJourney = binding.btnEndJourney;
             date = binding.tvDate;
+
 
         }
     }

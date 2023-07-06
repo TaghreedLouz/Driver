@@ -80,4 +80,11 @@
     <string name="btn_phone">الهاتف</string>
 
 
+    <string name="arch_adapter_total">عدد الحضور</string>
+    <string name="num_change_success">تم تحديث الرقم بنجاح</string>
+    <string name="num_change_error">الرقم المدخل خطأ</string>
+
+    <string name="schedule_prog_title">يتم تحميل جدولك</string>
+
+
 </resources>

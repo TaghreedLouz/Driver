@@ -1,5 +1,7 @@
 package com.example.driveroutreach.ui.fragments.archive;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.example.driveroutreach.model.ArichivedJourney;
@@ -18,10 +20,11 @@ public class ArchivePresenter extends BasePresenter {
         this.view = view;
     }
 
+
+
     void gettingArchivedJourneys(String driverId){
 
-        firestore.collection("Journey_Archive").document(driverId)
-                .collection("Journeys").get()
+        firestore.collection("Journey_Archive").whereEqualTo("driver",driverId).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -29,6 +32,8 @@ public class ArchivePresenter extends BasePresenter {
                         if (task.isSuccessful()){
 
                             ArrayList<ArichivedJourney> journeys = (ArrayList<ArichivedJourney>) task.getResult().toObjects(ArichivedJourney.class);
+
+                            Log.d("sucess",journeys.toString());
                             view.onGettingArchivedJourneysSuccess(journeys);
                         }else {
                             view.onGettingArchivedJourneysFailure(task.getException());

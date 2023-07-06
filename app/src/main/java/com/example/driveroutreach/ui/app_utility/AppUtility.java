@@ -1,8 +1,9 @@
 package com.example.driveroutreach.ui.app_utility;
 
+import android.content.Context;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
-import com.example.driveroutreach.ui.activities.Main.LocationService;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.text.SimpleDateFormat;
@@ -32,4 +33,10 @@ public class AppUtility {
         return new SimpleDateFormat("hh:mm aa").format(Calendar.getInstance().getTime());
     }
 
+    public static void hideSoftKeyboard(Context context, View view) {
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
 }
