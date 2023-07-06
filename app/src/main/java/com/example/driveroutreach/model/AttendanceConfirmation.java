@@ -1,61 +1,40 @@
 package com.example.driveroutreach.model;
 
-import java.util.ArrayList;
-
 public class AttendanceConfirmation {
-    String driverId;
-    String date;
-    String journeyId;
-   // String benf;
+  String userId;
+  double lat;
+  double lon;
 
-    ArrayList<String> benf;
-
-    public AttendanceConfirmation(ArrayList<String> benf) {
-        this.benf = benf;
-    }
-
-    public AttendanceConfirmation(String journeyId, ArrayList<String> benf) {
-        this.journeyId = journeyId;
-        this.benf = benf;
+    public AttendanceConfirmation(String userId, double lat, double lon) {
+        this.userId = userId;
+        this.lat = lat;
+        this.lon = lon;
     }
 
     public AttendanceConfirmation() {
     }
 
-
-
-
-
-
-    public String getDriverId() {
-        return driverId;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setDriverId(String driverId) {
-        this.driverId = driverId;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
-    public String getDate() {
-        return date;
+    public double getLat() {
+        return lat;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setLat(double lat) {
+        this.lat = lat;
     }
 
-    public String getJourneyId() {
-        return journeyId;
+    public double getLon() {
+        return lon;
     }
 
-    public void setJourneyId(String journeyId) {
-        this.journeyId = journeyId;
-    }
-
-    public ArrayList<String> getBenf() {
-        return benf;
-    }
-
-    public void setBenf(ArrayList<String> benf) {
-        this.benf = benf;
+    public void setLon(double lon) {
+        this.lon = lon;
     }
 }

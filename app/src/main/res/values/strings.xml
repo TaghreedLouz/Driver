@@ -112,5 +112,9 @@
     <string name="btn_email">Email</string>
     <string name="btn_phone">Phone</string>
 
+    <string name="arch_adapter_total">Total: </string>
 
+    <string name="num_change_success">Phone Number Has Been Updated</string>
+    <string name="num_change_error">Wrong Code</string>
+    <string name="schedule_prog_title">Schedule Uploading</string>
 </resources>

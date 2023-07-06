@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -13,17 +12,18 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.driveroutreach.R;
 import com.example.driveroutreach.databinding.ActivityMainBinding;
 import com.example.driveroutreach.ui.app_utility.AppUtility;
+import com.example.driveroutreach.ui.base_classes.BaseActivity;
+import com.example.driveroutreach.ui.fragments.Home.HomeFragment;
 import com.example.driveroutreach.ui.fragments.schedule.ScheduleFragment;
+import com.example.driveroutreach.ui.fragments.schedule.days.DayFragment;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.LocationRequest;
@@ -32,19 +32,19 @@ import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResponse;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.navigation.NavigationBarView;
 
 
-public class MainActivity extends AppCompatActivity implements MainView {
+public class MainActivity extends BaseActivity implements MainView, DayFragment.Move {
     ActivityMainBinding binding;
-    BottomSheetBehavior bottomSheetBehavior;
+
     Dialog dialog;
     Button btn_getLocation;
+    MainPresenter mainPresenter;
     private LocationManager locationManager;
-    SharedPreferences sp;
-    SharedPreferences.Editor edit;
-    public final String DRIVER_ID_KEY = "driverId";
+   // SharedPreferences sp;
+    //SharedPreferences.Editor edit;
+ //   public final String DRIVER_ID_KEY = "driverId";
     private static final int PERMISSIONS_REQUEST_LOCATION = 1001;
 
     @Override
@@ -53,8 +53,10 @@ public class MainActivity extends AppCompatActivity implements MainView {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        sp = getSharedPreferences("sp", MODE_PRIVATE);
-        edit = sp.edit();
+        mainPresenter = new MainPresenter(this);
+
+//        sp = getSharedPreferences("sp", MODE_PRIVATE);
+//        edit = sp.edit();
 
 
 
@@ -65,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
 
 
-        MainPresenter mainPresenter = new MainPresenter(this);
+         mainPresenter = new MainPresenter(this);
         mainPresenter.AddingFrag(new ScheduleFragment());
 
         binding.bottomNavigationMain.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
@@ -209,4 +211,11 @@ public class MainActivity extends AppCompatActivity implements MainView {
         turnOnGPS();
     }
 
+    @Override
+    public void onMove() {
+
+       getSupportFragmentManager().beginTransaction().replace(R.id.container, new HomeFragment()).commit();
+
+        binding.bottomNavigationMain.setSelectedItemId(R.id.page_home);
+    }
 }

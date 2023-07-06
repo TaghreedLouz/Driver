@@ -6,7 +6,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
@@ -31,7 +30,7 @@ import com.google.firebase.auth.FirebaseAuth;
 public class ProfileFragment extends BaseFragment implements ProfileView{
 
 
-    public final String DRIVER_ID_KEY = "driverId";
+   // public final String DRIVER_ID_KEY = "driverId";
     FragmentProfileBinding binding;
     DriverProfile driverProfileObject;
     ProfilePresenter profilePresenter;
@@ -83,11 +82,12 @@ public class ProfileFragment extends BaseFragment implements ProfileView{
         // Inflate the layout for this fragment
          binding = FragmentProfileBinding.inflate(inflater,container,false);
 
+        profilePresenter = new ProfilePresenter(this);
 
       if (sp != null){
            driverId = sp.getString(DRIVER_ID_KEY, null);
           if (driverId != null) {
-               profilePresenter = new ProfilePresenter(this);
+
 
               profilePresenter.driverInfo(driverId);
 
@@ -97,7 +97,7 @@ public class ProfileFragment extends BaseFragment implements ProfileView{
           }
 
       } else {
-            Toast.makeText(getActivity(), "nulllllllll", Toast.LENGTH_SHORT).show();
+
             Log.d("sp_driverId", "onCreateView: sp_driverId nullllllllllllllllllllll   ");
         }
                 binding.linLayoutContactUs.setOnClickListener(new View.OnClickListener() {
@@ -188,6 +188,9 @@ public class ProfileFragment extends BaseFragment implements ProfileView{
     @Override
     public void onResume() {
         super.onResume();
+        if (!isAdded()) return;
+
+
         profilePresenter.gettingProfileImage(driverId);
     }
 }

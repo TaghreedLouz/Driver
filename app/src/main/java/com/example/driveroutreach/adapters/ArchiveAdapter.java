@@ -1,5 +1,7 @@
 package com.example.driveroutreach.adapters;
 
+
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.driveroutreach.R;
 import com.example.driveroutreach.databinding.ItemArchiveBinding;
 import com.example.driveroutreach.model.ArichivedJourney;
 
@@ -67,6 +70,7 @@ Context context;
             holder.itenary.setVisibility(View.GONE);
             holder.itenaryNum.setVisibility(View.GONE);
             holder.busIcon.setVisibility(View.GONE);
+            holder.moreIcon.setVisibility(View.GONE);
 
             holder.attendingClients.setAdapter(new ArchiveAttendingClientsChildAdapter(j.getAttending(), context));
             holder.attendingClients.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
@@ -76,6 +80,9 @@ Context context;
             holder.itenary.setVisibility(View.VISIBLE);
             holder.itenaryNum.setVisibility(View.VISIBLE);
             holder.busIcon.setVisibility(View.VISIBLE);
+            holder.total.setText(context.getText(R.string.arch_adapter_total) + " "+ String.valueOf(j.getAttending().size()) );
+
+
         }
 
     }
@@ -87,9 +94,9 @@ Context context;
 
     class AVH extends RecyclerView.ViewHolder {
 
-        TextView start, end, to,from,journeyId,date,more,itenary, itenaryNum;
+        TextView start, end, to,from,journeyId,date,more,itenary, itenaryNum,total;
 
-        ImageView busIcon;
+        ImageView busIcon,moreIcon;
         RecyclerView attendingClients;
         LinearLayout childAdapterSection;
 
@@ -108,6 +115,8 @@ Context context;
             itenary = binding.tvItinerary;
             itenaryNum=binding.tvItineraryNumber;
             busIcon=binding.iconBus;
+            moreIcon =binding.iconMore;
+            total=binding.tvTotal;
         }
     }
 }

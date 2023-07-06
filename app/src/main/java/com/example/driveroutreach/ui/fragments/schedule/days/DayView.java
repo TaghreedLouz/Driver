@@ -14,7 +14,6 @@ public interface DayView {
     void storeArchivedJourneyFailure(Exception e);
 
 
-    void storeArchivedJourneySuccess2();
-    void storeArchivedJourneyFailure2(Exception e);
+
 
 }

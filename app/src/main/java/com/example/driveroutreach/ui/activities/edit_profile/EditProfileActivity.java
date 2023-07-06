@@ -3,7 +3,6 @@ package com.example.driveroutreach.ui.activities.edit_profile;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -16,13 +15,14 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.example.driveroutreach.R;
 import com.example.driveroutreach.databinding.ActivityEditProfileBinding;
 import com.example.driveroutreach.model.DriverProfile;
 import com.example.driveroutreach.ui.activities.Verification.VerificationActivity;
+import com.example.driveroutreach.ui.app_utility.AppUtility;
+import com.example.driveroutreach.ui.base_classes.BaseActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -42,14 +42,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-public class EditProfileActivity extends AppCompatActivity implements EditProfileView {
+public class EditProfileActivity extends BaseActivity implements EditProfileView {
 
     ActivityEditProfileBinding binding;
     FirebaseStorage firebaseStorage;
     FirebaseFirestore firestore;
-    SharedPreferences sp;
+
     FirebaseAuth firebaseAuth;
-    public final String DRIVER_ID_KEY = "driverId";
+
     EditProfilePresenter editProfilePresenter;
     String driverId;
     Uri  imgUrl;
@@ -66,7 +66,7 @@ public class EditProfileActivity extends AppCompatActivity implements EditProfil
         firebaseStorage  = FirebaseStorage.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
         firestore=FirebaseFirestore.getInstance();
-        sp = getSharedPreferences("sp", MODE_PRIVATE);
+
         driverId =sp.getString(DRIVER_ID_KEY,null);
 
         DriverProfile driver_profile = getIntent().getParcelableExtra("Driver_Profile");
@@ -112,10 +112,14 @@ public class EditProfileActivity extends AppCompatActivity implements EditProfil
 
                     if (!newNumber.isEmpty()){
                         editProfilePresenter.updateNumber(newNumber,EditProfileActivity.this);
+                        View view = getCurrentFocus();
+                        AppUtility.hideSoftKeyboard(getBaseContext(),view);
                            //updateNumber(newNumber);
                         return true;
                     } else {
                         Toast.makeText(EditProfileActivity.this, "Enter a new number", Toast.LENGTH_SHORT).show();
+                        View view = getCurrentFocus();
+                        AppUtility.hideSoftKeyboard(getBaseContext(),view);
                     }
                     }
 
