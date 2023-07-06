@@ -156,6 +156,7 @@ HashMap<String, Integer> FinishedJourneys = new HashMap<String, Integer>();;
 
 
                 FinishedJourneys.put(journeyModel.getJourneyId(),holder.getAdapterPosition());
+                edit.putString("createdSps",AppUtility.getDate());
                 edit.putString("FinishedJourneys",   new Gson().toJson(FinishedJourneys));
                 edit.commit();
 

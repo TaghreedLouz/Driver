@@ -114,6 +114,7 @@ public class EditProfileActivity extends BaseActivity implements EditProfileView
                         editProfilePresenter.updateNumber(newNumber,EditProfileActivity.this);
                         View view = getCurrentFocus();
                         AppUtility.hideSoftKeyboard(getBaseContext(),view);
+                        binding.etMobile.setEnabled(false);
                            //updateNumber(newNumber);
                         return true;
                     } else {
@@ -276,6 +277,13 @@ public class EditProfileActivity extends BaseActivity implements EditProfileView
         intent.putExtra("fromWhere",false);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    public void onVerificationFailed(Exception e) {
+        Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        Log.d("onVerificationFailes",e.getMessage());
+        binding.etMobile.setEnabled(true);
     }
 
 
