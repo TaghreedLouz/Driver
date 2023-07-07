@@ -371,6 +371,7 @@ public class VerificationActivity extends BaseActivity implements VerificationVi
 
         AppUtility.showSnackbar(binding.getRoot(),getString(R.string.num_change_success));
         startActivity(new Intent(getBaseContext(), MainActivity.class));
+        finish();
     }
 
     @Override
