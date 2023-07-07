@@ -34,14 +34,6 @@
                     android:textColor="@color/white"
                     android:textSize="@dimen/_12ssp" />
 
-                <ImageView
-                    android:layout_width="@dimen/_10sdp"
-                    android:layout_height="@dimen/_10sdp"
-                    android:src="@drawable/ic_arrow_back"
-                    android:layout_marginTop="@dimen/_22sdp"
-                    android:layout_marginStart="@dimen/_25sdp"
-                    app:tint="@color/white" />
-
             </com.google.android.material.appbar.CollapsingToolbarLayout>
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -105,7 +97,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_20sdp"
-                        android:src="@drawable/sound_img" />
+                        android:src="@drawable/img_sound" />
 
                     <TextView
                         android:id="@+id/tv_sound"
@@ -147,7 +139,7 @@
                         android:layout_width="@dimen/_24sdp"
                         android:layout_height="@dimen/_24sdp"
                         android:layout_gravity="center"
-                        android:src="@drawable/world_img" />
+                        android:src="@drawable/img_world" />
 
                     <TextView
                         android:id="@+id/tv_language"
@@ -215,7 +207,7 @@
                         android:layout_width="@dimen/_24sdp"
                         android:layout_height="@dimen/_24sdp"
                         android:layout_gravity="center"
-                        android:src="@drawable/text_img" />
+                        android:src="@drawable/img_text" />
 
                     <TextView
                         android:id="@+id/tv_text"

@@ -114,7 +114,7 @@ public class DayFragment extends BaseFragment implements DayView{
 
 
 
-        Log.d("driver",driverId);
+     //   Log.d("driver",driverId);
 
              dayPresenter = new DayPresenter(this);
             dayPresenter.gettingSchedule(day,driverId,getActivity(),getString(R.string.schedule_prog_title));
