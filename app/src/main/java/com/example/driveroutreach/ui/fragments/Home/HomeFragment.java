@@ -13,6 +13,7 @@ import com.example.driveroutreach.R;
 import com.example.driveroutreach.databinding.FragmentHomeBinding;
 import com.example.driveroutreach.model.AttendanceConfirmation;
 import com.example.driveroutreach.ui.activities.Main.LocationChanged;
+import com.example.driveroutreach.ui.app_utility.AppUtility;
 import com.example.driveroutreach.ui.base_classes.BaseFragment;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -20,7 +21,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.Task;
@@ -135,69 +135,6 @@ public class HomeFragment extends BaseFragment implements HomeView, OnMapReadyCa
                     if (sp.getString("journeyId",null) !=null & sp.getString("journeyDate",null) != null) {
                         Log.d("Databack", sp.getString("journeyId",null) + "journeey iddd" + date+"driverid"+driverId);
 
-//                        reference = FirebaseDatabase.getInstance().getReference("AttendanceConfirmation")
-//                                .child(date).child(driverId).child(journeyId).get()
-//                                .addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-//                                    @Override
-//                                    public void onComplete(@NonNull Task<DataSnapshot> task) {
-//                                   if (task.isSuccessful()){
-//
-//                                       for (DataSnapshot dataSnapshot : task.getResult().getChildren()) {
-//
-//
-//                                        ArrayList<AttendanceConfirmation>   benf = (ArrayList<AttendanceConfirmation>) dataSnapshot.getValue();
-//
-//
-//
-//                                           edit.putString("attending",  new Gson().toJson(benf));
-//                                           edit.commit();
-//
-//                                           Log.d("DataReturned", benf.toString());
-//
-//                                       }
-////
-//                                   } else {
-//                                       Log.d("onFailure",task.getException().getMessage());
-//                                   }
-//                                    }
-//                                });
-//
-
-
-
-//                        reference = FirebaseDatabase.getInstance().getReference("AttendanceConfirmation").child(AppUtility.getDate())
-//                                .child(driverId).child(journeyId).get()
-//                                .addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-//                                    @Override
-//                                    public void onComplete(@NonNull Task<DataSnapshot> task) {
-//Log.d("test2","in");
-//                                        if (task.isSuccessful()) {
-//
-//                                          Log.d("test2",  task.getResult().toString());
-//                                            for (DataSnapshot dataSnapshot : task.getResult().getChildren()) {
-//
-//
-//                                                attendanceConfirmationArrayList = (ArrayList<AttendanceConfirmation>) dataSnapshot.getValue();
-//
-//
-//
-////                                                edit.putString("attending",  new Gson().toJson(benf));
-////                                                edit.commit();
-//
-//                                                Log.d("DataReturned", attendanceConfirmationArrayList.toString());
-//
-//                                            }
-//
-//
-//                                                onSetMapFrag();
-//
-//
-//
-//                                        } else {
-//                                            Log.d("realtimeDatabase", task.getException().getMessage());
-//                                        }
-//                                    }
-//                                });
                         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("AttendanceConfirmation")
                                 .child(date).child(driverId).child(journeyId);
 
@@ -205,13 +142,32 @@ public class HomeFragment extends BaseFragment implements HomeView, OnMapReadyCa
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 Log.d("valuess",dataSnapshot.toString());
+
                                 if (dataSnapshot.exists()) {
-                                    ArrayList<AttendanceConfirmation> attendanceList = new ArrayList<>();
+                                    ArrayList<String> attendanceList = new ArrayList<>();
 
                                     for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
-                                     String attendance =  childSnapshot.getValue().toString();
-                                        //attendanceList.add(attendance);
+
+                                     AttendanceConfirmation attendance =  childSnapshot.getValue(AttendanceConfirmation.class);
+
+
+                                        attendanceList.add(attendance.getUserId());
                                         Log.d("values",attendance.toString());
+
+                                        if (map != null){
+                                            //adding benf place markers
+                                            MarkerOptions markerOptions = new MarkerOptions().position(new LatLng(attendance.getLat(), attendance.getLon()));
+                                            Marker marker = map.addMarker(markerOptions);
+                                        }
+
+                                      float distance = homePresenter.calculateDiatance(
+                                                attendance.getLon(),attendance.getLon(),
+                                                Double.parseDouble(sp.getString("longitude",null)),
+                                              Double.parseDouble(sp.getString("latitude",null)));
+
+                                        if (distance<=100) {
+                                            AppUtility.showSnackbar(binding.getRoot(),"You are near a client");
+                                        }
                                     }
 
                                     // Store the attendance list or perform any required operations
@@ -258,32 +214,8 @@ public class HomeFragment extends BaseFragment implements HomeView, OnMapReadyCa
     public void onMapReady(@NonNull GoogleMap googleMap) {
         map = googleMap;
 
-//        if (MarkersPoistions != null ) {
-//            for (com.example.driveroutreach.model.Location position : MarkersPoistions) {
-//                //adding benf place markers
-//                MarkerOptions markerOptions = new MarkerOptions().position(new LatLng(position.getLatitude(), position.getLongitude()));
-//                Marker marker = googleMap.addMarker(markerOptions);
-//
-//                Log.d("client_location",new LatLng(position.getLatitude(), position.getLongitude()).toString());
-//
-//                LatLngBounds.Builder builder = new LatLngBounds.Builder();
-//                builder.include(new LatLng(latitude_driver,longitude_driver));
-//                builder.include(new LatLng(position.getLatitude(), position.getLongitude()));
-//                LatLngBounds bounds = builder.build();
-//                googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 20));
-//            }
-//        }
 
-
-//        if (longitude_driver != 0 && latitude_driver != 0){
-//            if (driver_marker != null) {
-//                MarkerOptions markersPoistionsDriver = new MarkerOptions().position(new LatLng(latitude_driver, longitude_driver));
-//                driver_marker = googleMap.addMarker(markersPoistionsDriver);
-//            } else {
-//                driver_marker.setPosition(new LatLng(latitude_driver, longitude_driver));
-//            }
-//        }
-
+       moveToDriverMarker();
 
 
         Log.d("Locaaaation",new LatLng(longitude_driver,latitude_driver).toString());
@@ -304,33 +236,47 @@ public class HomeFragment extends BaseFragment implements HomeView, OnMapReadyCa
  @Subscribe(threadMode = ThreadMode.MAIN)
     public void onLocation(LocationChanged event) {
         // Do something
+
+     Log.d("onLocation", String.valueOf(event.latitude) + "outside IF");
         if(event!=null){
-            longitude_driver= event.longitude;
-             latitude_driver = event.latitude;
+            longitude_driver= event.getLongitude();
+             latitude_driver = event.getLatitude();
+
+            Log.d("onLocation from event",event.latitude +" ,"+  event.longitude);
+
+            Log.d("onLocation",  "event!=null");
 
 if (map != null){
-    if (latitude_driver != 0.0){
+    Log.d("onLocation",  "map != null");
+
+        Log.d("onLocation",  "latitude_driver != 0.0");
         if (driver_marker != null) {
+            Log.d("onLocation",  "driver_marker != null");
             driver_marker.setPosition(new LatLng(latitude_driver, longitude_driver));
 
 
-        } else {
+
+
+        }else {
             MarkerOptions markersPoistionsDriver = new MarkerOptions().position(new LatLng(latitude_driver, longitude_driver));
             driver_marker = map.addMarker(markersPoistionsDriver);
-        }
 
-        LatLngBounds.Builder builder = new LatLngBounds.Builder();
-        builder.include(new LatLng(latitude_driver,longitude_driver));
-        LatLngBounds bounds = builder.build();
-        map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 20));
-    }
+
+            Log.d("onLocation",  "else");
+        }
 }
-
-
-
-
-            Log.d("onLocation from event",event.latitude +" ,"+  event.longitude);
         }
+    }
+
+    private void moveToDriverMarker() {
+       map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(31.500928391303876, 34.45740717950703),17));
+        // Zoom in, animating the camera.
+
+        map.getUiSettings().setZoomControlsEnabled(true);
+        map.getUiSettings().setZoomGesturesEnabled(true);
+        map.getUiSettings().setScrollGesturesEnabled(true);
+
+
     }
 
     @Override
@@ -338,6 +284,9 @@ if (map != null){
         super.onDestroy();
         EventBus.getDefault().unregister(this);
     }
+
+
+
 }
 
 
