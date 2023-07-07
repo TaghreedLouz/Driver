@@ -54,7 +54,7 @@ public class SplashActivity extends BaseActivity {
         SimpleDateFormat date= new SimpleDateFormat("dd-MMMM-yyyy");
 
         String previous = sp.getString("createdSps",null);
-        Log.d("boolean",previous);
+      //  Log.d("boolean",previous);
         if(previous != null){
           boolean x = previous.equals(AppUtility.getDate());
             Log.d("boolean",String.valueOf(x));

@@ -205,11 +205,16 @@ public class HomeFragment extends BaseFragment implements HomeView, OnMapReadyCa
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 Log.d("valuess",dataSnapshot.toString());
+
                                 if (dataSnapshot.exists()) {
                                     ArrayList<AttendanceConfirmation> attendanceList = new ArrayList<>();
 
                                     for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
-                                     String attendance =  childSnapshot.getValue().toString();
+                                      //  Log.d("valuess","inFor"+ dataSnapshot.toString());
+//                                        HashMap<String,String> values = new HashMap<>();
+//                                        values.p
+                                     AttendanceConfirmation attendance =  childSnapshot.getValue(AttendanceConfirmation.class);
+
                                         //attendanceList.add(attendance);
                                         Log.d("values",attendance.toString());
                                     }
@@ -304,32 +309,46 @@ public class HomeFragment extends BaseFragment implements HomeView, OnMapReadyCa
  @Subscribe(threadMode = ThreadMode.MAIN)
     public void onLocation(LocationChanged event) {
         // Do something
+
+     Log.d("onLocation", String.valueOf(event.latitude) + "outside IF");
         if(event!=null){
-            longitude_driver= event.longitude;
-             latitude_driver = event.latitude;
+            longitude_driver= event.getLongitude();
+             latitude_driver = event.getLatitude();
+
+            Log.d("onLocation from event",event.latitude +" ,"+  event.longitude);
+
+            Log.d("onLocation",  "event!=null");
 
 if (map != null){
-    if (latitude_driver != 0.0){
+    Log.d("onLocation",  "map != null");
+
+        Log.d("onLocation",  "latitude_driver != 0.0");
         if (driver_marker != null) {
+            Log.d("onLocation",  "driver_marker != null");
             driver_marker.setPosition(new LatLng(latitude_driver, longitude_driver));
 
 
-        } else {
+        }else {
             MarkerOptions markersPoistionsDriver = new MarkerOptions().position(new LatLng(latitude_driver, longitude_driver));
             driver_marker = map.addMarker(markersPoistionsDriver);
+
+            Log.d("onLocation",  "else");
         }
 
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
         builder.include(new LatLng(latitude_driver,longitude_driver));
         LatLngBounds bounds = builder.build();
         map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 20));
-    }
+
+
+
+
 }
 
 
 
 
-            Log.d("onLocation from event",event.latitude +" ,"+  event.longitude);
+
         }
     }
 

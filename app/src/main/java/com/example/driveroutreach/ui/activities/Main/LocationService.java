@@ -47,6 +47,8 @@ public class LocationService extends Service implements LocationListener {
 
     static Activity activityContext;
 
+    boolean isFirstCall = true;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -153,6 +155,8 @@ public class LocationService extends Service implements LocationListener {
         double latitude = location.getLatitude();
         double longitude = location.getLongitude();
 
+        Log.d("onLocation",String.valueOf(location.getLongitude()));
+        if (latitude != 0.0){
         // تخزين اللوكيشن في الهاشماب
         locationMap = new HashMap<>();
         locationMap.put("latitude", latitude);
@@ -161,20 +165,62 @@ public class LocationService extends Service implements LocationListener {
         String driverId= sp.getString(DRIVER_ID_KEY,null);
 
         // تحديث على اللوكيشن في الريل تايم
-        locationRef.child(String.valueOf(driverId)).setValue(locationMap);
+        //locationRef.child(String.valueOf(driverId)).setValue(locationMap);
 
 
-        EventBus.getDefault().post(new LocationChanged(location.getLatitude(), location.getLongitude()));
+        //EventBus.getDefault().post(new LocationChanged(location.getLatitude(), location.getLongitude()));
+
+        String PreLat   = sp.getString("latitude",null);
+        String Prelong =  sp.getString("longitude",null);
+
+
+
+
+            if (PreLat != null && Prelong !=null && !isFirstCall){
+
+
+                Location locationA = new Location("point A");
+
+                locationA.setLatitude(Double.parseDouble(PreLat));
+                locationA.setLongitude(Double.parseDouble(Prelong));
+
+                Location locationB = new Location("point B");
+
+                locationB.setLatitude(latitude);
+                locationB.setLongitude(longitude);
+
+                float distance = locationA.distanceTo(locationB);
+
+
+
+
+                Log.d("distance",String.valueOf(distance));
+
+
+
+                if (distance>5){
+               SvaingLocation(location, driverId);
+                }
+
+
+            } else {
+                SvaingLocation(location, driverId);
+                isFirstCall=false;
+            }
+
+            Log.d("LocationService", "onLocationChanged:   id  "+driverId);
+        }
 
 
 
         Log.d("LocationService", "onLocationChanged:   "+driver.getMobile());
-        Log.d("LocationService", "onLocationChanged:   id  "+driverId);
+
 
         Log.d("LocationService", "Latitude: " + driver.getMobile() + " " + latitude + ", Longitude: " + longitude);
 
         Toast.makeText(this, "Latitude: " + latitude + ", Longitude: " + longitude, Toast.LENGTH_SHORT).show();
     }
+
 
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
@@ -219,5 +265,17 @@ public class LocationService extends Service implements LocationListener {
         // توقيف الفورجراوند
         stopForeground(false);
 
+    }
+
+    private void SvaingLocation(Location location, String driverId) {
+        if (location.getLatitude() != 0.0 && location.getLongitude() != 0.0){
+        edit.putString("latitude", String.valueOf(location.getLatitude()));
+        edit.putString("longitude", String.valueOf(location.getLongitude()));
+        edit.commit();
+    }
+        LocationChanged locationChanged = new LocationChanged(location.getLatitude(), location.getLongitude());
+        Log.d("locationChanged", locationChanged.toString());
+        EventBus.getDefault().post(locationChanged);
+         locationRef.child(String.valueOf(driverId)).setValue(locationMap);
     }
 }
