@@ -117,4 +117,7 @@
     <string name="num_change_success">Phone Number Has Been Updated</string>
     <string name="num_change_error">Wrong Code</string>
     <string name="schedule_prog_title">Schedule Uploading</string>
+    <string name="are_you_sure_you_want_to_log_out">Are you sure you want to logout</string>
+    <string name="yes">Yes</string>
+    <string name="cancel">Cancel</string>
 </resources>
