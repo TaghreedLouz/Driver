@@ -198,9 +198,9 @@ public class LocationService extends Service implements LocationListener {
 
 
 
-                if (distance>5){
+              //  if (distance>5){
                SvaingLocation(location, driverId);
-                }
+               // }
 
 
             } else {
