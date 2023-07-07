@@ -1,11 +1,13 @@
 package com.example.driveroutreach.ui.fragments.Profile;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.fragment.app.Fragment;
 
@@ -35,6 +37,7 @@ public class ProfileFragment extends BaseFragment implements ProfileView{
     DriverProfile driverProfileObject;
     ProfilePresenter profilePresenter;
     String driverId;
+    Dialog dialog;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -142,9 +145,30 @@ public class ProfileFragment extends BaseFragment implements ProfileView{
                 binding.linLayoutLogout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        FirebaseAuth.getInstance().signOut();
-                        startActivity(new Intent(getActivity(), LoginActivity.class));
-                        getActivity().finish();
+                        dialog = new Dialog(getActivity());
+                        View dialogView = LayoutInflater.from(requireActivity()).inflate(R.layout.item_dialog_logout, requireActivity().findViewById(R.id.custom_dialog_logout));
+                        dialog.setContentView(dialogView);
+                        dialog.show();
+
+                        Button cancel = dialogView.findViewById(R.id.btn_cancel);
+                        Button yes = dialogView.findViewById(R.id.btn_yes);
+
+                        yes.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                FirebaseAuth.getInstance().signOut();
+                                startActivity(new Intent(getActivity(), LoginActivity.class));
+                                getActivity().finish();
+                            }
+                        });
+
+                        cancel.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+
+                                dialog.dismiss();
+                            }
+                        });
                     }
                 });
 

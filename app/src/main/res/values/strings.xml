@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Driver(outreach)</string>
+    <string name="app_name">Driver</string>
 
     <string name="tv_menu_profile">Profile</string>
     <string name="tv_menu_archive">Archive</string>
@@ -117,4 +117,7 @@
     <string name="num_change_success">Phone Number Has Been Updated</string>
     <string name="num_change_error">Wrong Code</string>
     <string name="schedule_prog_title">Schedule Uploading</string>
+    <string name="are_you_sure_you_want_to_log_out">Are you sure you want to logout</string>
+    <string name="yes">Yes</string>
+    <string name="cancel">Cancel</string>
 </resources>

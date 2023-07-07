@@ -32,7 +32,8 @@ public class AboutUsActivity extends AppCompatActivity {
                     @Override
                     public void onActivityResult(Boolean result) {
                         if (result){
-                            AppUtility.showSnackbar(binding.getRoot(),"Call Permission granted");
+                        //    AppUtility.showSnackbar(binding.getRoot(),"Call Permission granted");
+                            Toast.makeText(AboutUsActivity.this, "Call Permission granted", Toast.LENGTH_SHORT).show();
                         }else {
                             AppUtility.showSnackbar(binding.getRoot(),"Call Permission denied");
                         }

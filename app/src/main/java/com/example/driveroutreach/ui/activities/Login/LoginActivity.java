@@ -33,10 +33,11 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     FirebaseFirestore firestore;
     SharedPreferences sp;
     SharedPreferences.Editor edit;
+    public static String mobile;
     LoginPresenter loginPresenter;
     public final String DRIVER_ID_KEY = "driverId";
     public final String DRIVER_NUMBER_KEY = "driverNumber";
-
+    String phone;
     @Override
     protected void onStart() {
         super.onStart();
@@ -62,7 +63,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
 
 
         binding.btnLogin.setOnClickListener(view -> {
-            String mobile = binding.etMobile.getText().toString().trim();
+            mobile = binding.etMobile.getText().toString().trim();
             if (TextUtils.isEmpty(mobile)) {
                 binding.etMobile.setError("Enter your phone number");
                 setEnabledVisibility();
@@ -79,7 +80,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     }
 
     private void sendCodeVerification() {
-        String phone = binding.etMobile.getText().toString().trim();
+        phone = binding.etMobile.getText().toString().trim();
         Log.e("LoginActivityLOG", phone);
 
 
@@ -109,6 +110,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
                         Intent intent = new Intent(LoginActivity.this, VerificationActivity.class);
                         intent.putExtra("verificationId", verificationId);
                         intent.putExtra("resendingToken", token);
+                        intent.putExtra("phone", phone);
                         intent.putExtra("fromWhere", true);
                         setEnabledVisibility();
                         startActivity(intent);

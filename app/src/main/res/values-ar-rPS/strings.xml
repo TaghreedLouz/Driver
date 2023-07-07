@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">السائق </string>
+    <string name="app_name">السائق</string>
 
     <string name="tv_menu_profile">الصفحة الشخصية</string>
     <string name="tv_menu_archive">الأرشيف</string>
@@ -85,6 +85,9 @@
     <string name="num_change_error">الرقم المدخل خطأ</string>
 
     <string name="schedule_prog_title">يتم تحميل جدولك</string>
+    <string name="are_you_sure_you_want_to_log_out">Are you sure you want to logout</string>
+    <string name="yes">Yes</string>
+    <string name="cancel">Cancel</string>
 
 
 </resources>

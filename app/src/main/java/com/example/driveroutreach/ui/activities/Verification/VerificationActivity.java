@@ -3,6 +3,7 @@ package com.example.driveroutreach.ui.activities.Verification;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -12,15 +13,20 @@ import androidx.annotation.NonNull;
 
 import com.example.driveroutreach.R;
 import com.example.driveroutreach.databinding.ActivityVerificationBinding;
+import com.example.driveroutreach.ui.activities.Login.LoginActivity;
 import com.example.driveroutreach.ui.activities.Main.MainActivity;
 import com.example.driveroutreach.ui.app_utility.AppUtility;
 import com.example.driveroutreach.ui.base_classes.BaseActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseException;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+
+import java.util.concurrent.TimeUnit;
 
 public class VerificationActivity extends BaseActivity implements VerificationView {
     ActivityVerificationBinding binding;
@@ -31,6 +37,7 @@ public class VerificationActivity extends BaseActivity implements VerificationVi
     String newNumber;
     String verificationIdEdit;
     PhoneAuthCredential phoneAuthCredentialEdite , phoneAuthCredential;
+    private String storedVerificationId;
 
   //  public final String DRIVER_ID_KEY = "driverId";
 
@@ -61,6 +68,8 @@ public class VerificationActivity extends BaseActivity implements VerificationVi
 
 
            if (fromlogin){
+               binding.tvHintCode.setText(getString(R.string.secret_code) + " +970 " + getIntent().getStringExtra("phone"));
+
                Log.d("froWhere","inside: "+fromlogin);
                binding.btnLogin.setOnClickListener(view -> {
                    setEnabledVisibility();
@@ -109,6 +118,7 @@ public class VerificationActivity extends BaseActivity implements VerificationVi
                });
            }else {
                Log.d("froWhere","inside: "+fromlogin);
+               binding.tvHintCode.setText(getString(R.string.secret_code) + " +970 " + getIntent().getStringExtra("number"));
                binding.btnLogin.setOnClickListener(new View.OnClickListener() {
                    @Override
                    public void onClick(View view) {
@@ -143,193 +153,19 @@ public class VerificationActivity extends BaseActivity implements VerificationVi
                    }
                });
            }
+        binding.tvResend.setVisibility(View.VISIBLE);
+
+        binding.tvResend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                binding.tvResend.setTextColor(getResources().getColor(R.color.dark_gray));
+                binding.tvResend.setEnabled(false);
+                resendVerificationCode();
+            }
+        });
 
 
-
-
-
-        //        binding.tvResend.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                {
-//                    FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-//                    FirebaseAuthSettings firebaseAuthSettings = firebaseAuth.getFirebaseAuthSettings();
-//                    firebaseAuthSettings.setAppVerificationDisabledForTesting(false);
-//
-//                    PhoneAuthOptions.Builder builder = PhoneAuthOptions.newBuilder(firebaseAuth);
-//                    builder.setPhoneNumber("+972" + getIntent().getStringExtra("mobile"));
-//                    builder.setTimeout(60L, TimeUnit.SECONDS);
-//                    builder.setActivity(VerificationActivity.this);
-//                    builder.setCallbacks(new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-//                        @Override
-//                        public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
-//                            setEnabledVisibility();
-//                            Log.d("VerificationActivityLOG", "onVerificationCompleted   :    failed");
-//                        }
-//
-//                        @Override
-//                        public void onVerificationFailed(@androidx.annotation.NonNull FirebaseException e) {
-//                            setEnabledVisibility();
-//                            Toast.makeText(VerificationActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-//                            Log.d("VerificationActivityLOG", "onVerificationFailed   :  " + e.getMessage());
-//                        }
-//
-//                        @Override
-//                        public void onCodeSent(@NonNull String newVerificationId, PhoneAuthProvider.ForceResendingToken forceResendingToken) {
-//                            setEnabledVisibility();
-//                            verificationId = newVerificationId;
-//                            Toast.makeText(VerificationActivity.this, "OTP sent", Toast.LENGTH_SHORT).show();
-//                            Log.d("VerificationActivityLOG", "onCodeSent   :  ");
-//                        }
-//                    });
-//
-//                    String code = binding.pinView.getText().toString();
-//                    if (verificationId != null) {
-//                        binding.progressBar.setVisibility(View.VISIBLE);
-//                        PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.getCredential(verificationId, code);
-//                        FirebaseAuth.getInstance().signInWithCredential(phoneAuthCredential)
-//                                .addOnCompleteListener(task -> {
-//                                    Log.e("VerificationActivityLOG", "   =====>  " + task.getException().getMessage());
-//                                    binding.progressBar.setVisibility(View.GONE);
-//                                    //setEnabledVisibility();
-//                                    if (task.isSuccessful()) {
-//                                        Intent intent = new Intent(VerificationActivity.this, MainActivity.class);
-//                                        startActivity(intent);
-//                                        finish();
-//                                    } else {
-//                                        Toast.makeText(VerificationActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-//                                    }
-//                                })
-//                                .addOnFailureListener(e -> Toast.makeText(VerificationActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show());
-//                    }
-//                }
-//            }
-//        });
-
-
-
-
-
-
-
-//        binding.btnLogin.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                String code = binding.pinView.getText().toString();
-//
-//                if (TextUtils.isEmpty(code)) {
-//                    Toast.makeText(VerificationActivity.this, "Enter your code OTP", Toast.LENGTH_SHORT).show();
-//                    return;
-//                }
-//                //  verifyCode(code);
-//                if (verificationId != null) {
-//                    binding.progressBar.setVisibility(View.VISIBLE);binding.btnLogin.setText(R.string.verifying);
-//                    binding.btnLogin.setEnabled(false);
-//                    binding.pinView.setEnabled(false);
-//                    binding.tvResend.setEnabled(false);
-//                    PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
-//
-//
-//                    FirebaseAuth.getInstance().signInWithCredential(credential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-//                        @Override
-//                        public void onComplete(@NonNull Task<AuthResult> task) {
-//                            setEnabledVisibility();
-//                            if (task.isSuccessful()) {
-//                                // Sign in success, update UI with the signed-in user's information
-//                                Log.d("VVVTAG", "signInWithCredential:success");
-//                                Intent intent = new Intent(VerificationActivity.this, MainActivity.class);
-//                                //todo
-//                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                                startActivity(intent);
-//                                //finish();
-//                            } else {
-//                                // Sign in failed, display a message and update the UI
-//                                Log.d("VVVTAG", "signInWithCredential:failed" + task.getException().getMessage());
-//                                Toast.makeText(VerificationActivity.this, "" + task.getException().getMessage(), Toast.LENGTH_LONG).show();
-//                            }
-//                        }
-//                    });
-//                }
-//            }
-//        });
-//
-//
-//        binding.tvResend.setOnClickListener(view -> {
-//
-//            FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-//            FirebaseAuthSettings firebaseAuthSettings = firebaseAuth.getFirebaseAuthSettings();
-//            firebaseAuthSettings.setAppVerificationDisabledForTesting(false);
-//
-//            PhoneAuthOptions.Builder builder = PhoneAuthOptions.newBuilder(firebaseAuth);
-//            builder.setPhoneNumber("+970" +getIntent().getStringExtra("mobile"));
-//            builder.setTimeout(60L, TimeUnit.SECONDS);
-//            builder.setActivity(VerificationActivity.this);
-//            builder.setCallbacks(new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-//                @Override
-//                public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
-//                    setEnabledVisibility();
-//                    Log.d("VVVTAG", "onVerificationCompleted   :    failed");
-//                }
-//
-//                @Override
-//                public void onVerificationFailed(@NonNull FirebaseException e) {
-//                    setEnabledVisibility();
-//                    Toast.makeText(VerificationActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-//                    Log.d("VVVTAG", "onVerificationFailed   :  " + e.getMessage());
-//                }
-//
-//                @Override
-//                public void onCodeSent(@NonNull String newVerificationId, PhoneAuthProvider.@NonNull ForceResendingToken forceResendingToken) {
-//                    setEnabledVisibility();
-//                    verificationId = newVerificationId;
-//                    Toast.makeText(VerificationActivity.this, "OTP sent", Toast.LENGTH_SHORT).show();
-//                    Log.d("VVVTAG", "onCodeSent   :  ");
-//                }
-//            });
-//            PhoneAuthOptions options = builder
-//                    .build();
-//
-//            firebaseAuth.setLanguageCode("en"); // or any other language code
-//            PhoneAuthProvider.verifyPhoneNumber(options);
-//
-//
-//
-//            if (binding.tvResend.isClickable()) {
-//                binding.tvResend.setTextColor(Color.parseColor("#417F7A")); // set text color to green
-//            } else {
-//                binding.tvResend.setTextColor(Color.parseColor("#8B8B8B")); // set text color to gray
-//            }
-//
-//
-//
-////                PhoneAuthProvider.getInstance().verifyPhoneNumber("+970" + getIntent().getStringExtra("mobile"), 60, TimeUnit.SECONDS, VvvvvActivity.this,
-////                        new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-////
-////                            @Override
-////                            public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
-////                                setEnabledVisibility();
-////                                Log.d("VVVTAG", "onVerificationCompleted   :    failed");
-////                            }
-////
-////                            @Override
-////                            public void onVerificationFailed(@NonNull FirebaseException e) {
-////                                setEnabledVisibility();
-////                                Toast.makeText(VvvvvActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-////                                Log.d("VVVTAG", "onVerificationFailed   :  " + e.getMessage());
-////                            }
-////
-////                            @Override
-////                            public void onCodeSent(@NonNull String newVerificationId, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
-////                                // super.onCodeSent(verificationId, forceResendingToken);
-////                                setEnabledVisibility();
-////                                verificationId = newVerificationId;
-////                                Toast.makeText(VvvvvActivity.this, "OTP sent", Toast.LENGTH_SHORT).show();
-////                                Log.d("VVVTAG", "onCodeSent   :  ");
-////
-////                            }
-////                        });
-//
-//        });
 
     }
 
@@ -373,6 +209,76 @@ public class VerificationActivity extends BaseActivity implements VerificationVi
         startActivity(new Intent(getBaseContext(), MainActivity.class));
         finish();
     }
+
+
+
+    private void resendVerificationCode() {
+        if (token != null) {
+
+            Log.d("teeeeat1","+970" + LoginActivity.mobile);
+            PhoneAuthProvider.getInstance().verifyPhoneNumber(
+                    "+970" + LoginActivity.mobile,
+                    60,
+                    TimeUnit.SECONDS,
+                    VerificationActivity.this,
+                    new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+
+                        @Override
+                        public void onVerificationCompleted(PhoneAuthCredential credential) {
+                            // This method will be called when verification is completed automatically
+                            signInWithPhoneAuthCredential(credential);
+                        }
+
+                        @Override
+                        public void onVerificationFailed(FirebaseException e) {
+                            Toast.makeText(VerificationActivity.this, "Verification failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onCodeSent(String verificationId, PhoneAuthProvider.ForceResendingToken resendingToken) {
+                            storedVerificationId = verificationId;
+                            token = resendingToken;
+                            startCountdownTimer();
+                            Toast.makeText(VerificationActivity.this, "Verification code sent", Toast.LENGTH_SHORT).show();
+                        }
+                    },
+                    token
+            );
+        } else {
+            Toast.makeText(VerificationActivity.this, "Resending not supported", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void startCountdownTimer() {
+        binding.tvResend.setEnabled(false);
+        new CountDownTimer(60000, 1000) {
+            public void onTick(long millisUntilFinished) {
+                binding.tvResend.setText("Resend in " + millisUntilFinished / 1000 + "s");
+            }
+
+            public void onFinish() {
+                binding.tvResend.setEnabled(true);
+                binding.tvResend.setText("Resend");
+            }
+        }.start();
+    }
+
+    private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
+        FirebaseAuth.getInstance().signInWithCredential(credential)
+                .addOnCompleteListener(VerificationActivity.this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(VerificationActivity.this, "Verification successful", Toast.LENGTH_SHORT).show();
+                            AuthResult authResult = task.getResult();
+                            // Perform additional actions if needed
+                        } else {
+                            Toast.makeText(VerificationActivity.this, "Verification failed", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
 
     @Override
     public void onChangeNumberFailure(Exception e) {

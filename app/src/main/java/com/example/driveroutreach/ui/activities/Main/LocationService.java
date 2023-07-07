@@ -118,11 +118,11 @@ public class LocationService extends Service implements LocationListener {
         PendingIntent pi = PendingIntent.getActivity(getBaseContext(), 0, intent1, PendingIntent.FLAG_IMMUTABLE);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID);
-        builder.setSmallIcon(R.drawable.icon_arrive);
+        builder.setSmallIcon(R.drawable.img_logo_app);
         builder.setContentTitle("Driver");
         builder.setContentText(getString(R.string.notifacation_describtion));
         builder.setPriority(NotificationCompat.PRIORITY_HIGH);
-        builder.addAction(R.drawable.ic_arrow_right, "show", pi);
+        builder.addAction(R.drawable.icon_arrive, "show", pi);
 
 
         Notification n = builder.build();
