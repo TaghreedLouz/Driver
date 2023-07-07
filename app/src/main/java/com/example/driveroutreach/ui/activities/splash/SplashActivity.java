@@ -54,36 +54,23 @@ public class SplashActivity extends BaseActivity {
         SimpleDateFormat date= new SimpleDateFormat("dd-MMMM-yyyy");
 
         String previous = sp.getString("createdSps",null);
+        String jid = sp.getString("journeyId",null);
+        String jdate = sp.getString("journeyDate",null);
 
-        if(previous != null){
+        if(previous != null && jid !=null && jdate != null){
           boolean x = previous.equals(AppUtility.getDate());
             Log.d("boolean",String.valueOf(x));
           if (!x){
               Log.d("boolean",String.valueOf(x)+"inside");
               edit.putString("FinishedJourneys",null);
               edit.putString("attending",null);
+              edit.putString("journeyId",null);
+              edit.putString("journeyDate",null);
               edit.commit();
           }
         }
 
-//        Date created;
-//        Date currentDate;
-//
-//        try {
-//             created=   date.parse(sp.getString("createdSps",null));
-//             currentDate = date.parse(AppUtility.getDate());
-//            if (sp!=null){
-//                if (previous != null){
-//                    if (created.compareTo(currentDate)<0){
-//                        edit.putString("FinishedJourneys",null);
-//                        edit.putString("attending",null);
-//                        edit.commit();
-//                    }
-//                }
-//            }
-//        } catch (ParseException e) {
-//            throw new RuntimeException(e);
-//        }
+
     }
 
 

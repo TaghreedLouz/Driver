@@ -226,7 +226,7 @@ public class VerificationActivity extends BaseActivity implements VerificationVi
                         @Override
                         public void onVerificationCompleted(PhoneAuthCredential credential) {
                             // This method will be called when verification is completed automatically
-                            signInWithPhoneAuthCredential(credential);
+                      //      signInWithPhoneAuthCredential(credential);
                         }
 
                         @Override
@@ -235,8 +235,8 @@ public class VerificationActivity extends BaseActivity implements VerificationVi
                         }
 
                         @Override
-                        public void onCodeSent(String verificationId, PhoneAuthProvider.ForceResendingToken resendingToken) {
-                            storedVerificationId = verificationId;
+                        public void onCodeSent(String verificationId2, PhoneAuthProvider.ForceResendingToken resendingToken) {
+                           verificationId = verificationId2;
                             token = resendingToken;
                             startCountdownTimer();
                             Toast.makeText(VerificationActivity.this, "Verification code sent", Toast.LENGTH_SHORT).show();
