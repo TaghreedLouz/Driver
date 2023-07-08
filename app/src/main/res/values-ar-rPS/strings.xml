@@ -85,9 +85,11 @@
     <string name="num_change_error">الرقم المدخل خطأ</string>
 
     <string name="schedule_prog_title">يتم تحميل جدولك</string>
-    <string name="are_you_sure_you_want_to_log_out">Are you sure you want to logout</string>
-    <string name="yes">Yes</string>
-    <string name="cancel">Cancel</string>
+    <string name="are_you_sure_you_want_to_log_out">هل أنت متأكد من رغبتك بتسجيل الخروج؟</string>
+    <string name="yes">أجل</string>
+    <string name="cancel">لا</string>
+
+    <string name="end_journey">أنهي الرحلة</string>
 
 
 </resources>

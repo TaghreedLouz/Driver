@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -105,16 +106,17 @@ HashMap<String, Integer> FinishedJourneys = new HashMap<String, Integer>();;
         holder.PickingupPlace.setText(journeyModel.getRegion());
 
 
-// todo: uncomment this block of code, in the end when the database entry is complete
 
-//        if (AppUtility.getToday().equals(journeyModel.getDay())) {
-//            holder.date.setText(AppUtility.getDate());
-//        } else {
-//            holder.date.setVisibility(View.GONE);
-//            holder.startJourney.setVisibility(View.GONE);
-//        }
 
-        holder.date.setText(AppUtility.getDate());
+        if (AppUtility.getToday().equals(journeyModel.getDay())) {
+            holder.date.setText(AppUtility.getDate());
+        } else {
+            holder.date.setVisibility(View.GONE);
+            holder.startJourney.setVisibility(View.GONE);
+            holder.calender.setVisibility(View.GONE);
+        }
+
+
 
 
 
@@ -201,6 +203,7 @@ HashMap<String, Integer> FinishedJourneys = new HashMap<String, Integer>();;
 
         TextView TimeStart, TimeEnds, ArrivalPlace, PickingupPlace, itenaryId, date;
         Button startJourney, endJourney;
+        ImageView calender;
         public MyViewHolderTrip(@NonNull ItemTripBinding binding) {
             super(binding.getRoot());
 
@@ -212,6 +215,7 @@ HashMap<String, Integer> FinishedJourneys = new HashMap<String, Integer>();;
             startJourney = binding.btnStartJourney;
             endJourney = binding.btnEndJourney;
             date = binding.tvDate;
+            calender =binding.iconCalender;
 
 
         }
