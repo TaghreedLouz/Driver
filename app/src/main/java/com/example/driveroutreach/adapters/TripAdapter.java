@@ -35,9 +35,6 @@ int itemPosition;
 SharedPreferences sp;
 SharedPreferences.Editor edit;
 HashMap<String, Integer> FinishedJourneys = new HashMap<String, Integer>();
-int startedPosition;
-String journeyID2;
-
 
 
 
@@ -46,6 +43,7 @@ String journeyID2;
         this.scheduleListener = scheduleListener;
         sp = context.getSharedPreferences("sp", Context.MODE_PRIVATE);
         edit =sp.edit();
+
 
 
         Gson gson2 = new Gson();
@@ -73,18 +71,26 @@ String journeyID2;
         JourneyModel journeyModel = journys.get(position);
 
 
-        //here we check the values of sp to make save the state of the adapter
+        //if one journey started the rest is disabled
+        boolean started =sp.getBoolean("started",false);
+        if (started){
+            holder.startJourney.setEnabled(false);
+        }
 
-      int  startedPosition = sp.getInt("startedPosition",-1);
-      String  journeyID2 = sp.getString("journeyId",null);
-        if (sp.getInt("startedPosition",-1) > -1 && sp.getString("journeyId",null) !=null){
-            if (startedPosition == holder.getAdapterPosition() &&
+        int startedPostion = sp.getInt("startedPosition",-1);
+        String jId = sp.getString("journeyId",null);
+
+        //here we check the values of sp to make save the state of the adapter
+        if (startedPostion > -1 && jId !=null){
+            if (sp.getInt("startedPosition",-1) == holder.getAdapterPosition() &&
                     sp.getString("journeyId",null).equals(journeyModel.getJourneyId()) ){
 
                 holder.startJourney.setEnabled(false);
                 holder.startJourney.setVisibility(View.GONE);
                 holder.endJourney.setVisibility(View.VISIBLE);
-                Log.d("jm",String.valueOf(journeyModel.isEnabled()));
+
+     //           Log.d("jm",String.valueOf(journeyModel.isEnabled()));
+
                 holder.startJourney.setEnabled(journeyModel.isEnabled());
 
             }
@@ -106,6 +112,7 @@ String journeyID2;
 
 
 
+
         holder.TimeEnds.setText(journeyModel.getEnd());
         holder.TimeStart.setText(journeyModel.getStart());
         holder.itenaryId.setText("Itinerary"+journeyModel.getJourneyId());
@@ -115,13 +122,13 @@ String journeyID2;
 
 
 //to be able to start only todays journeys
-//        if (AppUtility.getToday().equals(journeyModel.getDay())) {
-//            holder.date.setText(AppUtility.getDate());
-//        } else {
-//            holder.date.setVisibility(View.GONE);
-//            holder.startJourney.setVisibility(View.GONE);
-//            holder.calender.setVisibility(View.GONE);
-//        }
+        if (AppUtility.getToday().equals(journeyModel.getDay())) {
+            holder.date.setText(AppUtility.getDate());
+        } else {
+            holder.date.setVisibility(View.GONE);
+            holder.startJourney.setVisibility(View.GONE);
+            holder.calender.setVisibility(View.GONE);
+        }
 
 
         holder.date.setText(AppUtility.getDate());
@@ -144,8 +151,9 @@ String journeyID2;
                 edit.putString("journeyStartDate",AppUtility.getTime());
                 edit.commit();
 
-                 journeyModel.setEnabled(false);
-                 notifyDataSetChanged();
+
+                journeyModel.setEnabled(false);
+                notifyDataSetChanged();
 
                 scheduleListener.StartJourney(journeyModel.getJourneyId(),date);
             }

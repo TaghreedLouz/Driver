@@ -56,8 +56,9 @@ public class SplashActivity extends BaseActivity {
         String previous = sp.getString("createdSps",null);
         String jid = sp.getString("journeyId",null);
         String jdate = sp.getString("journeyDate",null);
+        boolean started =sp.getBoolean("started",false);
 
-        if(previous != null && jid !=null && jdate != null){
+        if(previous != null && jid !=null && jdate != null && started){
           boolean x = previous.equals(AppUtility.getDate());
             Log.d("boolean",String.valueOf(x));
           if (!x){
@@ -66,6 +67,7 @@ public class SplashActivity extends BaseActivity {
               edit.putString("attending",null);
               edit.putString("journeyId",null);
               edit.putString("journeyDate",null);
+              edit.putBoolean("started",false);
               edit.commit();
           }
         }
