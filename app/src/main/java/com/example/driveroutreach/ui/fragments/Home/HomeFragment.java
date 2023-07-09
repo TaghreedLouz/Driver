@@ -2,6 +2,8 @@ package com.example.driveroutreach.ui.fragments.Home;
 
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -169,27 +171,45 @@ public class HomeFragment extends BaseFragment implements HomeView, OnMapReadyCa
 
 
                                     }
-
-                                    for (Location loc:clientLocationList){
-                                        Log.d("distance","before"+String.valueOf(loc.getLongitude()));
-
-                                        float distance = homePresenter.calculateDiatance(
-                                                loc.getLongitude(),loc.getLatitude(),
-                                                Double.parseDouble(sp.getString("longitude",null)),
-                                                Double.parseDouble(sp.getString("latitude",null)));
-
-                                        Log.d("distance","distance is:"+String.valueOf(distance));
-                                        if (distance<=100) {
-                                            Log.d("distance","distance<=100");
-                                            AppUtility.showSnackbar(binding.getRoot(),"You are near a client");
-                                        }
-                                    }
-
-
-
                                     // Store the attendance list or perform any required operations
                                     edit.putString("attending", new Gson().toJson(attendanceList));
                                     edit.commit();
+
+                                    // check if near
+                                    Handler handler = new Handler(Looper.myLooper());
+                                    Runnable keepLooping= new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Log.d("distance","array: "+clientLocationList.toString());
+
+                                            if (clientLocationList != null){
+                                                for (Location loc:clientLocationList){
+                                                    Log.d("distance","before"+String.valueOf(loc.getLongitude()));
+
+                                                    float distance = homePresenter.calculateDiatance(
+                                                            loc.getLongitude(),loc.getLatitude(),
+                                                            Double.parseDouble(sp.getString("longitude",null)),
+                                                            Double.parseDouble(sp.getString("latitude",null)));
+
+                                                    Log.d("distance","distance is:"+String.valueOf(distance));
+                                                    if (distance<=100) {
+                                                        Log.d("distance","distance<=100");
+                                                        clientLocationList.remove(loc);
+                                                        AppUtility.showSnackbar(binding.getRoot(),"You are near a client");
+                                                    }
+                                                    //TimeUnit.MINUTES.toMillis(5)
+                                                }
+                                                handler.postDelayed(this,20000 );
+                                            }
+
+                                        }
+                                    };
+
+
+                                   // Start the periodic updates
+                                    handler.post(keepLooping);
+
+
 
                                     Log.d("DataReturned", attendanceList.toString());
                                 } else {
