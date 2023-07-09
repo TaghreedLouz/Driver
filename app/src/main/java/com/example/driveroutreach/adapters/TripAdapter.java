@@ -34,8 +34,9 @@ String date;
 int itemPosition;
 SharedPreferences sp;
 SharedPreferences.Editor edit;
-HashMap<String, Integer> FinishedJourneys = new HashMap<String, Integer>();;
-
+HashMap<String, Integer> FinishedJourneys = new HashMap<String, Integer>();
+int startedPosition;
+String journeyID2;
 
 
 
@@ -74,15 +75,21 @@ HashMap<String, Integer> FinishedJourneys = new HashMap<String, Integer>();;
 
         //here we check the values of sp to make save the state of the adapter
 
-        if (sp.getInt("startedPosition",-1) == holder.getAdapterPosition() &&
-            sp.getString("journeyId",null).equals(journeyModel.getJourneyId()) ){
+      int  startedPosition = sp.getInt("startedPosition",-1);
+      String  journeyID2 = sp.getString("journeyId",null);
+        if (sp.getInt("startedPosition",-1) > -1 && sp.getString("journeyId",null) !=null){
+            if (startedPosition == holder.getAdapterPosition() &&
+                    sp.getString("journeyId",null).equals(journeyModel.getJourneyId()) ){
 
-            holder.startJourney.setEnabled(false);
-            holder.startJourney.setVisibility(View.GONE);
-            holder.endJourney.setVisibility(View.VISIBLE);
-            holder.startJourney.setEnabled(journeyModel.isEnabled());
+                holder.startJourney.setEnabled(false);
+                holder.startJourney.setVisibility(View.GONE);
+                holder.endJourney.setVisibility(View.VISIBLE);
+                Log.d("jm",String.valueOf(journeyModel.isEnabled()));
+                holder.startJourney.setEnabled(journeyModel.isEnabled());
 
+            }
         }
+
 
         if (FinishedJourneys != null){
             for(String journeyID : FinishedJourneys.keySet() ){
@@ -107,17 +114,17 @@ HashMap<String, Integer> FinishedJourneys = new HashMap<String, Integer>();;
 
 
 
+//to be able to start only todays journeys
+//        if (AppUtility.getToday().equals(journeyModel.getDay())) {
+//            holder.date.setText(AppUtility.getDate());
+//        } else {
+//            holder.date.setVisibility(View.GONE);
+//            holder.startJourney.setVisibility(View.GONE);
+//            holder.calender.setVisibility(View.GONE);
+//        }
 
-        if (AppUtility.getToday().equals(journeyModel.getDay())) {
-            holder.date.setText(AppUtility.getDate());
-        } else {
-            holder.date.setVisibility(View.GONE);
-            holder.startJourney.setVisibility(View.GONE);
-            holder.calender.setVisibility(View.GONE);
-        }
 
-
-
+        holder.date.setText(AppUtility.getDate());
 
 
 

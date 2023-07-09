@@ -23,6 +23,7 @@ public class JourneyModel {
     public JourneyModel() {
     }
 
+
     public JourneyModel(String driver, String region, String start, String end, String organization, ArrayList<String> beneficiaries, String day, String journeyId) {
         this.driver = driver;
         this.region = region;
