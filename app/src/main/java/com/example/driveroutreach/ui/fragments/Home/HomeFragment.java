@@ -2,8 +2,6 @@ package com.example.driveroutreach.ui.fragments.Home;
 
 import android.location.Location;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,13 +14,13 @@ import com.example.driveroutreach.R;
 import com.example.driveroutreach.databinding.FragmentHomeBinding;
 import com.example.driveroutreach.model.AttendanceConfirmation;
 import com.example.driveroutreach.ui.activities.Main.LocationChanged;
-import com.example.driveroutreach.ui.app_utility.AppUtility;
 import com.example.driveroutreach.ui.base_classes.BaseFragment;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -175,39 +173,6 @@ public class HomeFragment extends BaseFragment implements HomeView, OnMapReadyCa
                                     edit.putString("attending", new Gson().toJson(attendanceList));
                                     edit.commit();
 
-                                    // check if near
-                                    Handler handler = new Handler(Looper.myLooper());
-                                    Runnable keepLooping= new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            Log.d("distance","array: "+clientLocationList.toString());
-
-                                            if (clientLocationList != null){
-                                                for (Location loc:clientLocationList){
-                                                    Log.d("distance","before"+String.valueOf(loc.getLongitude()));
-
-                                                    float distance = homePresenter.calculateDiatance(
-                                                            loc.getLongitude(),loc.getLatitude(),
-                                                            Double.parseDouble(sp.getString("longitude",null)),
-                                                            Double.parseDouble(sp.getString("latitude",null)));
-
-                                                    Log.d("distance","distance is:"+String.valueOf(distance));
-                                                    if (distance<=100) {
-                                                        Log.d("distance","distance<=100");
-                                                        clientLocationList.remove(loc);
-                                                        AppUtility.showSnackbar(binding.getRoot(),"You are near a client");
-                                                    }
-                                                    //TimeUnit.MINUTES.toMillis(5)
-                                                }
-                                                handler.postDelayed(this,20000 );
-                                            }
-
-                                        }
-                                    };
-
-
-                                   // Start the periodic updates
-                                    handler.post(keepLooping);
 
 
 
@@ -295,7 +260,7 @@ if (map != null){
 
 
         }else {
-            MarkerOptions markersPoistionsDriver = new MarkerOptions().position(new LatLng(latitude_driver, longitude_driver));
+            MarkerOptions markersPoistionsDriver = new MarkerOptions().position(new LatLng(latitude_driver, longitude_driver)).icon(BitmapDescriptorFactory.fromResource(R.drawable.img_bus2));
             driver_marker = map.addMarker(markersPoistionsDriver);
 
 
